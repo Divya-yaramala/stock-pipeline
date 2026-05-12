@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
+.Python
 *.egg
 *.egg-info/
 dist/
@@ -29,6 +30,10 @@ airflow.cfg
 webserver_config.py
 standalone_admin_password.txt
 
+# AWS credentials
+.aws/
+credentials
+
 # Pytest
 .pytest_cache/
 .coverage
@@ -37,6 +42,7 @@ htmlcov/
 # IDE
 .vscode/
 .idea/
+*.iml
 
 # OS
 .DS_Store
