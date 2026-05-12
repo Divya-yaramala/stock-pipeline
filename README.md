@@ -70,3 +70,22 @@ stock-pipeline/
 **Divya Yaramala** — Data Engineer
 - GitHub: [Divya-yaramala](https://github.com/Divya-yaramala)
 - Email: divyayaramala145@gmail.com
+
+---
+
+## Progress Log
+
+### ✅ Day 1 — Project Scaffold
+- Created complete folder structure
+- Docker Compose with Postgres + Airflow
+- .env.example with all required variables
+- .gitignore covering Python, dbt, Airflow
+- ASCII architecture diagram
+
+### ✅ Day 2 — Ingestion Script
+- Python ingestion script using yfinance
+- Fetches OHLCV data for 5 tickers: AAPL, MSFT, GOOGL, AMZN, TSLA
+- Uploads raw JSON to AWS S3 with date partitioning: raw/stocks/YYYY/MM/DD/
+- Type hints and logging on every function
+- 5 unit tests using pytest with mocked boto3 and yfinance
+- All tests passing green
