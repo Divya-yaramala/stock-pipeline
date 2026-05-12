@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: mart_stock_summary
+    description: >
+      Final analytics-ready table combining OHLCV, technical indicators,
+      and period statistics per symbol. Intended for dashboards and ad-hoc
+      analysis. Grain: one row per symbol per trading day.
+    columns:
+      - name: symbol
+        description: Ticker symbol.
+        tests: [not_null]
+      - name: date
+        description: Trading date.
+        tests: [not_null]
+      - name: close
+        description: Adjusted closing price.
+        tests: [not_null]
+      - name: golden_cross
+        description: True when 20-day MA is above 50-day MA (bullish signal).
+      - name: above_ma_20d
+        description: True when the closing price is above its 20-day moving average.
+      - name: relative_volume
+        description: Ratio of current volume to the prior 7-day average volume.
+      - name: cumulative_return_pct
+        description: Total return (%) since the earliest loaded date for each symbol.
+      - name: pct_below_period_high
+        description: Percentage below the all-time high within the loaded data window.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [symbol, date]

@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: int_stock_daily_metrics
+    description: >
+      Daily stock metrics including price changes, moving averages,
+      volume analytics, and cumulative returns.
+    columns:
+      - name: symbol
+        tests: [not_null]
+      - name: date
+        tests: [not_null]
+      - name: close
+        tests: [not_null]
+      - name: pct_change
+        description: Day-over-day percentage price change.
+      - name: ma_7d
+        description: 7-day simple moving average of closing price.
+      - name: ma_20d
+        description: 20-day simple moving average of closing price.
+      - name: ma_50d
+        description: 50-day simple moving average of closing price.
+      - name: relative_volume
+        description: >
+          Current day volume relative to the prior 7-day average.
+          >1 means higher-than-average volume.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [symbol, date]

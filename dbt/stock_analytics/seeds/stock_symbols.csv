@@ -1,0 +1,11 @@
+symbol,company_name,sector,index
+AAPL,Apple Inc.,Technology,S&P 500
+MSFT,Microsoft Corporation,Technology,S&P 500
+GOOGL,Alphabet Inc.,Communication Services,S&P 500
+AMZN,Amazon.com Inc.,Consumer Discretionary,S&P 500
+META,Meta Platforms Inc.,Communication Services,S&P 500
+TSLA,Tesla Inc.,Consumer Discretionary,S&P 500
+NVDA,NVIDIA Corporation,Technology,S&P 500
+JPM,JPMorgan Chase & Co.,Financials,S&P 500
+JNJ,Johnson & Johnson,Health Care,S&P 500
+V,Visa Inc.,Financials,S&P 500
