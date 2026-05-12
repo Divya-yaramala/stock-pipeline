@@ -1,0 +1,6 @@
+yfinance
+boto3
+pandas
+pytest
+python-dotenv
+moto
