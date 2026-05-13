@@ -89,3 +89,10 @@ stock-pipeline/
 - Type hints and logging on every function
 - 5 unit tests using pytest with mocked boto3 and yfinance
 - All tests passing green
+
+### ✅ Day 3 — AI Anomaly Detection
+- Added Isolation Forest ML model to detect unusual stock price movements
+- Detects anomalies across 5 features: open, high, low, close, volume
+- Saves anomaly results to S3 under processed/anomalies/YYYY/MM/DD/
+- 6 unit tests all passing green
+- scikit-learn and numpy added to requirements.txt
