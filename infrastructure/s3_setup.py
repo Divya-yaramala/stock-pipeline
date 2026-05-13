@@ -1,16 +1,14 @@
 import logging
+import os
 
 import boto3
 from botocore.exceptions import ClientError
-import yaml
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger(__name__)
-
-
-def load_config(path: str = "config/config.yaml") -> dict:
-    with open(path) as f:
-        return yaml.safe_load(f)
 
 
 def create_bucket_if_not_exists(bucket: str, region: str) -> None:
@@ -23,35 +21,18 @@ def create_bucket_if_not_exists(bucket: str, region: str) -> None:
                 Bucket=bucket,
                 CreateBucketConfiguration={"LocationConstraint": region},
             )
-        logger.info(f"Created bucket: {bucket}")
+        logger.info("Created bucket: %s", bucket)
     except ClientError as e:
         if e.response["Error"]["Code"] == "BucketAlreadyOwnedByYou":
-            logger.info(f"Bucket already exists: {bucket}")
+            logger.info("Bucket already exists: %s", bucket)
         else:
             raise
 
 
-def create_snowflake_stage_sql(bucket: str, prefix: str, stage: str) -> str:
-    return f"""
-CREATE OR REPLACE STAGE {stage}
-  URL = 's3://{bucket}/{prefix}/'
-  CREDENTIALS = (AWS_KEY_ID = '{{AWS_KEY_ID}}' AWS_SECRET_KEY = '{{AWS_SECRET_KEY}}')
-  FILE_FORMAT = (TYPE = 'CSV' FIELD_OPTIONALLY_ENCLOSED_BY = '"' SKIP_HEADER = 1);
-"""
-
-
-def setup(config_path: str = "config/config.yaml") -> None:
-    cfg = load_config(config_path)
-    bucket = cfg["aws"]["s3_bucket"]
-    region = cfg["aws"]["region"]
-    prefix = cfg["aws"]["s3_prefix"]
-    stage = cfg["snowflake"]["stage"]
-
+def setup() -> None:
+    bucket = os.environ["AWS_BUCKET_NAME"]
+    region = os.environ.get("AWS_REGION", "us-east-1")
     create_bucket_if_not_exists(bucket, region)
-
-    stage_sql = create_snowflake_stage_sql(bucket, prefix, stage)
-    logger.info("Run the following SQL in Snowflake to create the external stage:")
-    print(stage_sql)
 
 
 if __name__ == "__main__":

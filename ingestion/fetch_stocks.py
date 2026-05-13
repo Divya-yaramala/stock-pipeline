@@ -13,8 +13,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "")
-AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
 AWS_BUCKET_NAME = os.environ.get("AWS_BUCKET_NAME", "")
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
 
@@ -37,12 +35,7 @@ def fetch_stock_data(ticker: str, period: str = "1d") -> pd.DataFrame:
 
 def upload_to_s3(data: dict, ticker: str, bucket: str, date: str) -> bool:
     try:
-        s3_client = boto3.client(
-            "s3",
-            region_name=AWS_REGION,
-            aws_access_key_id=AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-        )
+        s3_client = boto3.client("s3", region_name=AWS_REGION)
         key = f"raw/stocks/{date}/{ticker}.json"
         json_str = json.dumps(data)
         s3_client.put_object(Bucket=bucket, Key=key, Body=json_str)

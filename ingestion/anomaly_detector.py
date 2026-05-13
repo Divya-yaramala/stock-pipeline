@@ -13,8 +13,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "")
-AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
 AWS_BUCKET_NAME = os.environ.get("AWS_BUCKET_NAME", "")
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
 
@@ -24,12 +22,7 @@ FEATURES = ["open", "high", "low", "close", "volume"]
 
 def load_stock_data_from_s3(ticker: str, bucket: str, date: str) -> pd.DataFrame:
     try:
-        s3_client = boto3.client(
-            "s3",
-            region_name=AWS_REGION,
-            aws_access_key_id=AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-        )
+        s3_client = boto3.client("s3", region_name=AWS_REGION)
         key = f"raw/stocks/{date}/{ticker}.json"
         response = s3_client.get_object(Bucket=bucket, Key=key)
         data = json.loads(response["Body"].read().decode("utf-8"))
@@ -58,12 +51,7 @@ def detect_anomalies(df: pd.DataFrame, ticker: str) -> pd.DataFrame:
 
 def save_anomaly_results(df: pd.DataFrame, ticker: str, bucket: str, date: str) -> bool:
     try:
-        s3_client = boto3.client(
-            "s3",
-            region_name=AWS_REGION,
-            aws_access_key_id=AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-        )
+        s3_client = boto3.client("s3", region_name=AWS_REGION)
         key = f"processed/anomalies/{date}/{ticker}.json"
         json_str = df.to_json()
         s3_client.put_object(Bucket=bucket, Key=key, Body=json_str)

@@ -2,11 +2,11 @@
 Stock Price Data Pipeline DAG
 ==============================
 Schedule  : Weekdays at 18:00 UTC (after US market close)
-Flow      : yfinance → S3 raw layer → PostgreSQL raw → dbt transforms
+Flow      : yfinance → S3 (JSON per ticker) → Postgres staging → dbt → anomaly detection
 """
 import logging
 import os
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.operators.bash import BashOperator
@@ -14,10 +14,9 @@ from airflow.operators.python import PythonOperator, ShortCircuitOperator
 
 log = logging.getLogger(__name__)
 
-# ── Helpers imported from /opt/ingestion (mounted via docker-compose) ─────────
 
 def _is_trading_day(**context) -> bool:
-    """Skip the pipeline on weekends (simple guard; does not account for holidays)."""
+    """Skip the pipeline on weekends."""
     execution_date: datetime = context["logical_date"]
     if execution_date.weekday() >= 5:
         log.info("Execution date %s is a weekend — skipping run", execution_date.date())
@@ -25,53 +24,22 @@ def _is_trading_day(**context) -> bool:
     return True
 
 
-def _ingest_and_upload(**context) -> str:
-    """Fetch stock data for the execution date and upload to S3."""
-    from fetch_stocks import fetch_stock_data
-    from s3_utils import upload_dataframe_to_s3
-
-    execution_date: datetime = context["logical_date"]
-    target_date = execution_date.date()
-
-    symbols = os.environ["STOCK_SYMBOLS"].split(",")
-    df = fetch_stock_data(symbols, target_date=target_date)
-
-    if df.empty:
-        log.warning("No data returned for %s — DAG will continue but load will no-op", target_date)
-        return ""
-
-    s3_key = upload_dataframe_to_s3(
-        df,
-        bucket=os.environ["S3_BUCKET"],
-        prefix=os.environ.get("S3_PREFIX", "raw/stocks"),
-        target_date=target_date,
-    )
-    # Push S3 key for downstream task
-    context["ti"].xcom_push(key="s3_key", value=s3_key)
-    log.info("Ingestion complete. S3 key: %s", s3_key)
-    return s3_key
+def _fetch_and_upload_to_s3(**context) -> None:
+    """Fetch OHLCV data for all tickers and upload JSON files to S3."""
+    from fetch_stocks import run_pipeline
+    run_pipeline()
 
 
-def _load_raw_to_postgres(**context) -> int:
-    """Download today's Parquet from S3 and upsert into raw.stock_prices."""
-    from postgres_utils import load_from_s3_to_postgres
-
-    s3_key: str = context["ti"].xcom_pull(task_ids="ingest_and_upload_s3", key="s3_key") or ""
-    if not s3_key:
-        log.warning("No S3 key received — skipping Postgres load")
-        return 0
-
-    execution_date: datetime = context["logical_date"]
-    rows = load_from_s3_to_postgres(
-        bucket=os.environ["S3_BUCKET"],
-        prefix=os.environ.get("S3_PREFIX", "raw/stocks"),
-        target_date=execution_date.date(),
-    )
-    log.info("Loaded %d row(s) into raw.stock_prices", rows)
-    return rows
+def _load_to_postgres_staging(**context) -> None:
+    """Load stock JSON files from S3 into the Postgres raw staging layer."""
+    log.info("Postgres staging load — to be implemented in Day 4")
 
 
-# ── DAG definition ─────────────────────────────────────────────────────────────
+def _run_anomaly_detection(**context) -> None:
+    """Run Isolation Forest anomaly detection on today's stock data."""
+    from anomaly_detector import run_anomaly_detection
+    run_anomaly_detection()
+
 
 default_args = {
     "owner": "data-engineer",
@@ -88,8 +56,8 @@ DBT_CMD = f"cd {DBT_DIR} && dbt {{}} --profiles-dir {DBT_DIR} --target dev"
 with DAG(
     dag_id="stock_price_pipeline",
     default_args=default_args,
-    description="Daily stock price ingestion → S3 → PostgreSQL → dbt transforms",
-    schedule="0 18 * * 1-5",  # 18:00 UTC, Mon–Fri
+    description="Daily stock price ingestion → S3 (JSON) → Postgres → dbt → anomaly detection",
+    schedule="0 18 * * 1-5",
     start_date=datetime(2024, 1, 1),
     catchup=False,
     max_active_runs=1,
@@ -102,49 +70,38 @@ with DAG(
         doc_md="Short-circuit on weekends so downstream tasks are skipped cleanly.",
     )
 
-    ingest_and_upload_s3 = PythonOperator(
-        task_id="ingest_and_upload_s3",
-        python_callable=_ingest_and_upload,
-        doc_md="Fetch OHLCV data via yfinance and upload Parquet to S3.",
+    fetch_and_upload_to_s3 = PythonOperator(
+        task_id="fetch_and_upload_to_s3",
+        python_callable=_fetch_and_upload_to_s3,
+        doc_md="Fetch OHLCV data via yfinance and upload one JSON file per ticker to S3.",
     )
 
-    load_raw_to_postgres = PythonOperator(
-        task_id="load_raw_to_postgres",
-        python_callable=_load_raw_to_postgres,
-        doc_md="Download Parquet from S3 and upsert into raw.stock_prices.",
+    load_to_postgres_staging = PythonOperator(
+        task_id="load_to_postgres_staging",
+        python_callable=_load_to_postgres_staging,
+        doc_md="Load today's stock data from S3 into raw.stock_prices in Postgres.",
     )
 
-    dbt_run_staging = BashOperator(
-        task_id="dbt_run_staging",
-        bash_command=DBT_CMD.format("run --select staging"),
-        doc_md="Build staging models (stg_stock_prices).",
+    run_dbt_models = BashOperator(
+        task_id="run_dbt_models",
+        bash_command=(
+            DBT_CMD.format("run --select staging intermediate mart")
+            + " && "
+            + DBT_CMD.format("test")
+        ),
+        doc_md="Build all dbt models (staging → intermediate → mart) and run data-quality tests.",
     )
 
-    dbt_run_intermediate = BashOperator(
-        task_id="dbt_run_intermediate",
-        bash_command=DBT_CMD.format("run --select intermediate"),
-        doc_md="Build intermediate models (int_stock_daily_metrics).",
+    run_anomaly_detection = PythonOperator(
+        task_id="run_anomaly_detection",
+        python_callable=_run_anomaly_detection,
+        doc_md="Run Isolation Forest on today's OHLCV data and write anomaly results to S3.",
     )
 
-    dbt_run_mart = BashOperator(
-        task_id="dbt_run_mart",
-        bash_command=DBT_CMD.format("run --select mart"),
-        doc_md="Build mart models (mart_stock_summary).",
-    )
-
-    dbt_test = BashOperator(
-        task_id="dbt_test",
-        bash_command=DBT_CMD.format("test"),
-        doc_md="Run all dbt data-quality tests.",
-    )
-
-    # ── Task dependency chain ─────────────────────────────────────────────────
     (
         check_trading_day
-        >> ingest_and_upload_s3
-        >> load_raw_to_postgres
-        >> dbt_run_staging
-        >> dbt_run_intermediate
-        >> dbt_run_mart
-        >> dbt_test
+        >> fetch_and_upload_to_s3
+        >> load_to_postgres_staging
+        >> run_dbt_models
+        >> run_anomaly_detection
     )
