@@ -1,6 +1,6 @@
 # Stock Price Data Pipeline
 
-An end-to-end data engineering portfolio project that ingests daily stock prices, stores raw data in AWS S3, loads into PostgreSQL, transforms with dbt, and syncs to Snowflake — orchestrated by Apache Airflow.
+An AI-powered stock price pipeline that ingests daily prices, detects anomalies with ML, predicts next-day closing prices, and generates LLM-powered market insights — storing raw data in AWS S3, transforming with dbt, warehousing in Snowflake, and orchestrated end-to-end by Apache Airflow.
 
 ---
 
