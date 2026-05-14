@@ -73,6 +73,14 @@ stock-pipeline/
 
 ---
 
+## Current AI Pipeline
+
+```
+check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → run_dbt_models → run_anomaly_detection → run_price_prediction
+```
+
+---
+
 ## Progress Log
 
 ### ✅ Day 1 — Project Scaffold
