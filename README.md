@@ -96,3 +96,11 @@ stock-pipeline/
 - Saves anomaly results to S3 under processed/anomalies/YYYY/MM/DD/
 - 6 unit tests all passing green
 - scikit-learn and numpy added to requirements.txt
+
+### ✅ Day 4 — AI Price Prediction
+- Built stock price prediction model using Facebook Prophet
+- Predicts next 5 days closing prices for all 5 tickers
+- Saves predictions to S3 under processed/predictions/YYYY/MM/DD/
+- Wired into Airflow DAG as final task
+- 7 unit tests all passing green
+- Prophet added to requirements.txt

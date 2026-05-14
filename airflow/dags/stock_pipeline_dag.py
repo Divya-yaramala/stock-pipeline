@@ -2,7 +2,7 @@
 Stock Price Data Pipeline DAG
 ==============================
 Schedule  : Weekdays at 18:00 UTC (after US market close)
-Flow      : yfinance → S3 (JSON per ticker) → Postgres staging → dbt → anomaly detection
+Flow      : yfinance → S3 (JSON per ticker) → Postgres staging → dbt → anomaly detection → price prediction
 """
 import logging
 import os
@@ -39,6 +39,12 @@ def _run_anomaly_detection(**context) -> None:
     """Run Isolation Forest anomaly detection on today's stock data."""
     from anomaly_detector import run_anomaly_detection
     run_anomaly_detection()
+
+
+def _run_price_prediction(**context) -> None:
+    """Run Prophet price prediction and save forecasts to S3."""
+    from price_predictor import run_price_prediction
+    run_price_prediction()
 
 
 default_args = {
@@ -98,10 +104,17 @@ with DAG(
         doc_md="Run Isolation Forest on today's OHLCV data and write anomaly results to S3.",
     )
 
+    run_price_prediction = PythonOperator(
+        task_id="run_price_prediction",
+        python_callable=_run_price_prediction,
+        doc_md="Run Prophet model to predict next 5 days of closing prices and write forecasts to S3.",
+    )
+
     (
         check_trading_day
         >> fetch_and_upload_to_s3
         >> load_to_postgres_staging
         >> run_dbt_models
         >> run_anomaly_detection
+        >> run_price_prediction
     )

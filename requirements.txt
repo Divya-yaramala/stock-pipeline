@@ -6,3 +6,5 @@ python-dotenv
 moto
 scikit-learn
 numpy
+prophet
+holidays
