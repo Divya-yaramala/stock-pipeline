@@ -9,3 +9,5 @@ numpy
 prophet
 holidays
 openai
+psycopg2-binary
+dbt-postgres

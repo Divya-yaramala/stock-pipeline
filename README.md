@@ -113,6 +113,16 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - 7 unit tests all passing green
 - Prophet added to requirements.txt
 
+### ✅ Day 6 — PostgreSQL Staging Layer and dbt Models
+- Created scripts/setup_postgres.py to initialise staging schema and 4 tables
+- Tables: stock_prices_raw, stock_anomalies, stock_predictions, stock_insights
+- All tables use UNIQUE(ticker, date) constraints with ON CONFLICT DO NOTHING
+- Built 4 dbt models: stg_stock_prices, stg_stock_anomalies, fct_stock_prices, dim_tickers
+- Staging models materialised as views; marts as tables
+- schema.yml with not_null and unique data-quality tests
+- 6 unit tests all passing green
+- psycopg2-binary and dbt-postgres added to requirements.txt
+
 ### ✅ Day 5 — LLM Market Insights
 - Built GPT-powered market insight generator using OpenAI API
 - Reads stock prices, anomaly results, and predictions for each ticker
