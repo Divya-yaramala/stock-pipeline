@@ -2,7 +2,7 @@
 Stock Price Data Pipeline DAG
 ==============================
 Schedule  : Weekdays at 18:00 UTC (after US market close)
-Flow      : yfinance → S3 (JSON per ticker) → Postgres staging → dbt → anomaly detection → price prediction
+Flow      : yfinance → S3 (JSON per ticker) → Postgres staging → dbt → anomaly detection → price prediction → market insights
 """
 import logging
 import os
@@ -45,6 +45,12 @@ def _run_price_prediction(**context) -> None:
     """Run Prophet price prediction and save forecasts to S3."""
     from price_predictor import run_price_prediction
     run_price_prediction()
+
+
+def _run_market_insights(**context) -> None:
+    """Generate GPT-powered market insight summaries and save to S3."""
+    from market_insights import run_market_insights
+    run_market_insights()
 
 
 default_args = {
@@ -110,6 +116,12 @@ with DAG(
         doc_md="Run Prophet model to predict next 5 days of closing prices and write forecasts to S3.",
     )
 
+    run_market_insights = PythonOperator(
+        task_id="run_market_insights",
+        python_callable=_run_market_insights,
+        doc_md="Generate GPT-powered 3-sentence market insight summaries and write to S3.",
+    )
+
     (
         check_trading_day
         >> fetch_and_upload_to_s3
@@ -117,4 +129,5 @@ with DAG(
         >> run_dbt_models
         >> run_anomaly_detection
         >> run_price_prediction
+        >> run_market_insights
     )

@@ -76,7 +76,7 @@ stock-pipeline/
 ## Current AI Pipeline
 
 ```
-check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → run_dbt_models → run_anomaly_detection → run_price_prediction
+check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → run_dbt_models → run_anomaly_detection → run_price_prediction → run_market_insights
 ```
 
 ---
@@ -112,3 +112,12 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - Wired into Airflow DAG as final task
 - 7 unit tests all passing green
 - Prophet added to requirements.txt
+
+### ✅ Day 5 — LLM Market Insights
+- Built GPT-powered market insight generator using OpenAI API
+- Reads stock prices, anomaly results, and predictions for each ticker
+- Generates a 3-sentence professional market summary per ticker daily
+- Saves insights to S3 under processed/insights/YYYY/MM/DD/
+- Wired into Airflow DAG as final task
+- 7 unit tests all passing green
+- openai added to requirements.txt
