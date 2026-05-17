@@ -35,6 +35,12 @@ def _import_steps():
 
 
 def run_all_steps() -> None:
+    """
+    Execute every pipeline step in sequence.
+
+    Steps run independently — a failure in one step does not abort the rest.
+    Prints a formatted summary table with per-step status and wall-clock duration.
+    """
     steps = _import_steps()
     results = []
 
