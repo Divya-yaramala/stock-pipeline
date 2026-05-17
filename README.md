@@ -41,6 +41,9 @@ cp .env.example .env
 docker-compose up -d
 
 # 3. Open Airflow UI at http://localhost:8080  (admin / admin)
+
+# Run full pipeline locally (without Airflow)
+python scripts/run_pipeline_local.py
 ```
 
 ---
@@ -112,6 +115,12 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - Wired into Airflow DAG as final task
 - 7 unit tests all passing green
 - Prophet added to requirements.txt
+
+### ✅ Day 7 — End-to-End Pipeline Wiring and Local Run Script
+- Implemented `load_to_postgres_staging` in Airflow DAG — reads S3 JSON and upserts into staging.stock_prices_raw
+- Created `tests/test_integration.py` with 3 integration tests covering full flow, S3 path consistency, and idempotency
+- Created `scripts/run_pipeline_local.py` — runs all 5 pipeline steps locally with per-step timing and a summary table
+- All 34 tests passing green
 
 ### ✅ Day 6 — PostgreSQL Staging Layer and dbt Models
 - Created scripts/setup_postgres.py to initialise staging schema and 4 tables

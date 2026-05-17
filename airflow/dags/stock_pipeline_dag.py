@@ -31,8 +31,56 @@ def _fetch_and_upload_to_s3(**context) -> None:
 
 
 def _load_to_postgres_staging(**context) -> None:
-    """Load stock JSON files from S3 into the Postgres raw staging layer."""
-    log.info("Postgres staging load — to be implemented in Day 4")
+    """Load today's stock JSON files from S3 into staging.stock_prices_raw."""
+    import json
+    import os
+    import boto3 as _boto3
+    from datetime import datetime as _dt
+    from scripts.setup_postgres import load_to_postgres
+
+    date = _dt.now().strftime("%Y/%m/%d")
+    trade_date = _dt.now().strftime("%Y-%m-%d")
+    bucket = os.environ.get("AWS_BUCKET_NAME", "")
+    region = os.environ.get("AWS_REGION", "us-east-1")
+    tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"]
+
+    insert_sql = """
+        INSERT INTO staging.stock_prices_raw
+            (ticker, trade_date, open_price, high_price, low_price, close_price, volume)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        ON CONFLICT (ticker, trade_date) DO NOTHING
+    """
+
+    s3 = _boto3.client("s3", region_name=region)
+
+    for ticker in tickers:
+        key = f"raw/stocks/{date}/{ticker}.json"
+        try:
+            response = s3.get_object(Bucket=bucket, Key=key)
+            data = json.loads(response["Body"].read().decode("utf-8"))
+
+            opens   = data.get("Open")   or data.get("open")   or {}
+            highs   = data.get("High")   or data.get("high")   or {}
+            lows    = data.get("Low")    or data.get("low")    or {}
+            closes  = data.get("Close")  or data.get("close")  or {}
+            volumes = data.get("Volume") or data.get("volume") or {}
+
+            rows = [(
+                ticker,
+                trade_date,
+                next(iter(opens.values()),   None),
+                next(iter(highs.values()),   None),
+                next(iter(lows.values()),    None),
+                next(iter(closes.values()),  None),
+                next(iter(volumes.values()), None),
+            )]
+
+            if load_to_postgres(rows, insert_sql):
+                log.info("Inserted %d row(s) for %s into staging.stock_prices_raw", len(rows), ticker)
+            else:
+                log.warning("Failed to insert %s into staging.stock_prices_raw", ticker)
+        except Exception as e:
+            log.error("Error loading %s from S3: %s", ticker, e)
 
 
 def _run_anomaly_detection(**context) -> None:
