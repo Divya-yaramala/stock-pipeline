@@ -116,11 +116,14 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - 7 unit tests all passing green
 - Prophet added to requirements.txt
 
-### ✅ Day 7 — End-to-End Pipeline Wiring and Local Run Script
-- Implemented `load_to_postgres_staging` in Airflow DAG — reads S3 JSON and upserts into staging.stock_prices_raw
-- Created `tests/test_integration.py` with 3 integration tests covering full flow, S3 path consistency, and idempotency
-- Created `scripts/run_pipeline_local.py` — runs all 5 pipeline steps locally with per-step timing and a summary table
-- All 34 tests passing green
+### ✅ Day 5 — LLM Market Insights
+- Built GPT-powered market insight generator using OpenAI API
+- Reads stock prices, anomaly results, and predictions for each ticker
+- Generates a 3-sentence professional market summary per ticker daily
+- Saves insights to S3 under processed/insights/YYYY/MM/DD/
+- Wired into Airflow DAG as final task
+- 7 unit tests all passing green
+- openai added to requirements.txt
 
 ### ✅ Day 6 — PostgreSQL Staging Layer and dbt Models
 - Created scripts/setup_postgres.py to initialise staging schema and 4 tables
@@ -132,11 +135,9 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - 6 unit tests all passing green
 - psycopg2-binary and dbt-postgres added to requirements.txt
 
-### ✅ Day 5 — LLM Market Insights
-- Built GPT-powered market insight generator using OpenAI API
-- Reads stock prices, anomaly results, and predictions for each ticker
-- Generates a 3-sentence professional market summary per ticker daily
-- Saves insights to S3 under processed/insights/YYYY/MM/DD/
-- Wired into Airflow DAG as final task
-- 7 unit tests all passing green
-- openai added to requirements.txt
+### ✅ Day 7 — End-to-End Pipeline Wiring
+- Wired load_to_postgres_staging task in Airflow DAG with real implementation
+- Created integration tests: full pipeline flow, S3 path consistency, idempotency
+- Built scripts/run_pipeline_local.py with step timer and summary table
+- Added local run command to Getting Started section
+- 34/34 tests passing green
