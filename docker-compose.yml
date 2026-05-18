@@ -1,7 +1,7 @@
 version: "3.8"
 
 x-airflow-common: &airflow-common
-  image: apache/airflow:2.9.1
+  image: apache/airflow:2.9.0
   env_file:
     - .env
   environment:
@@ -15,6 +15,7 @@ x-airflow-common: &airflow-common
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
     - ./ingestion:/opt/airflow/ingestion
+    - ./scripts:/opt/airflow/scripts
     - ./dbt_project:/opt/airflow/dbt_project
   depends_on:
     postgres:
@@ -22,7 +23,7 @@ x-airflow-common: &airflow-common
 
 services:
   postgres:
-    image: postgres:latest
+    image: postgres:15
     env_file:
       - .env
     environment:
@@ -42,22 +43,20 @@ services:
   airflow-init:
     <<: *airflow-common
     command: >
-      bash -c "
-        airflow db migrate &&
-        airflow users create
-          --username admin
-          --firstname Admin
-          --lastname User
-          --role Admin
-          --email admin@example.com
-          --password admin
-      "
+      bash -c "airflow db init &&
+      airflow users create
+        --username ${AIRFLOW_ADMIN_USER:-admin}
+        --password ${AIRFLOW_ADMIN_PASSWORD:-admin}
+        --firstname Divya
+        --lastname Yaramala
+        --role Admin
+        --email divyayaramala145@gmail.com"
     user: "${AIRFLOW_UID:-50000}:0"
     restart: on-failure
 
   airflow-webserver:
     <<: *airflow-common
-    command: webserver
+    command: airflow webserver
     ports:
       - "8080:8080"
     healthcheck:
@@ -73,7 +72,7 @@ services:
 
   airflow-scheduler:
     <<: *airflow-common
-    command: scheduler
+    command: airflow scheduler
     healthcheck:
       test: ["CMD", "airflow", "jobs", "check", "--job-type", "SchedulerJob", "--hostname", "$${HOSTNAME}"]
       interval: 30s
