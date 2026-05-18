@@ -40,7 +40,10 @@ cp .env.example .env
 # 2. Start all services (Postgres + Airflow)
 docker-compose up -d
 
-# 3. Open Airflow UI at http://localhost:8080  (admin / admin)
+# 3. Check health of all services
+python scripts/check_airflow.py
+
+# 4. Open Airflow UI at http://localhost:8080  (admin / admin)
 
 # Run full pipeline locally (without Airflow)
 python scripts/run_pipeline_local.py
@@ -134,6 +137,13 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - schema.yml with not_null and unique data-quality tests
 - 6 unit tests all passing green
 - psycopg2-binary and dbt-postgres added to requirements.txt
+
+### ✅ Day 8 — Docker and Airflow UI
+- Fixed docker-compose.yml: postgres:15, updated airflow-init user details, scripts/ volume mount
+- Created airflow-requirements.txt for pipeline dependencies inside containers
+- Webserver and scheduler install requirements on startup via pip
+- Created scripts/check_airflow.py — health checks for webserver, Postgres, and DAG syntax
+- Getting Started section updated with health check command
 
 ### ✅ Day 7 — End-to-End Pipeline Wiring
 - Wired load_to_postgres_staging task in Airflow DAG with real implementation
