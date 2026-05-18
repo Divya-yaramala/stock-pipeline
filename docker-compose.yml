@@ -17,6 +17,7 @@ x-airflow-common: &airflow-common
     - ./ingestion:/opt/airflow/ingestion
     - ./scripts:/opt/airflow/scripts
     - ./dbt_project:/opt/airflow/dbt_project
+    - ./airflow-requirements.txt:/opt/airflow/airflow-requirements.txt
   depends_on:
     postgres:
       condition: service_healthy
@@ -56,7 +57,9 @@ services:
 
   airflow-webserver:
     <<: *airflow-common
-    command: airflow webserver
+    command: >
+      bash -c "pip install -r /opt/airflow/airflow-requirements.txt --quiet &&
+      airflow webserver"
     ports:
       - "8080:8080"
     healthcheck:
@@ -72,7 +75,9 @@ services:
 
   airflow-scheduler:
     <<: *airflow-common
-    command: airflow scheduler
+    command: >
+      bash -c "pip install -r /opt/airflow/airflow-requirements.txt --quiet &&
+      airflow scheduler"
     healthcheck:
       test: ["CMD", "airflow", "jobs", "check", "--job-type", "SchedulerJob", "--hostname", "$${HOSTNAME}"]
       interval: 30s
