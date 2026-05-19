@@ -101,6 +101,12 @@ def _run_market_insights(**context) -> None:
     run_market_insights()
 
 
+def _run_snowflake_sync(**context) -> None:
+    """Sync all processed data from S3 into Snowflake raw layer."""
+    from snowflake_sync import run_snowflake_sync
+    run_snowflake_sync()
+
+
 default_args = {
     "owner": "data-engineer",
     "depends_on_past": False,
@@ -177,6 +183,13 @@ with DAG(
         doc_md="Generate GPT-powered 3-sentence market insight summaries and write to S3.",
     )
 
+    # Task 8 — Warehouse: sync all processed S3 data into Snowflake raw layer tables
+    run_snowflake_sync = PythonOperator(
+        task_id="run_snowflake_sync",
+        python_callable=_run_snowflake_sync,
+        doc_md="Sync stock prices, anomalies, predictions, and insights from S3 into Snowflake.",
+    )
+
     (
         check_trading_day
         >> fetch_and_upload_to_s3
@@ -185,4 +198,5 @@ with DAG(
         >> run_anomaly_detection
         >> run_price_prediction
         >> run_market_insights
+        >> run_snowflake_sync
     )

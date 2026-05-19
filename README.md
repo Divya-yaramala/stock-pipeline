@@ -82,7 +82,7 @@ stock-pipeline/
 ## Current AI Pipeline
 
 ```
-check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → run_dbt_models → run_anomaly_detection → run_price_prediction → run_market_insights
+check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → run_dbt_models → run_anomaly_detection → run_price_prediction → run_market_insights → run_snowflake_sync
 ```
 
 ---
@@ -144,6 +144,14 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - Webserver and scheduler install requirements on startup via pip
 - Created scripts/check_airflow.py — health checks for webserver, Postgres, and DAG syntax
 - Getting Started section updated with health check command
+
+### ✅ Day 9 — Snowflake Integration
+- Created Snowflake setup script with database, schemas, warehouse, tables
+- Added dbt Snowflake profile alongside existing Postgres profile
+- Built Snowflake sync script to load all 4 data types from S3
+- Wired Snowflake sync as final Airflow DAG task
+- 6 unit tests passing green
+- Updated requirements.txt with Snowflake dependencies
 
 ### ✅ Day 7 — End-to-End Pipeline Wiring
 - Wired load_to_postgres_staging task in Airflow DAG with real implementation

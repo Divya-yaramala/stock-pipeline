@@ -11,3 +11,5 @@ holidays
 openai
 psycopg2-binary
 dbt-postgres
+snowflake-connector-python
+dbt-snowflake
