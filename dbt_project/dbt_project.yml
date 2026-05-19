@@ -24,3 +24,8 @@ models:
     marts:
       +materialized: table
       +schema: marts
+
+# Snowflake target config (profile: stock_pipeline_snowflake)
+# Run with: dbt run --profile stock_pipeline_snowflake --target dev
+# staging models -> materialized as view in Snowflake
+# marts models   -> materialized as table in Snowflake
