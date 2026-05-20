@@ -1,5 +1,8 @@
 # Stock Price Data Pipeline
 
+[![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
+[![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
+
 An AI-powered stock price pipeline that ingests daily prices, detects anomalies with ML, predicts next-day closing prices, and generates LLM-powered market insights — storing raw data in AWS S3, transforming with dbt, warehousing in Snowflake, and orchestrated end-to-end by Apache Airflow.
 
 ---
@@ -144,6 +147,13 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - Webserver and scheduler install requirements on startup via pip
 - Created scripts/check_airflow.py — health checks for webserver, Postgres, and DAG syntax
 - Getting Started section updated with health check command
+
+### ✅ Day 10 — CI/CD with GitHub Actions
+- Created CI pipeline that runs all 40 tests on every push
+- Created code quality checks: black, isort, flake8, mypy
+- Fixed all formatting and linting issues across entire codebase
+- Added CI and Code Quality badges to README
+- Pipeline runs automatically on every commit
 
 ### ✅ Day 9 — Snowflake Integration
 - Created Snowflake setup script with database, schemas, warehouse, tables
