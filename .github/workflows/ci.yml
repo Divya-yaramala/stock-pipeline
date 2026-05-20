@@ -28,6 +28,7 @@ jobs:
       SNOWFLAKE_DATABASE: test
       SNOWFLAKE_SCHEMA: test
       SNOWFLAKE_ROLE: test
+      PYTHONPATH: ${{ github.workspace }}
 
     steps:
       - name: Checkout code
