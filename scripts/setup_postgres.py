@@ -3,10 +3,7 @@ import os
 
 import psycopg2
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -79,7 +76,10 @@ def create_tables(conn: psycopg2.extensions.connection) -> None:
         for sql in statements:
             cur.execute(sql)
     conn.commit()
-    logger.info("Created staging tables: stock_prices_raw, stock_anomalies, stock_predictions, stock_insights")
+    logger.info(
+        "Created staging tables: "
+        "stock_prices_raw, stock_anomalies, stock_predictions, stock_insights"
+    )
 
 
 def load_to_postgres(rows: list[tuple], insert_sql: str) -> bool:

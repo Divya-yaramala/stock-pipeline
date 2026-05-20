@@ -1,8 +1,9 @@
-import pytest
-import psycopg2
 from unittest.mock import MagicMock, patch
 
-from scripts.setup_postgres import get_connection, create_schemas, create_tables, load_to_postgres
+import psycopg2
+import pytest
+
+from scripts.setup_postgres import create_schemas, create_tables, get_connection, load_to_postgres
 
 
 def test_get_connection_success():

@@ -1,16 +1,13 @@
-import yfinance as yf
-import boto3
-import pandas as pd
-import logging
 import json
+import logging
 import os
 from datetime import datetime
-from typing import Dict, Any
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
-)
+import boto3
+import pandas as pd
+import yfinance as yf
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 AWS_BUCKET_NAME = os.environ.get("AWS_BUCKET_NAME", "")

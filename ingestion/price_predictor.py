@@ -1,16 +1,13 @@
-import pandas as pd
-import numpy as np
-from prophet import Prophet
-import logging
 import json
+import logging
 import os
-import boto3
 from datetime import datetime, timedelta
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
-)
+import boto3
+import pandas as pd
+from prophet import Prophet
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logging.getLogger("prophet").setLevel(logging.WARNING)
 logging.getLogger("cmdstanpy").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)

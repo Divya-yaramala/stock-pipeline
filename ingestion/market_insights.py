@@ -1,15 +1,12 @@
-import openai
-import pandas as pd
 import json
-import os
-import boto3
 import logging
+import os
 from datetime import datetime
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
-)
+import boto3
+import openai
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
@@ -64,7 +61,8 @@ def build_prompt(ticker: str, data: dict) -> str:
 
     prompt = (
         f"You are a professional financial analyst. Write a 3-sentence market insight summary "
-        f"for {ticker} based on the following data. Keep the language professional and data-driven.\n\n"
+        f"for {ticker} based on the following data. "
+        f"Keep the language professional and data-driven.\n\n"
         f"Today's OHLCV data for {ticker}:\n"
         f"  Open: {open_val}, High: {high_val}, Low: {low_val}, "
         f"Close: {close_val}, Volume: {volume_val}\n\n"

@@ -1,21 +1,27 @@
-import pytest
-import pandas as pd
-import numpy as np
-from unittest.mock import MagicMock, patch
 import json
+from unittest.mock import MagicMock, patch
 
-from ingestion.anomaly_detector import detect_anomalies, load_stock_data_from_s3, save_anomaly_results
+import numpy as np
+import pandas as pd
+
+from ingestion.anomaly_detector import (
+    detect_anomalies,
+    load_stock_data_from_s3,
+    save_anomaly_results,
+)
 
 
 def _make_normal_df(n: int = 20) -> pd.DataFrame:
     rng = np.random.default_rng(42)
-    return pd.DataFrame({
-        "open": rng.uniform(90, 110, n),
-        "high": rng.uniform(100, 120, n),
-        "low": rng.uniform(80, 100, n),
-        "close": rng.uniform(90, 110, n),
-        "volume": rng.uniform(900_000, 1_100_000, n),
-    })
+    return pd.DataFrame(
+        {
+            "open": rng.uniform(90, 110, n),
+            "high": rng.uniform(100, 120, n),
+            "low": rng.uniform(80, 100, n),
+            "close": rng.uniform(90, 110, n),
+            "volume": rng.uniform(900_000, 1_100_000, n),
+        }
+    )
 
 
 def test_detect_anomalies_returns_dataframe():
@@ -27,16 +33,18 @@ def test_detect_anomalies_returns_dataframe():
 
 def test_detect_anomalies_flags_outlier():
     normal = _make_normal_df(19)
-    outlier = pd.DataFrame({
-        "open": [50_000.0],
-        "high": [60_000.0],
-        "low": [40_000.0],
-        "close": [55_000.0],
-        "volume": [999_999_999.0],
-    })
+    outlier = pd.DataFrame(
+        {
+            "open": [50_000.0],
+            "high": [60_000.0],
+            "low": [40_000.0],
+            "close": [55_000.0],
+            "volume": [999_999_999.0],
+        }
+    )
     df = pd.concat([normal, outlier], ignore_index=True)
     result = detect_anomalies(df, "TEST")
-    assert result.loc[19, "is_anomaly"] == True
+    assert result.loc[19, "is_anomaly"]
 
 
 def test_load_stock_data_from_s3_success():

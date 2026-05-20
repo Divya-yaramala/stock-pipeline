@@ -1,16 +1,13 @@
-import pandas as pd
-import numpy as np
-from sklearn.ensemble import IsolationForest
-import logging
 import json
+import logging
 import os
-import boto3
 from datetime import datetime
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
-)
+import boto3
+import pandas as pd
+from sklearn.ensemble import IsolationForest
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 AWS_BUCKET_NAME = os.environ.get("AWS_BUCKET_NAME", "")

@@ -1,37 +1,41 @@
-import pytest
-import pandas as pd
-import numpy as np
-from unittest.mock import MagicMock, patch
 from datetime import datetime, timedelta
+from unittest.mock import MagicMock, patch
+
+import numpy as np
+import pandas as pd
 
 from ingestion.price_predictor import (
-    prepare_prophet_data,
-    train_and_predict,
-    save_predictions_to_s3,
     load_historical_data_from_s3,
+    prepare_prophet_data,
+    save_predictions_to_s3,
+    train_and_predict,
 )
 
 
 def _make_ohlcv_df(n: int = 30) -> pd.DataFrame:
     rng = np.random.default_rng(42)
     dates = [datetime(2026, 1, 1) + timedelta(days=i) for i in range(n)]
-    return pd.DataFrame({
-        "date": dates,
-        "open": rng.uniform(90, 110, n),
-        "high": rng.uniform(100, 120, n),
-        "low": rng.uniform(80, 100, n),
-        "close": rng.uniform(90, 110, n),
-        "volume": rng.uniform(900_000, 1_100_000, n),
-    })
+    return pd.DataFrame(
+        {
+            "date": dates,
+            "open": rng.uniform(90, 110, n),
+            "high": rng.uniform(100, 120, n),
+            "low": rng.uniform(80, 100, n),
+            "close": rng.uniform(90, 110, n),
+            "volume": rng.uniform(900_000, 1_100_000, n),
+        }
+    )
 
 
 def _make_forecast_df(n: int = 5) -> pd.DataFrame:
-    return pd.DataFrame({
-        "ds": pd.date_range("2026-05-14", periods=n),
-        "yhat": np.linspace(150.0, 155.0, n),
-        "yhat_lower": np.linspace(145.0, 150.0, n),
-        "yhat_upper": np.linspace(155.0, 160.0, n),
-    })
+    return pd.DataFrame(
+        {
+            "ds": pd.date_range("2026-05-14", periods=n),
+            "yhat": np.linspace(150.0, 155.0, n),
+            "yhat_lower": np.linspace(145.0, 150.0, n),
+            "yhat_upper": np.linspace(155.0, 160.0, n),
+        }
+    )
 
 
 def test_prepare_prophet_data_columns():

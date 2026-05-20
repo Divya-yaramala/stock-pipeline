@@ -1,11 +1,10 @@
-import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 from ingestion.snowflake_sync import (
-    sync_stock_prices,
-    sync_anomalies,
-    run_snowflake_sync,
     load_from_s3,
+    run_snowflake_sync,
+    sync_anomalies,
+    sync_stock_prices,
 )
 
 _STOCK_DATA = {

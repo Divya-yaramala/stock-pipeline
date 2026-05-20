@@ -2,35 +2,34 @@
 Run the full stock-price pipeline locally without Airflow.
 Usage: python scripts/run_pipeline_local.py
 """
-import sys
-import os
-import time
+
 import logging
+import os
+import sys
+import time
 
 # Ensure project root and ingestion/ are on the path
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, _ROOT)
 sys.path.insert(0, os.path.join(_ROOT, "ingestion"))
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 
 def _import_steps():
-    from ingestion.fetch_stocks import run_pipeline as fetch
     from ingestion.anomaly_detector import run_anomaly_detection as detect
-    from ingestion.price_predictor import run_price_prediction as predict
+    from ingestion.fetch_stocks import run_pipeline as fetch
     from ingestion.market_insights import run_market_insights as insights
+    from ingestion.price_predictor import run_price_prediction as predict
     from scripts.setup_postgres import setup_database as pg_setup
+
     return [
-        ("fetch_stocks",       fetch),
-        ("anomaly_detection",  detect),
-        ("price_prediction",   predict),
-        ("market_insights",    insights),
-        ("postgres_setup",     pg_setup),
+        ("fetch_stocks", fetch),
+        ("anomaly_detection", detect),
+        ("price_prediction", predict),
+        ("market_insights", insights),
+        ("postgres_setup", pg_setup),
     ]
 
 

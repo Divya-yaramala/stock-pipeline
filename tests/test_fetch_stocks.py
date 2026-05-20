@@ -1,7 +1,7 @@
-import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
 import pandas as pd
-from datetime import datetime
+import pytest
 
 from ingestion.fetch_stocks import fetch_stock_data, upload_to_s3
 

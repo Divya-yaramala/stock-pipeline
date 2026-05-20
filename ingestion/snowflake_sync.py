@@ -1,15 +1,13 @@
-import snowflake.connector
-import pandas as pd
-import boto3
 import json
-import os
 import logging
+import os
 from datetime import datetime
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
-)
+import boto3
+import pandas as pd
+import snowflake.connector
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 TICKERS = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"]
@@ -66,8 +64,17 @@ def sync_stock_prices(conn, ticker: str, date: str) -> bool:
                 WHERE TICKER = %s AND TRADE_DATE = %s::DATE
             )
             """,
-            (ticker, trade_date, open_val, high_val, low_val, close_val, volume_val,
-             ticker, trade_date),
+            (
+                ticker,
+                trade_date,
+                open_val,
+                high_val,
+                low_val,
+                close_val,
+                volume_val,
+                ticker,
+                trade_date,
+            ),
         )
         cur.close()
         logger.info("Synced stock prices for %s on %s", ticker, trade_date)
@@ -144,9 +151,13 @@ def sync_predictions(conn, ticker: str, date: str) -> bool:
                 )
                 """,
                 (
-                    ticker, prediction_date,
-                    yhat_col.get(idx), yhat_lower_col.get(idx), yhat_upper_col.get(idx),
-                    ticker, prediction_date,
+                    ticker,
+                    prediction_date,
+                    yhat_col.get(idx),
+                    yhat_lower_col.get(idx),
+                    yhat_upper_col.get(idx),
+                    ticker,
+                    prediction_date,
                 ),
             )
         cur.close()

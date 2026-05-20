@@ -1,12 +1,10 @@
-import pytest
-import json
 from unittest.mock import MagicMock, patch
 
 from ingestion.market_insights import (
     build_prompt,
     generate_insight,
-    save_insight_to_s3,
     load_todays_data,
+    save_insight_to_s3,
 )
 
 
@@ -24,8 +22,13 @@ def _make_sample_data() -> dict:
             "anomaly_score": {"0": 0.1},
         },
         "predictions": {
-            "ds": {"0": "2026-05-17", "1": "2026-05-18", "2": "2026-05-19",
-                   "3": "2026-05-20", "4": "2026-05-21"},
+            "ds": {
+                "0": "2026-05-17",
+                "1": "2026-05-18",
+                "2": "2026-05-19",
+                "3": "2026-05-20",
+                "4": "2026-05-21",
+            },
             "yhat": {"0": 154.0, "1": 155.0, "2": 156.0, "3": 157.0, "4": 158.0},
             "yhat_lower": {"0": 149.0, "1": 150.0, "2": 151.0, "3": 152.0, "4": 153.0},
             "yhat_upper": {"0": 159.0, "1": 160.0, "2": 161.0, "3": 162.0, "4": 163.0},
@@ -40,10 +43,10 @@ def test_build_prompt_contains_ticker():
 
 def test_build_prompt_contains_ohlcv():
     result = build_prompt("AAPL", _make_sample_data())
-    assert "150" in result   # Open
-    assert "155" in result   # High
-    assert "148" in result   # Low
-    assert "153" in result   # Close
+    assert "150" in result  # Open
+    assert "155" in result  # High
+    assert "148" in result  # Low
+    assert "153" in result  # Close
 
 
 def test_generate_insight_success():
