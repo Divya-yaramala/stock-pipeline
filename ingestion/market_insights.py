@@ -82,7 +82,7 @@ def generate_insight(prompt: str, ticker: str) -> str:
             max_tokens=200,
             temperature=0.7,
         )
-        insight = response.choices[0].message.content
+        insight = response.choices[0].message.content or ""
         logger.info(f"{ticker} insight: {insight[:100]}")
         return insight
     except Exception as e:
