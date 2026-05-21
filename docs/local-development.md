@@ -2,6 +2,13 @@
 
 This guide walks through setting up the stock pipeline for local development, running the test suite, and extending the project.
 
+## Table of Contents
+- [Prerequisites](#prerequisites)
+- [Setup Steps](#setup-steps)
+- [Running Tests](#running-tests)
+- [Common Errors](#common-errors)
+- [Adding a New Ticker](#adding-a-new-ticker)
+
 ---
 
 ## 1. Prerequisites
