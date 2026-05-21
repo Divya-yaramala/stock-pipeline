@@ -2,6 +2,13 @@
 
 This document describes the end-to-end architecture of the stock price data pipeline, including data flow, component responsibilities, data models, AI components, and scheduling.
 
+## Table of Contents
+- [Data Flow](#data-flow)
+- [Component Responsibilities](#component-responsibilities)
+- [Data Models](#data-models)
+- [AI Components](#ai-components)
+- [Scheduling](#scheduling)
+
 ---
 
 ## 1. Data Flow
