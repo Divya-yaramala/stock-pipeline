@@ -141,19 +141,19 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - 6 unit tests all passing green
 - psycopg2-binary and dbt-postgres added to requirements.txt
 
+### ✅ Day 7 — End-to-End Pipeline Wiring
+- Wired load_to_postgres_staging task in Airflow DAG with real implementation
+- Created integration tests: full pipeline flow, S3 path consistency, idempotency
+- Built scripts/run_pipeline_local.py with step timer and summary table
+- Added local run command to Getting Started section
+- 34/34 tests passing green
+
 ### ✅ Day 8 — Docker and Airflow UI
 - Fixed docker-compose.yml: postgres:15, updated airflow-init user details, scripts/ volume mount
 - Created airflow-requirements.txt for pipeline dependencies inside containers
 - Webserver and scheduler install requirements on startup via pip
 - Created scripts/check_airflow.py — health checks for webserver, Postgres, and DAG syntax
 - Getting Started section updated with health check command
-
-### ✅ Day 10 — CI/CD with GitHub Actions
-- Created CI pipeline that runs all 40 tests on every push
-- Created code quality checks: black, isort, flake8, mypy
-- Fixed all formatting and linting issues across entire codebase
-- Added CI and Code Quality badges to README
-- Pipeline runs automatically on every commit
 
 ### ✅ Day 9 — Snowflake Integration
 - Created Snowflake setup script with database, schemas, warehouse, tables
@@ -163,9 +163,9 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - 6 unit tests passing green
 - Updated requirements.txt with Snowflake dependencies
 
-### ✅ Day 7 — End-to-End Pipeline Wiring
-- Wired load_to_postgres_staging task in Airflow DAG with real implementation
-- Created integration tests: full pipeline flow, S3 path consistency, idempotency
-- Built scripts/run_pipeline_local.py with step timer and summary table
-- Added local run command to Getting Started section
-- 34/34 tests passing green
+### ✅ Day 10 — CI/CD with GitHub Actions
+- Created CI pipeline that runs all 40 tests on every push
+- Created code quality checks: black, isort, flake8, mypy
+- Fixed all formatting and linting issues across entire codebase
+- Added CI and Code Quality badges to README
+- Pipeline runs automatically on every commit
