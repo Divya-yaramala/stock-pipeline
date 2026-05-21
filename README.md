@@ -12,10 +12,20 @@ An AI-powered stock price pipeline that ingests daily prices, detects anomalies 
 ```
   ┌─────────────┐     ┌─────────┐     ┌──────────┐     ┌─────┐     ┌───────────┐
   │  Yahoo      │────▶│  AWS S3 │────▶│ Postgres │────▶│ dbt │────▶│ Snowflake │
-  │  Finance API│     │  (Raw)  │     │ (Staging)│     │     │     │ (Marts)   │
-  └─────────────┘     └─────────┘     └──────────┘     └─────┘     └───────────┘
-         │                                                                │
-         └──────────────────── Apache Airflow (Orchestration) ───────────┘
+  │  Finance API│     │  (Raw)  │     │(Staging) │     │     │     │ (Marts)   │
+  └─────────────┘     └────┬────┘     └──────────┘     └─────┘     └───────────┘
+                           │
+                    ┌──────┴───────┐
+                    │  AI Layer    │
+                    │ • Anomaly    │
+                    │   Detection  │
+                    │ • Price      │
+                    │   Prediction │
+                    │ • LLM        │
+                    │   Insights   │
+                    └──────────────┘
+
+  ─────────────────── Apache Airflow (Orchestration) ────────────────────────────
 ```
 
 ---
@@ -31,6 +41,15 @@ An AI-powered stock price pipeline that ingests daily prices, detects anomalies 
 | Transformation  | dbt                       |
 | Data Warehouse  | Snowflake                 |
 | Containerization| Docker + Docker Compose   |
+
+---
+
+## Documentation
+
+- [Pipeline Overview](docs/pipeline-overview.md)
+- [Local Development Guide](docs/local-development.md)
+- [Data Dictionary](docs/data-dictionary.md)
+- [Architecture Decision Records](docs/adr/README.md)
 
 ---
 
@@ -162,6 +181,13 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - Wired Snowflake sync as final Airflow DAG task
 - 6 unit tests passing green
 - Updated requirements.txt with Snowflake dependencies
+
+### ✅ Day 11 — Architecture Decision Records and Documentation
+- Created 4 ADRs explaining key technology choices (Airflow, Snowflake, dbt, Isolation Forest)
+- Created pipeline-overview.md covering data flow, components, data models, AI layer, and scheduling
+- Created local-development.md with setup steps, test commands, common errors, and new ticker guide
+- Created data-dictionary.md documenting all tables and columns across Postgres, Snowflake, and dbt
+- Updated README with Documentation section and improved architecture diagram showing AI layer
 
 ### ✅ Day 10 — CI/CD with GitHub Actions
 - Created CI pipeline that runs all 40 tests on every push
