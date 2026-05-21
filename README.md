@@ -182,16 +182,16 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - 6 unit tests passing green
 - Updated requirements.txt with Snowflake dependencies
 
-### ✅ Day 11 — Architecture Decision Records and Documentation
-- Created 4 ADRs explaining key technology choices (Airflow, Snowflake, dbt, Isolation Forest)
-- Created pipeline-overview.md covering data flow, components, data models, AI layer, and scheduling
-- Created local-development.md with setup steps, test commands, common errors, and new ticker guide
-- Created data-dictionary.md documenting all tables and columns across Postgres, Snowflake, and dbt
-- Updated README with Documentation section and improved architecture diagram showing AI layer
-
 ### ✅ Day 10 — CI/CD with GitHub Actions
 - Created CI pipeline that runs all 40 tests on every push
 - Created code quality checks: black, isort, flake8, mypy
 - Fixed all formatting and linting issues across entire codebase
 - Added CI and Code Quality badges to README
 - Pipeline runs automatically on every commit
+
+### ✅ Day 11 — Architecture Decision Records and Documentation
+- Created 4 ADRs explaining key technology choices (Airflow, Snowflake, dbt, Isolation Forest)
+- Created pipeline-overview.md covering data flow, components, data models, AI layer, and scheduling
+- Created local-development.md with setup steps, test commands, common errors, and new ticker guide
+- Created data-dictionary.md documenting all tables and columns across Postgres, Snowflake, and dbt
+- Updated README with Documentation section and improved architecture diagram showing AI layer
