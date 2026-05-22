@@ -1,3 +1,13 @@
+"""
+Dead Letter Queue (DLQ) Pattern
+--------------------------------
+When a pipeline step fails for a specific ticker, instead of
+stopping the entire pipeline, the failed record is saved to S3
+under errors/YYYY/MM/DD/step/. This allows:
+- Other tickers to continue processing
+- Failed records to be replayed later without rerunning the full pipeline
+- Full audit trail of all failures
+"""
 import json
 import logging
 import os
