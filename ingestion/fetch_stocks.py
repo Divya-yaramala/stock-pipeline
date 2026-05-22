@@ -58,6 +58,9 @@ def run_pipeline() -> None:
         except Exception as e:
             logger.error(f"Pipeline error for {ticker}: {e}")
             failed += 1
+            from ingestion import dead_letter_queue
+
+            dead_letter_queue.send_to_dlq(str(e), ticker, "fetch", {}, AWS_BUCKET_NAME)
     logger.info(f"Pipeline complete: {succeeded} succeeded, {failed} failed")
 
 

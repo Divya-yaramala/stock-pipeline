@@ -104,6 +104,9 @@ def run_price_prediction() -> None:
         except Exception as e:
             logger.error(f"Prediction error for {ticker}: {e}")
             failed += 1
+            from ingestion import dead_letter_queue
+
+            dead_letter_queue.send_to_dlq(str(e), ticker, "prediction", {}, AWS_BUCKET_NAME)
     logger.info(
         f"Price prediction complete: {succeeded} tickers predicted successfully, {failed} failed"
     )

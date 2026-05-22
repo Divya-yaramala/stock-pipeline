@@ -107,11 +107,17 @@ def run_market_insights() -> None:
     date = datetime.now().strftime("%Y/%m/%d")
     succeeded = 0
     for ticker in TICKERS:
-        data = load_todays_data(ticker, AWS_BUCKET_NAME, date)
-        prompt = build_prompt(ticker, data)
-        insight = generate_insight(prompt, ticker)
-        if insight and save_insight_to_s3(insight, ticker, AWS_BUCKET_NAME, date):
-            succeeded += 1
+        try:
+            data = load_todays_data(ticker, AWS_BUCKET_NAME, date)
+            prompt = build_prompt(ticker, data)
+            insight = generate_insight(prompt, ticker)
+            if insight and save_insight_to_s3(insight, ticker, AWS_BUCKET_NAME, date):
+                succeeded += 1
+        except Exception as e:
+            logger.error(f"Market insights error for {ticker}: {e}")
+            from ingestion import dead_letter_queue
+
+            dead_letter_queue.send_to_dlq(str(e), ticker, "insights", {}, AWS_BUCKET_NAME)
     logger.info(f"Market insights complete: {succeeded} insights generated successfully")
 
 

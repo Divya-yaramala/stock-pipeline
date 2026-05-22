@@ -64,14 +64,20 @@ def run_anomaly_detection() -> None:
     total_anomalies = 0
     processed = 0
     for ticker in TICKERS:
-        df = load_stock_data_from_s3(ticker, AWS_BUCKET_NAME, date)
-        if df.empty:
-            logger.warning(f"No data for {ticker}, skipping")
-            continue
-        df = detect_anomalies(df, ticker)
-        total_anomalies += int(df["is_anomaly"].sum())
-        if save_anomaly_results(df, ticker, AWS_BUCKET_NAME, date):
-            processed += 1
+        try:
+            df = load_stock_data_from_s3(ticker, AWS_BUCKET_NAME, date)
+            if df.empty:
+                logger.warning(f"No data for {ticker}, skipping")
+                continue
+            df = detect_anomalies(df, ticker)
+            total_anomalies += int(df["is_anomaly"].sum())
+            if save_anomaly_results(df, ticker, AWS_BUCKET_NAME, date):
+                processed += 1
+        except Exception as e:
+            logger.error(f"Anomaly detection error for {ticker}: {e}")
+            from ingestion import dead_letter_queue
+
+            dead_letter_queue.send_to_dlq(str(e), ticker, "anomaly", {}, AWS_BUCKET_NAME)
     logger.info(
         f"Anomaly detection complete: {processed} tickers processed, "
         f"{total_anomalies} anomalies found"
