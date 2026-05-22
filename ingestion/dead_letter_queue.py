@@ -8,6 +8,7 @@ under errors/YYYY/MM/DD/step/. This allows:
 - Failed records to be replayed later without rerunning the full pipeline
 - Full audit trail of all failures
 """
+
 import json
 import logging
 import os
