@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator, ShortCircuitOperator
+from airflow.utils.trigger_rule import TriggerRule
 
 log = logging.getLogger(__name__)
 
@@ -104,7 +105,15 @@ def _run_market_insights(**context) -> None:
 def _run_snowflake_sync(**context) -> None:
     """Sync all processed data from S3 into Snowflake raw layer."""
     from snowflake_sync import run_snowflake_sync
+
     run_snowflake_sync()
+
+
+def _run_dlq_replay(**context) -> None:
+    """Replay any failed records from today's dead letter queue."""
+    from dead_letter_queue import run_dlq_replay
+
+    run_dlq_replay()
 
 
 default_args = {
@@ -190,6 +199,14 @@ with DAG(
         doc_md="Sync stock prices, anomalies, predictions, and insights from S3 into Snowflake.",
     )
 
+    # Task 9 — Reliability: replay any DLQ records from failed upstream tasks
+    run_dlq_replay = PythonOperator(
+        task_id="run_dlq_replay",
+        python_callable=_run_dlq_replay,
+        trigger_rule=TriggerRule.ALL_DONE,
+        doc_md="Replay failed pipeline records from the dead letter queue. Runs even if upstream tasks fail.",
+    )
+
     (
         check_trading_day
         >> fetch_and_upload_to_s3
@@ -199,4 +216,5 @@ with DAG(
         >> run_price_prediction
         >> run_market_insights
         >> run_snowflake_sync
+        >> run_dlq_replay
     )
