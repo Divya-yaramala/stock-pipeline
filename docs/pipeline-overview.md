@@ -8,6 +8,7 @@ This document describes the end-to-end architecture of the stock price data pipe
 - [Data Models](#data-models)
 - [AI Components](#ai-components)
 - [Scheduling](#scheduling)
+- [Error Handling](#error-handling)
 
 ---
 
@@ -143,3 +144,11 @@ check_trading_day
                                             └── run_market_insights
                                                     └── run_snowflake_sync
 ```
+
+---
+
+## Error Handling
+
+The pipeline uses a Dead Letter Queue (DLQ) pattern for fault tolerance.
+Failed records are saved to S3 under errors/YYYY/MM/DD/step/ and can be
+replayed without rerunning the full pipeline.
