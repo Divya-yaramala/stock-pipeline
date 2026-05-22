@@ -189,6 +189,13 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - Added CI and Code Quality badges to README
 - Pipeline runs automatically on every commit
 
+### ✅ Day 11 — Architecture Decision Records and Documentation
+- Created 4 ADRs explaining key technology choices (Airflow, Snowflake, dbt, Isolation Forest)
+- Created pipeline-overview.md covering data flow, components, data models, AI layer, and scheduling
+- Created local-development.md with setup steps, test commands, common errors, and new ticker guide
+- Created data-dictionary.md documenting all tables and columns across Postgres, Snowflake, and dbt
+- Updated README with Documentation section and improved architecture diagram showing AI layer
+
 ### ✅ Day 12 — Dead Letter Queue Pattern
 - Built dead letter queue module to capture failed pipeline records
 - Failed records saved to S3 under errors/YYYY/MM/DD/step/
@@ -196,10 +203,3 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - All 4 pipeline modules updated to send failures to DLQ
 - DLQ replay wired as final Airflow task with TriggerRule.ALL_DONE
 - 6 unit tests passing green
-
-### ✅ Day 11 — Architecture Decision Records and Documentation
-- Created 4 ADRs explaining key technology choices (Airflow, Snowflake, dbt, Isolation Forest)
-- Created pipeline-overview.md covering data flow, components, data models, AI layer, and scheduling
-- Created local-development.md with setup steps, test commands, common errors, and new ticker guide
-- Created data-dictionary.md documenting all tables and columns across Postgres, Snowflake, and dbt
-- Updated README with Documentation section and improved architecture diagram showing AI layer
