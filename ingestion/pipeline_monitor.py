@@ -87,7 +87,11 @@ def generate_daily_report(bucket: str, date: str) -> dict:
 
     avg_by_step = {s: sum(v) / len(v) for s, v in durations_by_step.items()}
     avg_duration_seconds = round(
-        sum(m.get("duration_seconds", 0.0) for m in metrics) / total_runs if total_runs > 0 else 0.0,
+        (
+            sum(m.get("duration_seconds", 0.0) for m in metrics) / total_runs
+            if total_runs > 0
+            else 0.0
+        ),
         2,
     )
     slowest_step = max(avg_by_step, key=avg_by_step.get) if avg_by_step else None

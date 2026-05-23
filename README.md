@@ -203,3 +203,11 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - All 4 pipeline modules updated to send failures to DLQ
 - DLQ replay wired as final Airflow task with TriggerRule.ALL_DONE
 - 6 unit tests passing green
+
+### ✅ Day 13 — Data Validation + Pipeline Monitoring
+- Built data validation module with 7 checks per ticker
+- Built pipeline monitoring module tracking run metrics per step
+- Validation wired into DAG before staging load
+- Monitoring report runs as final DAG task
+- 10 unit tests passing green
+- Full audit trail: validation reports + monitoring metrics saved to S3
