@@ -1,3 +1,13 @@
+"""
+Pipeline Monitoring
+-------------------
+Tracks execution metrics for every pipeline step including
+duration, success/failure status, and timestamps. This enables:
+- SLA monitoring (detect slow steps)
+- Failure rate tracking per step
+- Daily summary reports for ops review
+"""
+
 import json
 import logging
 import os
