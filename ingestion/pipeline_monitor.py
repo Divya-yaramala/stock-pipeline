@@ -104,8 +104,8 @@ def generate_daily_report(bucket: str, date: str) -> dict:
         ),
         2,
     )
-    slowest_step = max(avg_by_step, key=avg_by_step.get) if avg_by_step else None
-    fastest_step = min(avg_by_step, key=avg_by_step.get) if avg_by_step else None
+    slowest_step = max(avg_by_step, key=lambda x: float(avg_by_step[x])) if avg_by_step else None
+    fastest_step = min(avg_by_step, key=lambda x: float(avg_by_step[x])) if avg_by_step else None
 
     report = {
         "date": date,
