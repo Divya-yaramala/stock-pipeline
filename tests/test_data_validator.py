@@ -1,8 +1,6 @@
-import json
 from unittest.mock import MagicMock, patch
 
 import pandas as pd
-import pytest
 
 from ingestion.data_validator import (
     save_validation_report,

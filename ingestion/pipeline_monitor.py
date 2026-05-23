@@ -122,7 +122,10 @@ def generate_daily_report(bucket: str, date: str) -> dict:
 
 
 def run_monitoring_report() -> None:
-    """Generate daily report, log it, and save to S3 at monitoring/reports/YYYY/MM/DD/daily_report.json."""
+    """Generate daily report, log it, and save to S3.
+
+    Report path: monitoring/reports/YYYY/MM/DD/daily_report.json
+    """
     bucket = os.environ.get("AWS_BUCKET_NAME", "")
     date = datetime.now().strftime("%Y/%m/%d")
 
