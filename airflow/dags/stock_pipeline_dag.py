@@ -2,7 +2,7 @@
 Stock Price Data Pipeline DAG
 ==============================
 Schedule  : Weekdays at 18:00 UTC (after US market close)
-Flow      : yfinance → S3 (JSON per ticker) → Postgres staging → dbt → anomaly detection → price prediction → market insights
+Flow      : yfinance → S3 (JSON per ticker) → validation → Postgres staging → dbt → anomaly detection → price prediction → market insights → Snowflake → DLQ replay → monitoring report
 """
 import logging
 import os
@@ -109,11 +109,25 @@ def _run_snowflake_sync(**context) -> None:
     run_snowflake_sync()
 
 
+def _run_validation(**context) -> None:
+    """Validate today's stock data for all tickers before staging load."""
+    from data_validator import run_validation
+
+    run_validation()
+
+
 def _run_dlq_replay(**context) -> None:
     """Replay any failed records from today's dead letter queue."""
     from dead_letter_queue import run_dlq_replay
 
     run_dlq_replay()
+
+
+def _run_monitoring_report(**context) -> None:
+    """Generate and save the daily pipeline monitoring report."""
+    from pipeline_monitor import run_monitoring_report
+
+    run_monitoring_report()
 
 
 default_args = {
@@ -153,14 +167,21 @@ with DAG(
         doc_md="Fetch OHLCV data via yfinance and upload one JSON file per ticker to S3.",
     )
 
-    # Task 3 — Staging: read today's JSON files from S3 and upsert into staging.stock_prices_raw
+    # Task 3 — Validation: check data quality before staging load; send failures to DLQ
+    run_validation = PythonOperator(
+        task_id="run_validation",
+        python_callable=_run_validation,
+        doc_md="Run 7 data-quality checks per ticker and save validation reports to S3.",
+    )
+
+    # Task 4 — Staging: read today's JSON files from S3 and upsert into staging.stock_prices_raw
     load_to_postgres_staging = PythonOperator(
         task_id="load_to_postgres_staging",
         python_callable=_load_to_postgres_staging,
         doc_md="Load today's stock data from S3 into raw.stock_prices in Postgres.",
     )
 
-    # Task 4 — Transformation: run dbt models (staging → intermediate → mart) and data-quality tests
+    # Task 5 — Transformation: run dbt models (staging → intermediate → mart) and data-quality tests
     run_dbt_models = BashOperator(
         task_id="run_dbt_models",
         bash_command=(
@@ -171,35 +192,35 @@ with DAG(
         doc_md="Build all dbt models (staging → intermediate → mart) and run data-quality tests.",
     )
 
-    # Task 5 — ML: run Isolation Forest to flag unusual price/volume movements; results saved to S3
+    # Task 6 — ML: run Isolation Forest to flag unusual price/volume movements; results saved to S3
     run_anomaly_detection = PythonOperator(
         task_id="run_anomaly_detection",
         python_callable=_run_anomaly_detection,
         doc_md="Run Isolation Forest on today's OHLCV data and write anomaly results to S3.",
     )
 
-    # Task 6 — ML: train Prophet on 30 days of history and forecast next 5 closing prices per ticker
+    # Task 7 — ML: train Prophet on 30 days of history and forecast next 5 closing prices per ticker
     run_price_prediction = PythonOperator(
         task_id="run_price_prediction",
         python_callable=_run_price_prediction,
         doc_md="Run Prophet model to predict next 5 days of closing prices and write forecasts to S3.",
     )
 
-    # Task 7 — LLM: combine prices + anomalies + predictions into a GPT prompt; save insight to S3
+    # Task 8 — LLM: combine prices + anomalies + predictions into a GPT prompt; save insight to S3
     run_market_insights = PythonOperator(
         task_id="run_market_insights",
         python_callable=_run_market_insights,
         doc_md="Generate GPT-powered 3-sentence market insight summaries and write to S3.",
     )
 
-    # Task 8 — Warehouse: sync all processed S3 data into Snowflake raw layer tables
+    # Task 9 — Warehouse: sync all processed S3 data into Snowflake raw layer tables
     run_snowflake_sync = PythonOperator(
         task_id="run_snowflake_sync",
         python_callable=_run_snowflake_sync,
         doc_md="Sync stock prices, anomalies, predictions, and insights from S3 into Snowflake.",
     )
 
-    # Task 9 — Reliability: replay any DLQ records from failed upstream tasks
+    # Task 10 — Reliability: replay any DLQ records from failed upstream tasks
     run_dlq_replay = PythonOperator(
         task_id="run_dlq_replay",
         python_callable=_run_dlq_replay,
@@ -207,9 +228,18 @@ with DAG(
         doc_md="Replay failed pipeline records from the dead letter queue. Runs even if upstream tasks fail.",
     )
 
+    # Task 11 — Observability: generate and persist the daily pipeline monitoring report
+    run_monitoring_report = PythonOperator(
+        task_id="run_monitoring_report",
+        python_callable=_run_monitoring_report,
+        trigger_rule=TriggerRule.ALL_DONE,
+        doc_md="Generate daily pipeline metrics report and save to S3.",
+    )
+
     (
         check_trading_day
         >> fetch_and_upload_to_s3
+        >> run_validation
         >> load_to_postgres_staging
         >> run_dbt_models
         >> run_anomaly_detection
@@ -217,4 +247,5 @@ with DAG(
         >> run_market_insights
         >> run_snowflake_sync
         >> run_dlq_replay
+        >> run_monitoring_report
     )
