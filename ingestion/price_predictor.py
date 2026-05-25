@@ -99,6 +99,16 @@ def run_price_prediction() -> None:
             forecast = train_and_predict(prophet_df, ticker)
             if save_predictions_to_s3(forecast, ticker, AWS_BUCKET_NAME, date):
                 succeeded += 1
+                from ingestion import lineage_tracker
+
+                lineage_tracker.record_lineage(
+                    source="s3_raw",
+                    destination="s3_processed_predictions",
+                    ticker=ticker,
+                    row_count=len(forecast),
+                    transformation="prophet_forecast",
+                    bucket=AWS_BUCKET_NAME,
+                )
             else:
                 failed += 1
         except Exception as e:

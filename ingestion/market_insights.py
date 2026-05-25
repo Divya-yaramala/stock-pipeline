@@ -113,6 +113,16 @@ def run_market_insights() -> None:
             insight = generate_insight(prompt, ticker)
             if insight and save_insight_to_s3(insight, ticker, AWS_BUCKET_NAME, date):
                 succeeded += 1
+                from ingestion import lineage_tracker
+
+                lineage_tracker.record_lineage(
+                    source="s3_processed",
+                    destination="s3_insights",
+                    ticker=ticker,
+                    row_count=1,
+                    transformation="gpt_summarization",
+                    bucket=AWS_BUCKET_NAME,
+                )
         except Exception as e:
             logger.error(f"Market insights error for {ticker}: {e}")
             from ingestion import dead_letter_queue

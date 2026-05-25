@@ -61,7 +61,7 @@ def save_anomaly_results(df: pd.DataFrame, ticker: str, bucket: str, date: str) 
 
 
 def run_anomaly_detection() -> None:
-    from ingestion import slack_alerter
+    from ingestion import lineage_tracker, slack_alerter
 
     date = datetime.now().strftime("%Y/%m/%d")
     total_anomalies = 0
@@ -78,6 +78,14 @@ def run_anomaly_detection() -> None:
             if save_anomaly_results(df, ticker, AWS_BUCKET_NAME, date):
                 processed += 1
                 slack_alerter.alert_pipeline_success("anomaly", ticker, time.time() - start)
+                lineage_tracker.record_lineage(
+                    source="s3_raw",
+                    destination="s3_processed_anomalies",
+                    ticker=ticker,
+                    row_count=len(df),
+                    transformation="isolation_forest",
+                    bucket=AWS_BUCKET_NAME,
+                )
         except Exception as e:
             logger.error(f"Anomaly detection error for {ticker}: {e}")
             slack_alerter.alert_pipeline_failure("anomaly", ticker, str(e))

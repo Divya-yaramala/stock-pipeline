@@ -45,7 +45,7 @@ def upload_to_s3(data: dict, ticker: str, bucket: str, date: str) -> bool:
 
 
 def run_pipeline() -> None:
-    from ingestion import slack_alerter
+    from ingestion import lineage_tracker, slack_alerter
 
     date = datetime.now().strftime("%Y/%m/%d")
     succeeded = 0
@@ -58,6 +58,14 @@ def run_pipeline() -> None:
             if upload_to_s3(data, ticker, AWS_BUCKET_NAME, date):
                 succeeded += 1
                 slack_alerter.alert_pipeline_success("fetch", ticker, time.time() - start)
+                lineage_tracker.record_lineage(
+                    source="yahoo_finance_api",
+                    destination="s3_raw",
+                    ticker=ticker,
+                    row_count=len(df),
+                    transformation="extract_ohlcv",
+                    bucket=AWS_BUCKET_NAME,
+                )
             else:
                 failed += 1
                 slack_alerter.alert_pipeline_failure("fetch", ticker, "S3 upload failed")
