@@ -2,6 +2,11 @@
 
 This document describes every table and column in the stock pipeline, covering the PostgreSQL staging layer and all dbt models. Column types shown are the PostgreSQL / Snowflake types used at each layer.
 
+## Table of Contents
+- [Postgres Staging Tables](#postgres-staging-tables)
+- [Snowflake RAW Tables](#snowflake-raw-tables)
+- [dbt Models](#dbt-models)
+
 ---
 
 ## PostgreSQL Staging Tables
