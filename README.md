@@ -218,3 +218,10 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - Health check script verifying S3, Postgres, Snowflake, OpenAI connectivity
 - Alerts wired into fetch and anomaly detection steps
 - 10 unit tests passing green
+
+### ✅ Day 15 — Data Lineage + Advanced dbt Models
+- Built data lineage tracking module recording full data journey
+- Lineage tracked: Yahoo Finance → S3 → anomalies → predictions → insights
+- Added 3 advanced dbt mart models: daily summary, anomaly summary, prediction accuracy
+- All 4 pipeline modules updated with lineage recording
+- 6 unit tests passing green
