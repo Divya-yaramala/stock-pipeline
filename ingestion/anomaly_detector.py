@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import time
 from datetime import datetime
 
 import boto3
@@ -60,10 +61,13 @@ def save_anomaly_results(df: pd.DataFrame, ticker: str, bucket: str, date: str) 
 
 
 def run_anomaly_detection() -> None:
+    from ingestion import slack_alerter
+
     date = datetime.now().strftime("%Y/%m/%d")
     total_anomalies = 0
     processed = 0
     for ticker in TICKERS:
+        start = time.time()
         try:
             df = load_stock_data_from_s3(ticker, AWS_BUCKET_NAME, date)
             if df.empty:
@@ -73,8 +77,10 @@ def run_anomaly_detection() -> None:
             total_anomalies += int(df["is_anomaly"].sum())
             if save_anomaly_results(df, ticker, AWS_BUCKET_NAME, date):
                 processed += 1
+                slack_alerter.alert_pipeline_success("anomaly", ticker, time.time() - start)
         except Exception as e:
             logger.error(f"Anomaly detection error for {ticker}: {e}")
+            slack_alerter.alert_pipeline_failure("anomaly", ticker, str(e))
             from ingestion import dead_letter_queue
 
             dead_letter_queue.send_to_dlq(str(e), ticker, "anomaly", {}, AWS_BUCKET_NAME)

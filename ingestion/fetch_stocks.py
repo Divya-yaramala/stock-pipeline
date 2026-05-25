@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import time
 from datetime import datetime
 
 import boto3
@@ -44,20 +45,26 @@ def upload_to_s3(data: dict, ticker: str, bucket: str, date: str) -> bool:
 
 
 def run_pipeline() -> None:
+    from ingestion import slack_alerter
+
     date = datetime.now().strftime("%Y/%m/%d")
     succeeded = 0
     failed = 0
     for ticker in TICKERS:
+        start = time.time()
         try:
             df = fetch_stock_data(ticker)
             data = df.to_dict()
             if upload_to_s3(data, ticker, AWS_BUCKET_NAME, date):
                 succeeded += 1
+                slack_alerter.alert_pipeline_success("fetch", ticker, time.time() - start)
             else:
                 failed += 1
+                slack_alerter.alert_pipeline_failure("fetch", ticker, "S3 upload failed")
         except Exception as e:
             logger.error(f"Pipeline error for {ticker}: {e}")
             failed += 1
+            slack_alerter.alert_pipeline_failure("fetch", ticker, str(e))
             from ingestion import dead_letter_queue
 
             dead_letter_queue.send_to_dlq(str(e), ticker, "fetch", {}, AWS_BUCKET_NAME)

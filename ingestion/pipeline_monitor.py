@@ -146,6 +146,10 @@ def run_monitoring_report() -> None:
     except Exception as e:
         logger.error("Failed to save daily report: %s", e)
 
+    from ingestion import slack_alerter
+
+    slack_alerter.alert_daily_summary(report)
+
 
 if __name__ == "__main__":
     run_monitoring_report()
