@@ -211,3 +211,10 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - Monitoring report runs as final DAG task
 - 10 unit tests passing green
 - Full audit trail: validation reports + monitoring metrics saved to S3
+
+### ✅ Day 14 — Slack Alerting + Health Checks
+- Built Slack webhook alerting for pipeline success and failures
+- Daily summary alert with success rate and slowest step
+- Health check script verifying S3, Postgres, Snowflake, OpenAI connectivity
+- Alerts wired into fetch and anomaly detection steps
+- 10 unit tests passing green
