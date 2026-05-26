@@ -225,3 +225,10 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - Added 3 advanced dbt mart models: daily summary, anomaly summary, prediction accuracy
 - All 4 pipeline modules updated with lineage recording
 - 6 unit tests passing green
+
+### ✅ Day 16 — Incremental Loading + Backfill
+- Built incremental loader detecting and filling data gaps automatically
+- CLI backfill script with --ticker --start-date --end-date --dry-run flags
+- Airflow DAG updated to use incremental loading by default
+- Handles missing dates, deduplication, and partial loads gracefully
+- 6 unit tests passing green

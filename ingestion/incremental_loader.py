@@ -57,9 +57,7 @@ def get_missing_dates(ticker: str, conn) -> list:
     return missing
 
 
-def backfill_ticker(
-    ticker: str, conn, bucket: str, start_date: str, end_date: str
-) -> int:
+def backfill_ticker(ticker: str, conn, bucket: str, start_date: str, end_date: str) -> int:
     """Download historical data from yfinance, upload to S3, and insert into Postgres.
 
     start_date / end_date must be in YYYY-MM-DD format. end_date is exclusive (yfinance).
@@ -137,9 +135,9 @@ def run_incremental_load() -> None:
                 continue
 
             start = datetime.strptime(missing[0], "%Y/%m/%d").strftime("%Y-%m-%d")
-            end = (
-                datetime.strptime(missing[-1], "%Y/%m/%d") + timedelta(days=1)
-            ).strftime("%Y-%m-%d")
+            end = (datetime.strptime(missing[-1], "%Y/%m/%d") + timedelta(days=1)).strftime(
+                "%Y-%m-%d"
+            )
 
             rows = backfill_ticker(ticker, conn, bucket, start, end)
             total_rows += rows
