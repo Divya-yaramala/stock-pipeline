@@ -231,4 +231,4 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - CLI backfill script with --ticker --start-date --end-date --dry-run flags
 - Airflow DAG updated to use incremental loading by default
 - Handles missing dates, deduplication, and partial loads gracefully
-- 6 unit tests passing green
+- 6 unit tests passing green — 78/78 total
