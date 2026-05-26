@@ -20,7 +20,7 @@ INSERT_SQL = """
 """
 
 
-def get_last_loaded_date(ticker: str, conn) -> str:
+def get_last_loaded_date(ticker: str, conn) -> str | None:
     """Return MAX(trade_date) for ticker from Postgres, or None if no rows exist."""
     with conn.cursor() as cur:
         cur.execute(
