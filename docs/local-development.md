@@ -8,6 +8,7 @@ This guide walks through setting up the stock pipeline for local development, ru
 - [Running Tests](#running-tests)
 - [Common Errors](#common-errors)
 - [Adding a New Ticker](#adding-a-new-ticker)
+- [Backfilling Historical Data](#backfilling-historical-data)
 
 ---
 

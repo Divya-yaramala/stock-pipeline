@@ -2,7 +2,10 @@
 Stock Price Data Pipeline DAG
 ==============================
 Schedule  : Weekdays at 18:00 UTC (after US market close)
-Flow      : yfinance → S3 (JSON per ticker) → validation → Postgres staging → dbt → anomaly detection → price prediction → market insights → Snowflake → DLQ replay → monitoring report
+Flow      : incremental load → validation → Postgres staging → dbt → anomaly detection
+            → price prediction → market insights → Snowflake → DLQ replay → monitoring report
+Params    : full_refresh (bool, default False) — set True to force a full yfinance re-fetch
+            instead of the default incremental gap-fill.
 """
 import logging
 import os
@@ -26,9 +29,24 @@ def _is_trading_day(**context) -> bool:
 
 
 def _fetch_and_upload_to_s3(**context) -> None:
-    """Fetch OHLCV data for all tickers and upload JSON files to S3."""
+    """Full-refresh: fetch OHLCV data for all tickers and upload JSON files to S3."""
     from fetch_stocks import run_pipeline
+
     run_pipeline()
+
+
+def _run_incremental_load(**context) -> None:
+    """Incremental load: detect data gaps and backfill missing dates from yfinance."""
+    full_refresh = context["params"].get("full_refresh", False)
+    if full_refresh:
+        log.info("full_refresh=True — falling back to full yfinance fetch")
+        from fetch_stocks import run_pipeline
+
+        run_pipeline()
+    else:
+        from incremental_loader import run_incremental_load
+
+        run_incremental_load()
 
 
 def _load_to_postgres_staging(**context) -> None:
@@ -151,6 +169,7 @@ with DAG(
     catchup=False,
     max_active_runs=1,
     tags=["stocks", "pipeline", "portfolio"],
+    params={"full_refresh": False},
 ) as dag:
 
     # Task 1 — Gate: skip the entire DAG on weekends (no market data available)
@@ -160,11 +179,18 @@ with DAG(
         doc_md="Short-circuit on weekends so downstream tasks are skipped cleanly.",
     )
 
-    # Task 2 — Ingestion: pull OHLCV prices from Yahoo Finance and persist raw JSON to S3
+    # Task 2 — Incremental ingestion: fill data gaps or full-refresh when full_refresh=True
+    run_incremental_load = PythonOperator(
+        task_id="run_incremental_load",
+        python_callable=_run_incremental_load,
+        doc_md="Detect missing dates and backfill from yfinance (incremental by default).",
+    )
+
+    # Task 2b — Full-refresh fallback (not wired into main chain; trigger manually if needed)
     fetch_and_upload_to_s3 = PythonOperator(
         task_id="fetch_and_upload_to_s3",
         python_callable=_fetch_and_upload_to_s3,
-        doc_md="Fetch OHLCV data via yfinance and upload one JSON file per ticker to S3.",
+        doc_md="Full-refresh: fetch OHLCV data via yfinance for all tickers.",
     )
 
     # Task 3 — Validation: check data quality before staging load; send failures to DLQ
@@ -238,7 +264,7 @@ with DAG(
 
     (
         check_trading_day
-        >> fetch_and_upload_to_s3
+        >> run_incremental_load
         >> run_validation
         >> load_to_postgres_staging
         >> run_dbt_models
