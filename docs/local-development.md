@@ -213,3 +213,24 @@ To add a sixth ticker (e.g., `NVDA`) to the pipeline:
    ```
 
 5. **Update tests** — add the new ticker to any test fixtures that enumerate the full ticker list.
+
+---
+
+## 6. Backfilling Historical Data
+
+Use `scripts/backfill.py` to load historical data for any date range without re-running the full Airflow DAG.
+
+```bash
+# Backfill last 30 days for all tickers
+python scripts/backfill.py --start-date 2024-01-01 --end-date 2024-01-31
+
+# Backfill a specific ticker
+python scripts/backfill.py --ticker AAPL --start-date 2024-01-01
+
+# Dry run to preview what would be loaded without making changes
+python scripts/backfill.py --start-date 2024-01-01 --dry-run
+```
+
+The incremental loader also runs automatically as part of the Airflow DAG (`run_incremental_load` task). It queries Postgres for each ticker's latest `trade_date` and backfills any gaps detected since that date.
+
+To force a full re-fetch instead of incremental loading, trigger the DAG with `full_refresh=True` in the Airflow UI under **Trigger DAG w/ config**.
