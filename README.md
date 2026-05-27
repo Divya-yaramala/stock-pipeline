@@ -232,3 +232,10 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - Airflow DAG updated to use incremental loading by default
 - Handles missing dates, deduplication, and partial loads gracefully
 - 6 unit tests passing green — 78/78 total
+
+### ✅ Day 17 — Data Quality Reporting + SLA Monitoring
+- Built quality reporter scoring ticker validation results (0–100%) with SLA alerting at 80% threshold
+- Built SLA monitor recording per-step durations and generating daily SLA compliance reports
+- Slack alerts triggered automatically on quality SLA miss or step duration breach
+- Airflow DAG wired with quality gate and SLA report tasks using TriggerRule.ALL_DONE
+- 10 unit tests passing green — 88/88 total
