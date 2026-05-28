@@ -239,3 +239,10 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - Slack alerts triggered automatically on quality SLA miss or step duration breach
 - Airflow DAG wired with quality gate and SLA report tasks using TriggerRule.ALL_DONE
 - 10 unit tests passing green — 88/88 total
+
+### ✅ Day 18 — Cost Optimization + Resource Management
+- Built S3 cost optimizer with storage analysis, old-data archiving, and monthly cost estimation
+- Resource manager checks CPU/memory/disk thresholds before allowing the pipeline to run
+- Pipeline skips automatically if any system resource is at a critical level
+- Airflow DAG updated with resource gate and S3 optimization tasks
+- 10 unit tests passing green — 98/98 total

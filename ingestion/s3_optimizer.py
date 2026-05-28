@@ -1,7 +1,6 @@
-import json
 import logging
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import boto3
 
@@ -34,14 +33,14 @@ def get_s3_storage_summary(bucket: str) -> dict:
                 breakdown.setdefault("other/", 0.0)
                 breakdown["other/"] += size
 
-    total_mb = total_bytes / (1024 ** 2)
-    total_gb = total_bytes / (1024 ** 3)
+    total_mb = total_bytes / (1024**2)
+    total_gb = total_bytes / (1024**3)
 
     summary = {
         "total_bytes": total_bytes,
         "total_mb": round(total_mb, 4),
         "total_gb": round(total_gb, 4),
-        "breakdown_mb": {k: round(v / (1024 ** 2), 4) for k, v in breakdown.items()},
+        "breakdown_mb": {k: round(v / (1024**2), 4) for k, v in breakdown.items()},
     }
 
     logger.info(
@@ -52,7 +51,7 @@ def get_s3_storage_summary(bucket: str) -> dict:
     )
     for prefix, size_bytes in breakdown.items():
         if size_bytes > 0:
-            logger.info("  %s: %.2f MB", prefix, size_bytes / (1024 ** 2))
+            logger.info("  %s: %.2f MB", prefix, size_bytes / (1024**2))
 
     return summary
 
@@ -60,13 +59,13 @@ def get_s3_storage_summary(bucket: str) -> dict:
 def archive_old_raw_data(bucket: str, days_to_keep: int = 30) -> int:
     """Move raw/stocks/ files older than days_to_keep to archive/raw/stocks/."""
     s3 = boto3.client("s3", region_name=AWS_REGION)
-    cutoff = datetime.utcnow() - timedelta(days=days_to_keep)
+    cutoff = datetime.now(timezone.utc) - timedelta(days=days_to_keep)
     archived = 0
 
     paginator = s3.get_paginator("list_objects_v2")
     for page in paginator.paginate(Bucket=bucket, Prefix="raw/stocks/"):
         for obj in page.get("Contents", []):
-            last_modified = obj["LastModified"].replace(tzinfo=None)
+            last_modified = obj["LastModified"]
             if last_modified < cutoff:
                 src_key = obj["Key"]
                 dst_key = "archive/" + src_key
@@ -89,13 +88,13 @@ def archive_old_raw_data(bucket: str, days_to_keep: int = 30) -> int:
 def delete_old_monitoring_data(bucket: str, days_to_keep: int = 7) -> int:
     """Delete monitoring/ files older than days_to_keep days."""
     s3 = boto3.client("s3", region_name=AWS_REGION)
-    cutoff = datetime.utcnow() - timedelta(days=days_to_keep)
+    cutoff = datetime.now(timezone.utc) - timedelta(days=days_to_keep)
     deleted = 0
 
     paginator = s3.get_paginator("list_objects_v2")
     for page in paginator.paginate(Bucket=bucket, Prefix="monitoring/"):
         for obj in page.get("Contents", []):
-            last_modified = obj["LastModified"].replace(tzinfo=None)
+            last_modified = obj["LastModified"]
             if last_modified < cutoff:
                 try:
                     s3.delete_object(Bucket=bucket, Key=obj["Key"])
@@ -103,9 +102,7 @@ def delete_old_monitoring_data(bucket: str, days_to_keep: int = 7) -> int:
                 except Exception as e:
                     logger.error("Failed to delete %s: %s", obj["Key"], e)
 
-    logger.info(
-        "Deleted %d monitoring file(s) older than %d days", deleted, days_to_keep
-    )
+    logger.info("Deleted %d monitoring file(s) older than %d days", deleted, days_to_keep)
     return deleted
 
 

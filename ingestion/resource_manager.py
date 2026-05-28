@@ -24,9 +24,9 @@ def get_system_resources() -> dict:
     resources = {
         "cpu_percent": psutil.cpu_percent(interval=1),
         "memory_percent": mem.percent,
-        "memory_available_gb": round(mem.available / (1024 ** 3), 2),
+        "memory_available_gb": round(mem.available / (1024**3), 2),
         "disk_usage_percent": disk.percent,
-        "disk_free_gb": round(disk.free / (1024 ** 3), 2),
+        "disk_free_gb": round(disk.free / (1024**3), 2),
         "recorded_at": datetime.now().isoformat(),
     }
 
@@ -44,12 +44,8 @@ def check_resource_thresholds() -> dict:
     resources = get_system_resources()
 
     cpu_status = "warning" if resources["cpu_percent"] > CPU_WARNING_THRESHOLD else "ok"
-    memory_status = (
-        "warning" if resources["memory_percent"] > MEMORY_WARNING_THRESHOLD else "ok"
-    )
-    disk_status = (
-        "critical" if resources["disk_usage_percent"] > DISK_CRITICAL_THRESHOLD else "ok"
-    )
+    memory_status = "warning" if resources["memory_percent"] > MEMORY_WARNING_THRESHOLD else "ok"
+    disk_status = "critical" if resources["disk_usage_percent"] > DISK_CRITICAL_THRESHOLD else "ok"
 
     result = {
         "cpu": {"status": cpu_status, "value": resources["cpu_percent"]},
@@ -59,9 +55,7 @@ def check_resource_thresholds() -> dict:
 
     for resource, data in result.items():
         if data["status"] != "ok":
-            logger.warning(
-                "Resource %s is %s: %.1f%%", resource, data["status"], data["value"]
-            )
+            logger.warning("Resource %s is %s: %.1f%%", resource, data["status"], data["value"])
 
     return result
 
