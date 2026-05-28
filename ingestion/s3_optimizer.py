@@ -1,3 +1,11 @@
+"""
+S3 Cost Optimizer
+-----------------
+Manages S3 storage costs by:
+- Archiving raw data older than 30 days to cheaper storage prefix
+- Deleting monitoring data older than 7 days
+- Estimating monthly costs at $0.023/GB (S3 standard pricing)
+"""
 import logging
 import os
 from datetime import datetime, timedelta, timezone
