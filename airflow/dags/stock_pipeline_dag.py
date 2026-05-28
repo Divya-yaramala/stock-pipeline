@@ -28,6 +28,23 @@ def _is_trading_day(**context) -> bool:
     return True
 
 
+def _check_resources(**context) -> bool:
+    """Skip the pipeline if any system resource is at a critical level."""
+    from resource_manager import should_run_pipeline
+
+    ok = should_run_pipeline()
+    if not ok:
+        log.warning("Pipeline skipped — critical resource constraint detected")
+    return ok
+
+
+def _run_s3_optimization(**context) -> None:
+    """Archive old raw data, purge stale monitoring files, and log cost estimate."""
+    from s3_optimizer import run_s3_optimization
+
+    run_s3_optimization()
+
+
 def _fetch_and_upload_to_s3(**context) -> None:
     """Full-refresh: fetch OHLCV data for all tickers and upload JSON files to S3."""
     from fetch_stocks import run_pipeline
@@ -199,6 +216,13 @@ with DAG(
         doc_md="Short-circuit on weekends so downstream tasks are skipped cleanly.",
     )
 
+    # Task 1b — Resource gate: skip if CPU/memory/disk are at critical levels
+    check_resources = ShortCircuitOperator(
+        task_id="check_resources",
+        python_callable=_check_resources,
+        doc_md="Short-circuit if any system resource is critical to protect pipeline stability.",
+    )
+
     # Task 2 — Incremental ingestion: fill data gaps or full-refresh when full_refresh=True
     run_incremental_load = PythonOperator(
         task_id="run_incremental_load",
@@ -298,8 +322,17 @@ with DAG(
         doc_md="Generate SLA report and alert via Slack if any step exceeded its threshold.",
     )
 
+    # Task 14 — Cost: archive old raw data, purge stale monitoring files, log cost estimate
+    run_s3_optimization = PythonOperator(
+        task_id="run_s3_optimization",
+        python_callable=_run_s3_optimization,
+        trigger_rule=TriggerRule.ALL_DONE,
+        doc_md="Archive raw data older than 30 days and report estimated S3 monthly cost.",
+    )
+
     (
         check_trading_day
+        >> check_resources
         >> run_incremental_load
         >> run_validation
         >> run_quality_reporting
@@ -312,4 +345,5 @@ with DAG(
         >> run_dlq_replay
         >> run_monitoring_report
         >> generate_sla_report
+        >> run_s3_optimization
     )

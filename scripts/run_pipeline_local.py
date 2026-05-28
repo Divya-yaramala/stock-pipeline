@@ -40,6 +40,21 @@ def run_all_steps() -> None:
     Steps run independently — a failure in one step does not abort the rest.
     Prints a formatted summary table with per-step status and wall-clock duration.
     """
+    from ingestion.resource_manager import get_system_resources, should_run_pipeline
+    from ingestion.s3_optimizer import generate_cost_report
+
+    # Resource check — abort if any resource is critical
+    resources = get_system_resources()
+    print()
+    print(
+        f"  Resource snapshot — CPU: {resources['cpu_percent']:.1f}%  "
+        f"Memory: {resources['memory_percent']:.1f}%  "
+        f"Disk: {resources['disk_usage_percent']:.1f}%"
+    )
+    if not should_run_pipeline():
+        logger.error("Aborting — system resources are at a critical level")
+        sys.exit(1)
+
     steps = _import_steps()
     results = []
 
@@ -72,6 +87,19 @@ def run_all_steps() -> None:
         logger.warning("%d step(s) failed: %s", len(failed), [r[0] for r in failed])
     else:
         logger.info("All steps completed successfully.")
+
+    # Cost report at end
+    bucket = os.environ.get("AWS_BUCKET_NAME", "")
+    if bucket:
+        try:
+            cost_report = generate_cost_report(bucket)
+            print()
+            print(
+                f"  S3 cost estimate — {cost_report['storage_gb']:.4f} GB  "
+                f"≈ ${cost_report['estimated_monthly_cost_usd']:.4f}/month"
+            )
+        except Exception as exc:
+            logger.warning("Could not generate cost report: %s", exc)
 
 
 if __name__ == "__main__":
