@@ -1,3 +1,12 @@
+"""
+Resource Manager
+----------------
+Monitors system resources before pipeline execution:
+- CPU usage threshold: 90%
+- Memory usage threshold: 85%
+- Disk usage threshold: 90% (critical - blocks pipeline)
+Pipeline is skipped automatically if disk reaches critical level.
+"""
 import json
 import logging
 import os
