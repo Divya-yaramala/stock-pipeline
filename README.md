@@ -62,10 +62,13 @@ cp .env.example .env
 # 2. Start all services (Postgres + Airflow)
 docker-compose up -d
 
-# 3. Check health of all services
+# 3. Validate all environment variables
+python scripts/validate_secrets.py
+
+# 4. Check health of all services
 python scripts/check_airflow.py
 
-# 4. Open Airflow UI at http://localhost:8080  (admin / admin)
+# 5. Open Airflow UI at http://localhost:8080  (admin / admin)
 
 # Run full pipeline locally (without Airflow)
 python scripts/run_pipeline_local.py
