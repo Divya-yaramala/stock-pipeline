@@ -11,3 +11,5 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [003](003-why-dbt-for-transformations.md) | Why dbt over custom SQL scripts | Accepted |
 | [004](004-why-isolation-forest-for-anomaly-detection.md) | Why Isolation Forest for Anomaly Detection | Accepted |
 | 005 | Why Prophet over ARIMA for price prediction | Accepted |
+| [006](006-s3-cost-optimization-strategy.md) | S3 Cost Optimization Strategy | Accepted |
+| [007](007-typed-config-with-dataclasses.md) | Typed Configuration with Python Dataclasses | Accepted |
