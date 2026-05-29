@@ -6,6 +6,7 @@ Manages S3 storage costs by:
 - Deleting monitoring data older than 7 days
 - Estimating monthly costs at $0.023/GB (S3 standard pricing)
 """
+
 import logging
 import os
 from datetime import datetime, timedelta, timezone

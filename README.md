@@ -246,3 +246,10 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - Pipeline skips automatically if any system resource is at a critical level
 - Airflow DAG updated with resource gate and S3 optimization tasks
 - 10 unit tests passing green — 98/98 total
+
+### ✅ Day 19 — Configuration Management + Secrets Validation
+- Built typed configuration manager using Python dataclasses for AWS, Postgres, Snowflake, OpenAI, and pipeline settings
+- Centralized all env var loading with fail-fast validation on missing required vars
+- CLI secrets validator checks all required vars before pipeline runs, with optional Slack warning
+- Pipeline modules updated to use config manager instead of scattered os.getenv calls
+- 10 unit tests passing green — 108/108 total

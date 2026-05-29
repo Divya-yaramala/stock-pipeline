@@ -44,9 +44,7 @@ class OpenAIConfig:
 
 @dataclass
 class PipelineConfig:
-    tickers: List[str] = field(
-        default_factory=lambda: ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"]
-    )
+    tickers: List[str] = field(default_factory=lambda: ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"])
     s3_raw_prefix: str = "raw/stocks"
     s3_processed_prefix: str = "processed"
     forecast_days: int = 5

@@ -3,6 +3,7 @@ Validate that all required environment variables are set before running the pipe
 Usage: python scripts/validate_secrets.py
 Exits with code 1 if any required service is missing vars; 0 if only optional Slack is missing.
 """
+
 import logging
 import os
 import sys
