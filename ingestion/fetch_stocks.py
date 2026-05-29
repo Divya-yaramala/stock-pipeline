@@ -11,6 +11,8 @@ import yfinance as yf
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
+from ingestion.config_manager import load_aws_config, load_pipeline_config
+
 AWS_BUCKET_NAME = os.environ.get("AWS_BUCKET_NAME", "")
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
 
@@ -47,35 +49,47 @@ def upload_to_s3(data: dict, ticker: str, bucket: str, date: str) -> bool:
 def run_pipeline() -> None:
     from ingestion import lineage_tracker, slack_alerter
 
+    try:
+        aws_cfg = load_aws_config()
+        bucket = aws_cfg.bucket_name
+        region = aws_cfg.region
+    except ValueError:
+        bucket = AWS_BUCKET_NAME
+        region = AWS_REGION
+
+    pipeline_cfg = load_pipeline_config()
+    tickers = pipeline_cfg.tickers
+    raw_prefix = pipeline_cfg.s3_raw_prefix
+
     date = datetime.now().strftime("%Y/%m/%d")
     succeeded = 0
     failed = 0
-    for ticker in TICKERS:
+    for ticker in tickers:
         start = time.time()
         try:
             df = fetch_stock_data(ticker)
             data = df.to_dict()
-            if upload_to_s3(data, ticker, AWS_BUCKET_NAME, date):
-                succeeded += 1
-                slack_alerter.alert_pipeline_success("fetch", ticker, time.time() - start)
-                lineage_tracker.record_lineage(
-                    source="yahoo_finance_api",
-                    destination="s3_raw",
-                    ticker=ticker,
-                    row_count=len(df),
-                    transformation="extract_ohlcv",
-                    bucket=AWS_BUCKET_NAME,
-                )
-            else:
-                failed += 1
-                slack_alerter.alert_pipeline_failure("fetch", ticker, "S3 upload failed")
+            key_prefix = f"{raw_prefix}/{date}"
+            s3_client = boto3.client("s3", region_name=region)
+            key = f"{key_prefix}/{ticker}.json"
+            s3_client.put_object(Bucket=bucket, Key=key, Body=json.dumps(data))
+            succeeded += 1
+            slack_alerter.alert_pipeline_success("fetch", ticker, time.time() - start)
+            lineage_tracker.record_lineage(
+                source="yahoo_finance_api",
+                destination="s3_raw",
+                ticker=ticker,
+                row_count=len(df),
+                transformation="extract_ohlcv",
+                bucket=bucket,
+            )
         except Exception as e:
             logger.error(f"Pipeline error for {ticker}: {e}")
             failed += 1
             slack_alerter.alert_pipeline_failure("fetch", ticker, str(e))
             from ingestion import dead_letter_queue
 
-            dead_letter_queue.send_to_dlq(str(e), ticker, "fetch", {}, AWS_BUCKET_NAME)
+            dead_letter_queue.send_to_dlq(str(e), ticker, "fetch", {}, bucket)
     logger.info(f"Pipeline complete: {succeeded} succeeded, {failed} failed")
 
 

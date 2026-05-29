@@ -234,3 +234,26 @@ python scripts/backfill.py --start-date 2024-01-01 --dry-run
 The incremental loader also runs automatically as part of the Airflow DAG (`run_incremental_load` task). It queries Postgres for each ticker's latest `trade_date` and backfills any gaps detected since that date.
 
 To force a full re-fetch instead of incremental loading, trigger the DAG with `full_refresh=True` in the Airflow UI under **Trigger DAG w/ config**.
+
+
+---
+
+## 7. Validating Your Environment
+
+Before running the pipeline, verify all required secrets are set:
+
+```bash
+# Check all required secrets are set
+python scripts/validate_secrets.py
+```
+
+The script checks every required env var grouped by service (AWS, Postgres, Snowflake, OpenAI) and prints a status table. It exits with code `1` if any required variable is missing. The Slack webhook is optional — a warning is shown but the script still exits `0`.
+
+You can also validate configs programmatically at pipeline startup:
+
+```python
+from ingestion.config_manager import validate_all_configs
+
+if not validate_all_configs():
+    raise SystemExit("Missing required environment configuration")
+```

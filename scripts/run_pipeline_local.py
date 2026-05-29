@@ -40,8 +40,14 @@ def run_all_steps() -> None:
     Steps run independently — a failure in one step does not abort the rest.
     Prints a formatted summary table with per-step status and wall-clock duration.
     """
+    from ingestion.config_manager import validate_all_configs
     from ingestion.resource_manager import get_system_resources, should_run_pipeline
     from ingestion.s3_optimizer import generate_cost_report
+
+    # Config validation — abort if required env vars are missing
+    if not validate_all_configs():
+        logger.error("Aborting — one or more required configs are invalid")
+        sys.exit(1)
 
     # Resource check — abort if any resource is critical
     resources = get_system_resources()
