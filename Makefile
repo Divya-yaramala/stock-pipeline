@@ -61,3 +61,23 @@ backfill: ## Backfill the DAG between START and END dates
 # ── Cleanup ───────────────────────────────────────────────────────────────────
 clean: ## Remove all Docker volumes (DESTROYS DATA)
 	docker compose down -v
+
+# ── Local Dev ─────────────────────────────────────────────────────────────────
+test: ## Run all 108 tests
+	pytest tests/ -v
+
+lint: ## Run flake8 linting
+	flake8 ingestion/ scripts/ tests/ --max-line-length=100 --ignore=E402,W503
+
+format: ## Format code with black and isort
+	black ingestion/ scripts/ tests/
+	isort ingestion/ scripts/ tests/
+
+typecheck: ## Run mypy type checking
+	mypy ingestion/ --ignore-missing-imports
+
+run: ## Run full pipeline locally
+	python scripts/run_pipeline_local.py
+
+health: ## Check health of all services
+	python scripts/health_check.py
