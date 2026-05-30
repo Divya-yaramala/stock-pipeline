@@ -1,118 +1,261 @@
-# Stock Price Data Pipeline
+# 🚀 AI-Powered Stock Price Pipeline
 
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![Tests](https://img.shields.io/badge/tests-108%20passing-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-An AI-powered stock price pipeline that ingests daily prices, detects anomalies with ML, predicts next-day closing prices, and generates LLM-powered market insights — storing raw data in AWS S3, transforming with dbt, warehousing in Snowflake, and orchestrated end-to-end by Apache Airflow.
+> An end-to-end AI-powered data engineering pipeline that ingests daily stock prices, detects anomalies with ML, predicts future prices with Prophet, and generates LLM market insights — orchestrated by Apache Airflow, transformed with dbt, and warehoused in Snowflake.
 
 ---
 
-## Architecture
+## 📐 Architecture
 
 ```
-  ┌─────────────┐     ┌─────────┐     ┌──────────┐     ┌─────┐     ┌───────────┐
-  │  Yahoo      │────▶│  AWS S3 │────▶│ Postgres │────▶│ dbt │────▶│ Snowflake │
-  │  Finance API│     │  (Raw)  │     │(Staging) │     │     │     │ (Marts)   │
-  └─────────────┘     └────┬────┘     └──────────┘     └─────┘     └───────────┘
-                           │
-                    ┌──────┴───────┐
-                    │  AI Layer    │
-                    │ • Anomaly    │
-                    │   Detection  │
-                    │ • Price      │
-                    │   Prediction │
-                    │ • LLM        │
-                    │   Insights   │
-                    └──────────────┘
-
-  ─────────────────── Apache Airflow (Orchestration) ────────────────────────────
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                         APACHE AIRFLOW (Orchestration)                       │
+│                                                                              │
+│  ┌─────────────┐   ┌──────────┐   ┌──────────┐   ┌────────────────────────┐│
+│  │  Yahoo      │──▶│  AWS S3  │──▶│ Postgres │──▶│        dbt Core        ││
+│  │  Finance API│   │ (Raw /   │   │(Staging) │   │  stg_stock_prices      ││
+│  │  yfinance   │   │  errors/ │   │  4 tables│   │  stg_stock_anomalies   ││
+│  └─────────────┘   │  archive)│   └────┬─────┘   │  fct_stock_prices      ││
+│                    └──────────┘        │          │  dim_tickers           ││
+│                         ▲             │          │  fct_daily_summary     ││
+│                         │             │          └────────────┬───────────┘│
+│              ┌──────────┴──────────┐  │                       │            │
+│              │      AI Layer       │  │                       ▼            │
+│              │                     │  │          ┌────────────────────────┐│
+│              │ 🔍 Anomaly Detection│  │          │       Snowflake        ││
+│              │  Isolation Forest   │  │          │   STOCK_DB.RAW         ││
+│              │                     │  │          │   STOCK_DB.ANALYTICS   ││
+│              │ 📈 Price Prediction │  │          └────────────────────────┘│
+│              │  Facebook Prophet   │◀─┘                                    │
+│              │  (5-day forecast)   │                                        │
+│              │                     │                                        │
+│              │ 💬 LLM Insights     │                                        │
+│              │  GPT-3.5 Turbo      │                                        │
+│              │  (daily summaries)  │                                        │
+│              └─────────────────────┘                                        │
+└──────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Tech Stack
+## ✨ Key Features
 
-| Layer           | Tool / Service            |
-|-----------------|---------------------------|
-| Orchestration   | Apache Airflow 2.9        |
-| Ingestion       | Python, yfinance          |
-| Raw Storage     | AWS S3                    |
-| Staging DB      | PostgreSQL (Docker)       |
-| Transformation  | dbt                       |
-| Data Warehouse  | Snowflake                 |
-| Containerization| Docker + Docker Compose   |
-
----
-
-## Documentation
-
-- [Pipeline Overview](docs/pipeline-overview.md)
-- [Local Development Guide](docs/local-development.md)
-- [Data Dictionary](docs/data-dictionary.md)
-- [Architecture Decision Records](docs/adr/README.md)
+- 🤖 **AI Anomaly Detection** — Isolation Forest ML model flags unusual price/volume movements across 5 features
+- 📈 **Price Prediction** — Facebook Prophet forecasts next 5 days of closing prices per ticker
+- 💬 **LLM Market Insights** — GPT-3.5 generates daily professional market summaries
+- 🔄 **Incremental Loading** — Automatically detects and backfills missing date gaps
+- ✅ **Data Validation** — 7-point quality checks per ticker with configurable SLA alerting
+- 🔔 **Slack Alerting** — Real-time pipeline notifications on success, failure, and SLA breaches
+- 💰 **Cost Optimization** — S3 storage analysis, old-data archiving, and monthly cost estimation
+- 🛡️ **Dead Letter Queue** — Failed records captured to S3 and replayed automatically
+- 📊 **Pipeline Monitoring** — Per-step execution metrics and daily SLA compliance reports
+- 🔍 **Data Lineage** — Full audit trail tracking every record from Yahoo Finance API to Snowflake
 
 ---
 
-## Getting Started
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Orchestration | Apache Airflow 2.9 |
+| Ingestion | Python 3.11 + yfinance |
+| AI / ML | scikit-learn (Isolation Forest) + Prophet + OpenAI GPT-3.5 |
+| Raw Storage | AWS S3 |
+| Staging DB | PostgreSQL 15 (Docker) |
+| Transformation | dbt Core |
+| Data Warehouse | Snowflake |
+| Alerting | Slack Webhooks |
+| CI / CD | GitHub Actions |
+| Testing | pytest — 108 tests |
+| Code Quality | black + isort + flake8 + mypy |
+
+---
+
+## 🏗️ Pipeline DAG (13 Tasks)
+
+```
+check_trading_day
+       │
+       ▼
+validate_data ──────────────────────────────────────────┐
+       │                                                 │
+       ▼                                                 │
+fetch_and_upload_to_s3                                   │
+       │                                                 │
+       ▼                                                 │
+load_to_postgres_staging                                 │
+       │                                                 │
+       ├──────────────────────────────────┐              │
+       ▼                                  ▼              │
+run_anomaly_detection           run_dbt_models           │
+       │                                  │              │
+       ▼                                  ▼              │
+run_price_prediction            run_snowflake_sync       │
+       │                                                 │
+       ▼                                                 │
+run_market_insights                                      │
+       │                                                 │
+       ▼                                                 │
+run_quality_report ◀─────────────────────────────────────┘
+       │
+       ▼
+run_monitoring_report
+       │
+       ▼
+replay_dead_letter_queue
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Python 3.11+
+- Docker + Docker Compose
+- AWS account with S3 bucket
+- Snowflake account
+- OpenAI API key
+- Slack webhook URL (optional)
+
+### Quick Start
 
 ```bash
-# 1. Copy environment variables and fill in your credentials
+# 1. Clone the repository
+git clone https://github.com/Divya-yaramala/stock-pipeline.git
+cd stock-pipeline
+
+# 2. Copy environment variables and fill in your credentials
 cp .env.example .env
 
-# 2. Start all services (Postgres + Airflow)
+# 3. Start all services (Postgres + Airflow)
 docker-compose up -d
 
-# 3. Validate all environment variables
+# 4. Validate all environment variables
 python scripts/validate_secrets.py
 
-# 4. Check health of all services
+# 5. Check health of all services
 python scripts/check_airflow.py
 
-# 5. Open Airflow UI at http://localhost:8080  (admin / admin)
+# 6. Open Airflow UI at http://localhost:8080  (admin / admin)
 
-# Run full pipeline locally (without Airflow)
+# 7. Run full pipeline locally (without Airflow)
 python scripts/run_pipeline_local.py
 ```
 
+### Running Tests
+
+```bash
+# Run all 108 tests
+pytest tests/ -v
+
+# Run with coverage
+pytest tests/ -v --cov=ingestion
+
+# Run a specific module
+pytest tests/test_anomaly_detector.py -v
+```
+
+### Backfilling Missing Data
+
+```bash
+# Preview gaps without loading
+python scripts/backfill_stocks.py --ticker AAPL --start-date 2024-01-01 --end-date 2024-01-31 --dry-run
+
+# Load gaps for all tickers
+python scripts/backfill_stocks.py --start-date 2024-01-01 --end-date 2024-01-31
+```
+
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 stock-pipeline/
-├── dags/               # Airflow DAG definitions
-├── ingestion/          # Python scripts to fetch and upload stock data
+├── dags/
+│   └── stock_price_pipeline.py     # Airflow DAG — 13-task daily pipeline
+│
+├── ingestion/
+│   ├── fetch_stocks.py             # Yahoo Finance → S3 with date partitioning
+│   ├── anomaly_detector.py         # Isolation Forest ML anomaly detection
+│   ├── price_predictor.py          # Facebook Prophet 5-day price forecasting
+│   ├── market_insights.py          # GPT-3.5 daily market summary generation
+│   ├── data_validator.py           # 7-point data quality validation checks
+│   ├── pipeline_monitor.py         # Per-step execution metrics tracking
+│   ├── dead_letter_queue.py        # Failed record capture and replay
+│   ├── slack_alerter.py            # Slack webhook notifications
+│   ├── lineage_tracker.py          # End-to-end data lineage recording
+│   ├── incremental_loader.py       # Gap detection and automatic backfill
+│   ├── quality_reporter.py         # Ticker-level quality scoring (0–100%)
+│   ├── sla_monitor.py              # SLA compliance tracking and alerting
+│   ├── s3_optimizer.py             # S3 cost analysis and archiving
+│   ├── resource_manager.py         # CPU/memory/disk resource gate
+│   ├── snowflake_sync.py           # Snowflake bulk load from S3
+│   └── config_manager.py           # Typed config via Python dataclasses
+│
 ├── dbt_project/
 │   └── models/
-│       ├── staging/    # Clean and cast raw data
-│       └── marts/      # Analytics-ready aggregates
-├── tests/              # pytest unit tests
-├── docs/               # Architecture diagrams and notes
-├── scripts/            # One-off utility scripts
-├── docker-compose.yml
-├── .env.example
-└── README.md
+│       ├── staging/                # stg_stock_prices, stg_stock_anomalies
+│       └── marts/                  # fct_stock_prices, dim_tickers,
+│                                   # fct_daily_summary, fct_anomaly_summary
+│
+├── tests/                          # pytest — 108 unit tests
+├── docs/
+│   ├── pipeline-overview.md        # Data flow, components, scheduling
+│   ├── local-development.md        # Setup, common errors, adding tickers
+│   ├── data-dictionary.md          # All tables and columns documented
+│   └── adr/                        # 7 Architecture Decision Records
+│
+├── scripts/
+│   ├── run_pipeline_local.py       # Full local pipeline run with timing
+│   ├── backfill_stocks.py          # CLI backfill with --dry-run support
+│   ├── validate_secrets.py         # Pre-flight env var validation
+│   └── check_airflow.py            # Service health checks
+│
+├── .github/
+│   └── workflows/
+│       ├── ci.yml                  # Run 108 tests on every push
+│       └── code-quality.yml        # black, isort, flake8, mypy checks
+│
+├── docker-compose.yml              # Postgres + Airflow services
+├── .env.example                    # All required environment variables
+├── requirements.txt                # Python dependencies
+└── pyproject.toml                  # black, isort, mypy configuration
 ```
 
 ---
 
-## Author
+## 📚 Documentation
 
-**Divya Yaramala** — Data Engineer
-- GitHub: [Divya-yaramala](https://github.com/Divya-yaramala)
-- Email: divyayaramala145@gmail.com
-
----
-
-## Current AI Pipeline
-
-```
-check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → run_dbt_models → run_anomaly_detection → run_price_prediction → run_market_insights → run_snowflake_sync
-```
+| Document | Description |
+|---|---|
+| [Pipeline Overview](docs/pipeline-overview.md) | Data flow, components, AI layer, scheduling |
+| [Local Development Guide](docs/local-development.md) | Setup steps, common errors, adding tickers |
+| [Data Dictionary](docs/data-dictionary.md) | All tables and columns across Postgres, Snowflake, dbt |
+| [Architecture Decision Records](docs/adr/README.md) | Technology choices with rationale |
 
 ---
 
-## Progress Log
+## 🏛️ Architecture Decisions
+
+| # | Decision | Status |
+|---|---|---|
+| ADR-001 | [Why Airflow over Prefect](docs/adr/001-why-airflow-over-prefect.md) | Accepted |
+| ADR-002 | [Why Snowflake over Redshift](docs/adr/002-why-snowflake-over-redshift.md) | Accepted |
+| ADR-003 | [Why dbt for Transformations](docs/adr/003-why-dbt-for-transformations.md) | Accepted |
+| ADR-004 | [Why Isolation Forest for Anomaly Detection](docs/adr/004-why-isolation-forest-for-anomaly-detection.md) | Accepted |
+| ADR-005 | [Why Prophet over ARIMA](docs/adr/005-why-prophet-over-arima.md) | Accepted |
+| ADR-006 | [S3 Cost Optimization Strategy](docs/adr/006-s3-cost-optimization-strategy.md) | Accepted |
+| ADR-007 | [Typed Config with Dataclasses](docs/adr/007-typed-config-with-dataclasses.md) | Accepted |
+
+---
+
+## 📈 Progress Log
 
 ### ✅ Day 1 — Project Scaffold
 - Created complete folder structure
@@ -256,3 +399,9 @@ check_trading_day → fetch_and_upload_to_s3 → load_to_postgres_staging → ru
 - CLI secrets validator checks all required vars before pipeline runs, with optional Slack warning
 - Pipeline modules updated to use config manager instead of scattered os.getenv calls
 - 10 unit tests passing green — 108/108 total
+
+### ✅ Day 20 — World-Class README Polish
+- Rewrote README with badges, features, architecture diagram
+- Added complete project structure with module descriptions
+- Added ADR summary table
+- Professional presentation ready for senior engineers and recruiters
