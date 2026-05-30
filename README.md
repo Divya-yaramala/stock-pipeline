@@ -5,6 +5,9 @@
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![Tests](https://img.shields.io/badge/tests-108%20passing-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
+![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
+![dbt](https://img.shields.io/badge/dbt-Core-orange)
+![Snowflake](https://img.shields.io/badge/Snowflake-blue)
 
 > An end-to-end AI-powered data engineering pipeline that ingests daily stock prices, detects anomalies with ML, predicts future prices with Prophet, and generates LLM market insights — orchestrated by Apache Airflow, transformed with dbt, and warehoused in Snowflake.
 
