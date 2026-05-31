@@ -42,3 +42,15 @@ Built an AI-powered stock price pipeline using Python, Airflow, dbt, Snowflake, 
 - "I used the same tools that Netflix, Airbnb, and Uber use for their data pipelines"
 - "The AI components detect unusual market behavior and predict future prices automatically"
 - "I documented every technology decision so the next engineer knows exactly why things were built this way"
+
+## Skills Demonstrated (for salary negotiation)
+
+| Skill | Market Value | Evidence |
+|---|---|---|
+| Apache Airflow | Senior DE skill | 13-task production DAG |
+| dbt Core | In-demand skill | 6 models with tests |
+| Snowflake | Premium skill | Full warehouse setup |
+| AWS S3 | Cloud skill | Raw data lake pattern |
+| CI/CD | DevOps skill | GitHub Actions workflows |
+| ML Integration | AI skill | 3 AI components |
+| pytest | Quality skill | 108 tests |
