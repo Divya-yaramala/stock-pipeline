@@ -34,3 +34,11 @@
 
 ## One-Line Resume Summary
 Built an AI-powered stock price pipeline using Python, Airflow, dbt, Snowflake, and AWS — featuring ML anomaly detection, Prophet forecasting, GPT insights, CI/CD, and 108 automated tests.
+
+## Talking Points for Recruiters (Non-Technical)
+
+- "I built a fully automated system that runs every day without human intervention"
+- "The pipeline has 108 automated tests that run on every code change"
+- "I used the same tools that Netflix, Airbnb, and Uber use for their data pipelines"
+- "The AI components detect unusual market behavior and predict future prices automatically"
+- "I documented every technology decision so the next engineer knows exactly why things were built this way"
