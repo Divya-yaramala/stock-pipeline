@@ -241,6 +241,8 @@ stock-pipeline/
 | [Local Development Guide](docs/local-development.md) | Setup steps, common errors, adding tickers |
 | [Data Dictionary](docs/data-dictionary.md) | All tables and columns across Postgres, Snowflake, dbt |
 | [Architecture Decision Records](docs/adr/README.md) | Technology choices with rationale |
+| [Interview Preparation](docs/interview-prep.md) | 10 common questions with answers and technical deep dives |
+| [Resume Bullet Points](docs/resume-bullets.md) | Ready-to-use bullets for Data Engineer and Analyst roles |
 
 ---
 
@@ -408,3 +410,9 @@ stock-pipeline/
 - Added complete project structure with module descriptions
 - Added ADR summary table
 - Professional presentation ready for senior engineers and recruiters
+
+### ✅ Day 21 — Resume Bullets + Interview Prep
+- Created 15 resume bullet points across Data Engineer and Analyst roles
+- Documented answers to 10 common interview questions
+- Added technical deep dives for Isolation Forest, Prophet, and testing strategy
+- Ready to interview for Data Engineer roles
