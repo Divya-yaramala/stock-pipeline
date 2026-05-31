@@ -51,3 +51,11 @@ Answer: Each pipeline module calls record_lineage() after successful processing,
 - Mix of unit tests (mock external services) and integration tests
 - Tests run in 3-4 seconds locally using mocks
 - CI runs them on every push ensuring no regressions
+
+## What I Learned Building This Project
+
+- **Idempotency is non-negotiable** — learned this the hard way by designing insert logic from day one
+- **Tests save time** — 108 tests caught regressions every time I refactored code
+- **CI/CD changes your workflow** — knowing every push is validated removes anxiety
+- **Documentation is code** — ADRs forced me to think deeply about every technology choice
+- **AI integration is straightforward** — the hard part is the data pipeline, not the AI layer
