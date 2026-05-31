@@ -1,5 +1,10 @@
 # Architecture Decision Records
 
+This project follows the practice of Architecture Decision Records (ADRs) to document
+the reasoning behind every major technology choice. Each ADR follows the format:
+Status, Context, Decision, Reasons, and Consequences. This ensures future engineers
+(and interviewers) understand not just WHAT was built but WHY.
+
 Architecture Decision Records (ADRs) capture the key technical decisions made during the design and build of this project. Each ADR documents the context that prompted a decision, the decision itself, the alternatives considered, and the trade-offs accepted. They serve as a permanent record so that future contributors understand not just *what* was built but *why*.
 
 ## ADR Index
