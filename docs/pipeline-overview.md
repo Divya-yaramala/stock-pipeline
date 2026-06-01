@@ -152,3 +152,12 @@ check_trading_day
 The pipeline uses a Dead Letter Queue (DLQ) pattern for fault tolerance.
 Failed records are saved to S3 under errors/YYYY/MM/DD/step/ and can be
 replayed without rerunning the full pipeline.
+
+---
+
+## Cost & Resource Management
+- S3 storage optimizer archives raw data older than 30 days
+- Monitoring data purged after 7 days to control costs
+- Monthly cost estimated at $0.023/GB (S3 standard pricing)
+- Resource manager checks CPU/memory/disk before pipeline runs
+- Pipeline skips automatically if disk usage exceeds 90%
