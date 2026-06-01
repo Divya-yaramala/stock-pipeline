@@ -419,4 +419,4 @@ stock-pipeline/
 - Created LinkedIn headline, about section, and featured project content
 - Wrote 3 LinkedIn post templates for building in public
 - Created job search tracker with target companies and weekly goals
-- Connection request templates for engineers, recruiters, and hiring managers
+- Kept repo clean — personal docs saved locally outside repo
