@@ -241,8 +241,6 @@ stock-pipeline/
 | [Local Development Guide](docs/local-development.md) | Setup steps, common errors, adding tickers |
 | [Data Dictionary](docs/data-dictionary.md) | All tables and columns across Postgres, Snowflake, dbt |
 | [Architecture Decision Records](docs/adr/README.md) | Technology choices with rationale |
-| [Interview Preparation](docs/interview-prep.md) | 10 common questions with answers and technical deep dives |
-| [Resume Bullet Points](docs/resume-bullets.md) | Ready-to-use bullets for Data Engineer and Analyst roles |
 
 ---
 
