@@ -296,3 +296,19 @@ Install with conda instead:
 ```bash
 conda install -c conda-forge prophet
 ```
+
+## Frequently Asked Questions
+
+### How do I add a new stock ticker?
+1. Add ticker to TICKERS list in ingestion/config_manager.py
+2. Run backfill script to load historical data
+3. Run full pipeline to generate AI insights
+
+### How do I change the forecast horizon?
+Update FORECAST_DAYS in config_manager.py (default is 5 days)
+
+### How do I adjust anomaly sensitivity?
+Update ANOMALY_CONTAMINATION in config_manager.py (default 0.05 = 5%)
+
+### How do I disable Slack alerts?
+Leave SLACK_WEBHOOK_URL empty in .env file — alerts are optional
