@@ -161,3 +161,12 @@ replayed without rerunning the full pipeline.
 - Monthly cost estimated at $0.023/GB (S3 standard pricing)
 - Resource manager checks CPU/memory/disk before pipeline runs
 - Pipeline skips automatically if disk usage exceeds 90%
+
+---
+
+## Security
+- No credentials stored in code — all secrets loaded from environment variables
+- .env file gitignored — never committed to repository
+- AWS credentials follow boto3 standard env/IAM chain
+- Snowflake credentials loaded via dbt env_var() function
+- validate_secrets.py checks all required vars before pipeline runs
