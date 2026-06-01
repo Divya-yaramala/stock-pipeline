@@ -267,3 +267,32 @@ python -c "from ingestion.s3_optimizer import run_s3_optimization; run_s3_optimi
 # Check monthly S3 cost estimate
 python -c "from ingestion.s3_optimizer import generate_cost_report; import os; print(generate_cost_report(os.getenv('AWS_BUCKET_NAME')))"
 ```
+
+## Troubleshooting
+
+### Pipeline fails with ModuleNotFoundError
+Set PYTHONPATH before running:
+```bash
+export PYTHONPATH=$PYTHONPATH:$(pwd)
+```
+
+### S3 upload fails with NoCredentialsError
+Check your .env file has correct AWS credentials:
+```bash
+python scripts/validate_secrets.py
+```
+
+### PostgreSQL connection refused
+Make sure Docker is running:
+```bash
+docker-compose up -d postgres
+```
+
+### dbt run fails with connection error
+Check profiles.yml matches your .env variables
+
+### Prophet installation fails
+Install with conda instead:
+```bash
+conda install -c conda-forge prophet
+```
