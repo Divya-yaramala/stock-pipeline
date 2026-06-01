@@ -2,6 +2,17 @@
 
 This document describes every table and column in the stock pipeline, covering the PostgreSQL staging layer and all dbt models. Column types shown are the PostgreSQL / Snowflake types used at each layer.
 
+## Data Freshness
+| Table | Update Frequency | Source |
+|---|---|---|
+| staging.stock_prices_raw | Daily 6 AM UTC | Yahoo Finance API |
+| staging.stock_anomalies | Daily after ingestion | Isolation Forest model |
+| staging.stock_predictions | Daily after ingestion | Prophet model |
+| staging.stock_insights | Daily after ingestion | GPT-3.5 API |
+| Snowflake marts | Daily after dbt run | dbt transformations |
+
+---
+
 ## Table of Contents
 - [Postgres Staging Tables](#postgres-staging-tables)
 - [Snowflake RAW Tables](#snowflake-raw-tables)
