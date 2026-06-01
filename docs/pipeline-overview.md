@@ -170,3 +170,12 @@ replayed without rerunning the full pipeline.
 - AWS credentials follow boto3 standard env/IAM chain
 - Snowflake credentials loaded via dbt env_var() function
 - validate_secrets.py checks all required vars before pipeline runs
+
+---
+
+## Performance Tips
+- Run pipeline during off-peak hours (6 AM UTC) to avoid API rate limits
+- Use incremental loading instead of full refresh whenever possible
+- Archive S3 raw data older than 30 days to reduce storage costs
+- Monitor step durations using SLA monitor to identify bottlenecks
+- Use Snowflake warehouse auto-suspend to reduce compute costs
