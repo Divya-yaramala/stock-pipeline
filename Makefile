@@ -81,3 +81,12 @@ run: ## Run full pipeline locally
 
 health: ## Check health of all services
 	python scripts/health_check.py
+
+cost: ## Estimate monthly S3 storage cost
+	python -c "from ingestion.s3_optimizer import generate_cost_report; import os; print(generate_cost_report(os.getenv('AWS_BUCKET_NAME')))"
+
+validate: ## Validate all required environment variables
+	python scripts/validate_secrets.py
+
+backfill: ## Backfill missing data (usage: make backfill START=2024-01-01 END=2024-01-31)
+	python scripts/backfill.py --start-date $(START) --end-date $(END)
