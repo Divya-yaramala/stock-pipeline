@@ -257,3 +257,13 @@ from ingestion.config_manager import validate_all_configs
 if not validate_all_configs():
     raise SystemExit("Missing required environment configuration")
 ```
+
+## Cost Optimization
+
+```bash
+# Archive old raw data (keeps last 30 days)
+python -c "from ingestion.s3_optimizer import run_s3_optimization; run_s3_optimization()"
+
+# Check monthly S3 cost estimate
+python -c "from ingestion.s3_optimizer import generate_cost_report; import os; print(generate_cost_report(os.getenv('AWS_BUCKET_NAME')))"
+```
