@@ -7,6 +7,7 @@ from datetime import datetime
 import boto3
 import pandas as pd
 import yfinance as yf
+from tenacity import retry, stop_after_attempt, wait_fixed
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
@@ -17,9 +18,13 @@ AWS_BUCKET_NAME = os.environ.get("AWS_BUCKET_NAME", "")
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
 
 
+@retry(stop=stop_after_attempt(3), wait=wait_fixed(5), reraise=True)
 def fetch_stock_data(ticker: str, period: str = "1d") -> pd.DataFrame:
     """
     Download OHLCV data for a ticker from Yahoo Finance.
+
+    Retries up to 3 times with a 5-second delay between attempts if yfinance
+    raises an unexpected error.
 
     Args:
         ticker: Stock ticker symbol.
@@ -30,7 +35,7 @@ def fetch_stock_data(ticker: str, period: str = "1d") -> pd.DataFrame:
 
     Raises:
         ValueError: If yfinance returns an empty DataFrame.
-        Exception: On unexpected yfinance errors.
+        Exception: On unexpected yfinance errors after all retries are exhausted.
     """
     try:
         df = yf.download(ticker, period=period, progress=False)

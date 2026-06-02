@@ -14,3 +14,4 @@ dbt-postgres
 snowflake-connector-python
 dbt-snowflake
 psutil
+tenacity
