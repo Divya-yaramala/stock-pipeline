@@ -2,6 +2,7 @@ import json
 import logging
 import os
 from datetime import datetime, timedelta
+from typing import Any
 
 import boto3
 import yfinance as yf
@@ -9,8 +10,9 @@ import yfinance as yf
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
+from ingestion.config_manager import load_pipeline_config
+
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
-TICKERS = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"]
 
 INSERT_SQL = """
     INSERT INTO staging.stock_prices_raw
@@ -20,7 +22,7 @@ INSERT_SQL = """
 """
 
 
-def get_last_loaded_date(ticker: str, conn) -> str | None:
+def get_last_loaded_date(ticker: str, conn: Any) -> str | None:
     """Return MAX(trade_date) for ticker from Postgres, or None if no rows exist."""
     with conn.cursor() as cur:
         cur.execute(
@@ -36,7 +38,7 @@ def get_last_loaded_date(ticker: str, conn) -> str | None:
     return None
 
 
-def get_missing_dates(ticker: str, conn) -> list:
+def get_missing_dates(ticker: str, conn: Any) -> list:
     """Return weekday dates (YYYY/MM/DD) between last loaded date and yesterday."""
     last_date_str = get_last_loaded_date(ticker, conn)
     if not last_date_str:
@@ -57,7 +59,7 @@ def get_missing_dates(ticker: str, conn) -> list:
     return missing
 
 
-def backfill_ticker(ticker: str, conn, bucket: str, start_date: str, end_date: str) -> int:
+def backfill_ticker(ticker: str, conn: Any, bucket: str, start_date: str, end_date: str) -> int:
     """Download historical data from yfinance, upload to S3, and insert into Postgres.
 
     start_date / end_date must be in YYYY-MM-DD format. end_date is exclusive (yfinance).
@@ -124,11 +126,14 @@ def run_incremental_load() -> None:
     bucket = os.environ.get("AWS_BUCKET_NAME", "")
     conn = get_connection()
 
+    pipeline_cfg = load_pipeline_config()
+    tickers = pipeline_cfg.tickers
+
     total_rows = 0
     tickers_loaded = 0
 
     try:
-        for ticker in TICKERS:
+        for ticker in tickers:
             missing = get_missing_dates(ticker, conn)
             if not missing:
                 logger.info("No missing dates for %s — skipping", ticker)

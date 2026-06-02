@@ -7,6 +7,7 @@ import logging
 import os
 import sys
 import time
+from typing import List, Tuple
 
 # Ensure project root and ingestion/ are on the path
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -17,7 +18,13 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 
-def _import_steps():
+def _import_steps() -> List[Tuple[str, object]]:
+    """
+    Import and return the ordered list of (step_name, callable) pipeline steps.
+
+    Returns:
+        List of (name, function) tuples in execution order.
+    """
     from ingestion.anomaly_detector import run_anomaly_detection as detect
     from ingestion.fetch_stocks import run_pipeline as fetch
     from ingestion.market_insights import run_market_insights as insights
@@ -38,7 +45,7 @@ def run_all_steps() -> None:
     Execute every pipeline step in sequence.
 
     Steps run independently — a failure in one step does not abort the rest.
-    Prints a formatted summary table with per-step status and wall-clock duration.
+    Logs a formatted summary table with per-step status and wall-clock duration.
     """
     from ingestion.config_manager import validate_all_configs
     from ingestion.resource_manager import get_system_resources, should_run_pipeline
@@ -51,11 +58,11 @@ def run_all_steps() -> None:
 
     # Resource check — abort if any resource is critical
     resources = get_system_resources()
-    print()
-    print(
-        f"  Resource snapshot — CPU: {resources['cpu_percent']:.1f}%  "
-        f"Memory: {resources['memory_percent']:.1f}%  "
-        f"Disk: {resources['disk_usage_percent']:.1f}%"
+    logger.info(
+        "Resource snapshot — CPU: %.1f%%  Memory: %.1f%%  Disk: %.1f%%",
+        resources["cpu_percent"],
+        resources["memory_percent"],
+        resources["disk_usage_percent"],
     )
     if not should_run_pipeline():
         logger.error("Aborting — system resources are at a critical level")
@@ -80,13 +87,12 @@ def run_all_steps() -> None:
     # Summary table
     col_w = (22, 10, 10)
     divider = "-" * (sum(col_w) + 6)
-    print()
-    print("=" * (sum(col_w) + 6))
-    print(f"  {'Step':<{col_w[0]}} {'Status':<{col_w[1]}} {'Duration':>{col_w[2]}}")
-    print(divider)
+    logger.info("=" * (sum(col_w) + 6))
+    logger.info("  %-*s %-*s %*s", col_w[0], "Step", col_w[1], "Status", col_w[2], "Duration")
+    logger.info(divider)
     for name, status, duration in results:
-        print(f"  {name:<{col_w[0]}} {status:<{col_w[1]}} {duration:>{col_w[2] - 1}.2f}s")
-    print("=" * (sum(col_w) + 6))
+        logger.info("  %-*s %-*s %*.2fs", col_w[0], name, col_w[1], status, col_w[2] - 1, duration)
+    logger.info("=" * (sum(col_w) + 6))
 
     failed = [r for r in results if r[1] == "FAILED"]
     if failed:
@@ -99,10 +105,10 @@ def run_all_steps() -> None:
     if bucket:
         try:
             cost_report = generate_cost_report(bucket)
-            print()
-            print(
-                f"  S3 cost estimate — {cost_report['storage_gb']:.4f} GB  "
-                f"≈ ${cost_report['estimated_monthly_cost_usd']:.4f}/month"
+            logger.info(
+                "S3 cost estimate — %.4f GB ≈ $%.4f/month",
+                cost_report["storage_gb"],
+                cost_report["estimated_monthly_cost_usd"],
             )
         except Exception as exc:
             logger.warning("Could not generate cost report: %s", exc)

@@ -9,14 +9,26 @@ import openai
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
+from ingestion.config_manager import load_aws_config, load_pipeline_config
+
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 AWS_BUCKET_NAME = os.environ.get("AWS_BUCKET_NAME", "")
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
 
-TICKERS = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"]
-
 
 def load_todays_data(ticker: str, bucket: str, date: str) -> dict:
+    """
+    Load raw, anomaly, and prediction data for a ticker from S3.
+
+    Args:
+        ticker: Stock ticker symbol.
+        bucket: S3 bucket name.
+        date: Date string in YYYY/MM/DD format.
+
+    Returns:
+        Dict with keys 'raw', 'anomalies', 'predictions'; values are dicts or None
+        if a given S3 object was not found.
+    """
     s3_client = boto3.client("s3", region_name=AWS_REGION)
     result = {"raw": None, "anomalies": None, "predictions": None}
 
@@ -39,6 +51,16 @@ def load_todays_data(ticker: str, bucket: str, date: str) -> dict:
 
 
 def build_prompt(ticker: str, data: dict) -> str:
+    """
+    Build a GPT market-insight prompt from today's OHLCV, anomaly flag, and forecasts.
+
+    Args:
+        ticker: Stock ticker symbol.
+        data: Dict returned by load_todays_data.
+
+    Returns:
+        Formatted prompt string ready to send to OpenAI.
+    """
     raw = data.get("raw") or {}
     open_val = next(iter((raw.get("Open") or raw.get("open") or {}).values()), "N/A")
     high_val = next(iter((raw.get("High") or raw.get("high") or {}).values()), "N/A")
@@ -74,6 +96,16 @@ def build_prompt(ticker: str, data: dict) -> str:
 
 
 def generate_insight(prompt: str, ticker: str) -> str:
+    """
+    Send a prompt to OpenAI and return the generated insight text.
+
+    Args:
+        prompt: Formatted market insight prompt.
+        ticker: Stock ticker symbol (used for logging).
+
+    Returns:
+        Generated insight string, or empty string on failure.
+    """
     try:
         client = openai.OpenAI(api_key=OPENAI_API_KEY)
         response = client.chat.completions.create(
@@ -91,6 +123,18 @@ def generate_insight(prompt: str, ticker: str) -> str:
 
 
 def save_insight_to_s3(insight: str, ticker: str, bucket: str, date: str) -> bool:
+    """
+    Serialize insight to JSON and upload to S3.
+
+    Args:
+        insight: Generated insight text.
+        ticker: Stock ticker symbol.
+        bucket: S3 bucket name.
+        date: Date string in YYYY/MM/DD format.
+
+    Returns:
+        True on success, False on failure.
+    """
     try:
         s3_client = boto3.client("s3", region_name=AWS_REGION)
         key = f"processed/insights/{date}/{ticker}.json"
@@ -104,14 +148,30 @@ def save_insight_to_s3(insight: str, ticker: str, bucket: str, date: str) -> boo
 
 
 def run_market_insights() -> None:
+    """
+    Generate AI market insights for all configured tickers and upload each to S3.
+
+    Loads the ticker list from config_manager. For each ticker, loads today's data,
+    builds a GPT prompt, generates an insight, saves it to S3, and records lineage.
+    Failed tickers are sent to the dead-letter queue.
+    """
+    try:
+        aws_cfg = load_aws_config()
+        bucket = aws_cfg.bucket_name
+    except ValueError:
+        bucket = AWS_BUCKET_NAME
+
+    pipeline_cfg = load_pipeline_config()
+    tickers = pipeline_cfg.tickers
+
     date = datetime.now().strftime("%Y/%m/%d")
     succeeded = 0
-    for ticker in TICKERS:
+    for ticker in tickers:
         try:
-            data = load_todays_data(ticker, AWS_BUCKET_NAME, date)
+            data = load_todays_data(ticker, bucket, date)
             prompt = build_prompt(ticker, data)
             insight = generate_insight(prompt, ticker)
-            if insight and save_insight_to_s3(insight, ticker, AWS_BUCKET_NAME, date):
+            if insight and save_insight_to_s3(insight, ticker, bucket, date):
                 succeeded += 1
                 from ingestion import lineage_tracker
 
@@ -121,13 +181,13 @@ def run_market_insights() -> None:
                     ticker=ticker,
                     row_count=1,
                     transformation="gpt_summarization",
-                    bucket=AWS_BUCKET_NAME,
+                    bucket=bucket,
                 )
         except Exception as e:
             logger.error(f"Market insights error for {ticker}: {e}")
             from ingestion import dead_letter_queue
 
-            dead_letter_queue.send_to_dlq(str(e), ticker, "insights", {}, AWS_BUCKET_NAME)
+            dead_letter_queue.send_to_dlq(str(e), ticker, "insights", {}, bucket)
     logger.info(f"Market insights complete: {succeeded} insights generated successfully")
 
 

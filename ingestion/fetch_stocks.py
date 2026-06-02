@@ -16,10 +16,22 @@ from ingestion.config_manager import load_aws_config, load_pipeline_config
 AWS_BUCKET_NAME = os.environ.get("AWS_BUCKET_NAME", "")
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
 
-TICKERS = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"]
-
 
 def fetch_stock_data(ticker: str, period: str = "1d") -> pd.DataFrame:
+    """
+    Download OHLCV data for a ticker from Yahoo Finance.
+
+    Args:
+        ticker: Stock ticker symbol.
+        period: yfinance period string (e.g. '1d', '5d').
+
+    Returns:
+        DataFrame of OHLCV data for the requested period.
+
+    Raises:
+        ValueError: If yfinance returns an empty DataFrame.
+        Exception: On unexpected yfinance errors.
+    """
     try:
         df = yf.download(ticker, period=period, progress=False)
         if df.empty:
@@ -34,6 +46,18 @@ def fetch_stock_data(ticker: str, period: str = "1d") -> pd.DataFrame:
 
 
 def upload_to_s3(data: dict, ticker: str, bucket: str, date: str) -> bool:
+    """
+    Serialize data dict as JSON and upload to S3.
+
+    Args:
+        data: Dict of OHLCV data to upload.
+        ticker: Stock ticker symbol.
+        bucket: S3 bucket name.
+        date: Date string in YYYY/MM/DD format.
+
+    Returns:
+        True on success, False on failure.
+    """
     try:
         s3_client = boto3.client("s3", region_name=AWS_REGION)
         key = f"raw/stocks/{date}/{ticker}.json"
@@ -47,6 +71,13 @@ def upload_to_s3(data: dict, ticker: str, bucket: str, date: str) -> bool:
 
 
 def run_pipeline() -> None:
+    """
+    Fetch daily stock data for all configured tickers and upload each to S3.
+
+    Loads configuration from config_manager. Succeeded and failed counts are
+    logged at the end. Failed tickers are sent to the dead-letter queue and a
+    Slack failure alert is fired.
+    """
     from ingestion import lineage_tracker, slack_alerter
 
     try:

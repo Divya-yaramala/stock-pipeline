@@ -103,4 +103,4 @@ def record_resource_snapshot(bucket: str) -> bool:
 
 
 if __name__ == "__main__":
-    print(get_system_resources())
+    logger.info("Resource snapshot: %s", get_system_resources())

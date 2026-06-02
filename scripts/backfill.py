@@ -6,8 +6,6 @@ from datetime import datetime
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
-TICKERS = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"]
-
 
 def validate_dates(start_date: str, end_date: str) -> bool:
     """Return True if start_date < end_date and start_date is not in the future."""
@@ -47,8 +45,19 @@ def run_backfill(ticker: str, start_date: str, end_date: str, dry_run: bool) -> 
 
 
 def main() -> None:
+    """
+    Parse CLI arguments and run historical backfill for one or all configured tickers.
+
+    Args:
+        None (reads from sys.argv via argparse).
+
+    Returns:
+        None
+    """
+    from ingestion.config_manager import load_pipeline_config
+
     parser = argparse.ArgumentParser(description="Backfill historical stock data into the pipeline")
-    parser.add_argument("--ticker", help="Specific ticker to backfill (default: all 5)")
+    parser.add_argument("--ticker", help="Specific ticker to backfill (default: all configured)")
     parser.add_argument("--start-date", required=True, help="Start date YYYY-MM-DD")
     parser.add_argument(
         "--end-date",
@@ -65,7 +74,8 @@ def main() -> None:
     if not validate_dates(args.start_date, args.end_date):
         raise SystemExit(1)
 
-    tickers = [args.ticker] if args.ticker else TICKERS
+    pipeline_cfg = load_pipeline_config()
+    tickers = [args.ticker] if args.ticker else pipeline_cfg.tickers
 
     for ticker in tickers:
         run_backfill(ticker, args.start_date, args.end_date, dry_run=args.dry_run)

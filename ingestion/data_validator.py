@@ -101,7 +101,7 @@ def save_validation_report(report: dict, ticker: str, bucket: str, date: str) ->
 
 def run_validation() -> None:
     """Validate today's stock data for all tickers, save reports, and send failures to DLQ."""
-    from dead_letter_queue import send_to_dlq
+    from ingestion.dead_letter_queue import send_to_dlq
 
     bucket = os.environ.get("AWS_BUCKET_NAME", "")
     date = datetime.now().strftime("%Y/%m/%d")

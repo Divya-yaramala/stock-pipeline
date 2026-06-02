@@ -16,11 +16,21 @@ from ingestion.config_manager import load_aws_config, load_pipeline_config
 AWS_BUCKET_NAME = os.environ.get("AWS_BUCKET_NAME", "")
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
 
-TICKERS = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"]
 FEATURES = ["open", "high", "low", "close", "volume"]
 
 
 def load_stock_data_from_s3(ticker: str, bucket: str, date: str) -> pd.DataFrame:
+    """
+    Load raw stock data for a ticker from S3 for the given date.
+
+    Args:
+        ticker: Stock ticker symbol.
+        bucket: S3 bucket name.
+        date: Date string in YYYY/MM/DD format.
+
+    Returns:
+        DataFrame of OHLCV data, or empty DataFrame on failure.
+    """
     try:
         s3_client = boto3.client("s3", region_name=AWS_REGION)
         key = f"raw/stocks/{date}/{ticker}.json"
@@ -36,6 +46,17 @@ def load_stock_data_from_s3(ticker: str, bucket: str, date: str) -> pd.DataFrame
 
 
 def detect_anomalies(df: pd.DataFrame, ticker: str, contamination: float = 0.05) -> pd.DataFrame:
+    """
+    Run Isolation Forest anomaly detection on OHLCV features.
+
+    Args:
+        df: DataFrame with OHLCV columns.
+        ticker: Stock ticker symbol (used for logging).
+        contamination: Expected proportion of anomalies in the data.
+
+    Returns:
+        Copy of df with is_anomaly (bool) and anomaly_score (float) columns appended.
+    """
     features = [col for col in FEATURES if col in df.columns]
     X = df[features].values
     model = IsolationForest(contamination=contamination, random_state=42)
@@ -50,6 +71,18 @@ def detect_anomalies(df: pd.DataFrame, ticker: str, contamination: float = 0.05)
 
 
 def save_anomaly_results(df: pd.DataFrame, ticker: str, bucket: str, date: str) -> bool:
+    """
+    Upload anomaly-annotated DataFrame as JSON to S3.
+
+    Args:
+        df: DataFrame with anomaly columns added.
+        ticker: Stock ticker symbol.
+        bucket: S3 bucket name.
+        date: Date string in YYYY/MM/DD format.
+
+    Returns:
+        True on success, False on failure.
+    """
     try:
         s3_client = boto3.client("s3", region_name=AWS_REGION)
         key = f"processed/anomalies/{date}/{ticker}.json"
@@ -63,6 +96,14 @@ def save_anomaly_results(df: pd.DataFrame, ticker: str, bucket: str, date: str) 
 
 
 def run_anomaly_detection() -> None:
+    """
+    Detect anomalies for all configured tickers and save results to S3.
+
+    Loads ticker list and configuration from config_manager, then for each ticker
+    loads raw data, runs Isolation Forest, saves annotated results, and records
+    lineage. Failed tickers are sent to the dead-letter queue and a Slack alert is
+    fired.
+    """
     from ingestion import lineage_tracker, slack_alerter
 
     try:

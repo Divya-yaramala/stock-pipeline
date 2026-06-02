@@ -2,6 +2,7 @@ import json
 import logging
 import os
 from datetime import datetime
+from typing import Any
 
 import boto3
 import pandas as pd
@@ -10,11 +11,22 @@ import snowflake.connector
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
-TICKERS = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"]
+from ingestion.config_manager import load_pipeline_config
+
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
 
 
-def _get_snowflake_connection():
+def _get_snowflake_connection() -> Any:
+    """
+    Create and return a Snowflake connection using environment variables.
+
+    We create a new connection per sync run rather than maintaining a pool because
+    Snowflake charges per active warehouse-second; a persistent pool would keep the
+    warehouse running between hourly pipeline executions.
+
+    Returns:
+        Open snowflake.connector.connection object.
+    """
     return snowflake.connector.connect(
         account=os.environ["SNOWFLAKE_ACCOUNT"],
         user=os.environ["SNOWFLAKE_USER"],
@@ -23,6 +35,7 @@ def _get_snowflake_connection():
         database=os.environ.get("SNOWFLAKE_DATABASE", "STOCK_PIPELINE_DB"),
         schema=os.environ.get("SNOWFLAKE_SCHEMA", "MARTS"),
         role=os.environ.get("SNOWFLAKE_ROLE", "SYSADMIN"),
+        login_timeout=30,
     )
 
 
@@ -33,7 +46,7 @@ def load_from_s3(bucket: str, key: str) -> dict:
     return json.loads(response["Body"].read().decode("utf-8"))
 
 
-def sync_stock_prices(conn, ticker: str, date: str) -> bool:
+def sync_stock_prices(conn: Any, ticker: str, date: str) -> bool:
     """Loads raw stock data from S3 and inserts into Snowflake RAW.STOCK_PRICES."""
     try:
         bucket = os.environ.get("AWS_BUCKET_NAME", "")
@@ -84,7 +97,7 @@ def sync_stock_prices(conn, ticker: str, date: str) -> bool:
         return False
 
 
-def sync_anomalies(conn, ticker: str, date: str) -> bool:
+def sync_anomalies(conn: Any, ticker: str, date: str) -> bool:
     """Loads anomaly results from S3 and inserts into Snowflake RAW.STOCK_ANOMALIES."""
     try:
         bucket = os.environ.get("AWS_BUCKET_NAME", "")
@@ -119,7 +132,7 @@ def sync_anomalies(conn, ticker: str, date: str) -> bool:
         return False
 
 
-def sync_predictions(conn, ticker: str, date: str) -> bool:
+def sync_predictions(conn: Any, ticker: str, date: str) -> bool:
     """Loads predictions from S3 and inserts into Snowflake RAW.STOCK_PREDICTIONS."""
     try:
         bucket = os.environ.get("AWS_BUCKET_NAME", "")
@@ -168,7 +181,7 @@ def sync_predictions(conn, ticker: str, date: str) -> bool:
         return False
 
 
-def sync_insights(conn, ticker: str, date: str) -> bool:
+def sync_insights(conn: Any, ticker: str, date: str) -> bool:
     """Loads insights from S3 and inserts into Snowflake RAW.STOCK_INSIGHTS."""
     try:
         bucket = os.environ.get("AWS_BUCKET_NAME", "")
@@ -200,10 +213,19 @@ def sync_insights(conn, ticker: str, date: str) -> bool:
 
 
 def run_snowflake_sync() -> None:
+    """
+    Sync stock prices, anomalies, predictions, and insights for all tickers to Snowflake.
+
+    Loads the ticker list from config_manager. Opens one Snowflake connection for the
+    entire sync run, then closes it when all tickers are processed.
+    """
+    pipeline_cfg = load_pipeline_config()
+    tickers = pipeline_cfg.tickers
+
     date = datetime.now().strftime("%Y/%m/%d")
     conn = _get_snowflake_connection()
     synced = 0
-    for ticker in TICKERS:
+    for ticker in tickers:
         if sync_stock_prices(conn, ticker, date):
             synced += 1
         if sync_anomalies(conn, ticker, date):

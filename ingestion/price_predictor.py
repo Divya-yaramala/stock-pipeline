@@ -12,13 +12,24 @@ logging.getLogger("prophet").setLevel(logging.WARNING)
 logging.getLogger("cmdstanpy").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
+from ingestion.config_manager import load_aws_config, load_pipeline_config
+
 AWS_BUCKET_NAME = os.environ.get("AWS_BUCKET_NAME", "")
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
 
-TICKERS = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"]
-
 
 def load_historical_data_from_s3(ticker: str, bucket: str, days: int = 30) -> pd.DataFrame:
+    """
+    Load up to days of historical OHLCV data for a ticker from S3.
+
+    Args:
+        ticker: Stock ticker symbol.
+        bucket: S3 bucket name.
+        days: Number of past days to attempt to load.
+
+    Returns:
+        Combined DataFrame across all found dates, or empty DataFrame if none found.
+    """
     s3_client = boto3.client("s3", region_name=AWS_REGION)
     frames = []
     today = datetime.now()
@@ -36,7 +47,8 @@ def load_historical_data_from_s3(ticker: str, bucket: str, days: int = 30) -> pd
             df.index.name = "date"
             df = df.reset_index()
             frames.append(df)
-        except Exception:
+        except Exception as e:
+            logger.debug(f"No data for {ticker} on {date_str}: {e}")
             continue
 
     if not frames:
@@ -49,6 +61,15 @@ def load_historical_data_from_s3(ticker: str, bucket: str, days: int = 30) -> pd
 
 
 def prepare_prophet_data(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Reshape a stock DataFrame into the ds/y format required by Prophet.
+
+    Args:
+        df: DataFrame with 'date' and 'close' columns.
+
+    Returns:
+        DataFrame with columns 'ds' (datetime) and 'y' (close price), nulls dropped.
+    """
     prophet_df = df[["date", "close"]].copy()
     prophet_df = prophet_df.rename(columns={"date": "ds", "close": "y"})
     prophet_df["ds"] = pd.to_datetime(prophet_df["ds"])
@@ -57,6 +78,17 @@ def prepare_prophet_data(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def train_and_predict(df: pd.DataFrame, ticker: str, forecast_days: int = 5) -> pd.DataFrame:
+    """
+    Fit a Prophet model on df and return future price forecasts.
+
+    Args:
+        df: Prophet-format DataFrame with 'ds' and 'y' columns.
+        ticker: Stock ticker symbol (used for logging).
+        forecast_days: Number of future days to forecast.
+
+    Returns:
+        DataFrame with columns ds, yhat, yhat_lower, yhat_upper for the forecast period.
+    """
     model = Prophet(daily_seasonality=True)
     model.fit(df)
     future = model.make_future_dataframe(periods=forecast_days)
@@ -72,6 +104,18 @@ def train_and_predict(df: pd.DataFrame, ticker: str, forecast_days: int = 5) -> 
 
 
 def save_predictions_to_s3(df: pd.DataFrame, ticker: str, bucket: str, date: str) -> bool:
+    """
+    Serialize Prophet forecast DataFrame to JSON and upload to S3.
+
+    Args:
+        df: Forecast DataFrame with ds, yhat, yhat_lower, yhat_upper columns.
+        ticker: Stock ticker symbol.
+        bucket: S3 bucket name.
+        date: Date string in YYYY/MM/DD format.
+
+    Returns:
+        True on success, False on failure.
+    """
     try:
         s3_client = boto3.client("s3", region_name=AWS_REGION)
         key = f"processed/predictions/{date}/{ticker}.json"
@@ -85,19 +129,35 @@ def save_predictions_to_s3(df: pd.DataFrame, ticker: str, bucket: str, date: str
 
 
 def run_price_prediction() -> None:
+    """
+    Run Prophet price predictions for all configured tickers and upload results to S3.
+
+    Loads ticker list from config_manager. For each ticker, loads historical data,
+    prepares Prophet input, trains a model, saves the forecast to S3, and records
+    lineage. Failed tickers are sent to the dead-letter queue.
+    """
+    try:
+        aws_cfg = load_aws_config()
+        bucket = aws_cfg.bucket_name
+    except ValueError:
+        bucket = AWS_BUCKET_NAME
+
+    pipeline_cfg = load_pipeline_config()
+    tickers = pipeline_cfg.tickers
+
     date = datetime.now().strftime("%Y/%m/%d")
     succeeded = 0
     failed = 0
-    for ticker in TICKERS:
+    for ticker in tickers:
         try:
-            df = load_historical_data_from_s3(ticker, AWS_BUCKET_NAME)
+            df = load_historical_data_from_s3(ticker, bucket)
             if df.empty:
                 logger.warning(f"No data for {ticker}, skipping")
                 failed += 1
                 continue
             prophet_df = prepare_prophet_data(df)
             forecast = train_and_predict(prophet_df, ticker)
-            if save_predictions_to_s3(forecast, ticker, AWS_BUCKET_NAME, date):
+            if save_predictions_to_s3(forecast, ticker, bucket, date):
                 succeeded += 1
                 from ingestion import lineage_tracker
 
@@ -107,7 +167,7 @@ def run_price_prediction() -> None:
                     ticker=ticker,
                     row_count=len(forecast),
                     transformation="prophet_forecast",
-                    bucket=AWS_BUCKET_NAME,
+                    bucket=bucket,
                 )
             else:
                 failed += 1
@@ -116,7 +176,7 @@ def run_price_prediction() -> None:
             failed += 1
             from ingestion import dead_letter_queue
 
-            dead_letter_queue.send_to_dlq(str(e), ticker, "prediction", {}, AWS_BUCKET_NAME)
+            dead_letter_queue.send_to_dlq(str(e), ticker, "prediction", {}, bucket)
     logger.info(
         f"Price prediction complete: {succeeded} tickers predicted successfully, {failed} failed"
     )

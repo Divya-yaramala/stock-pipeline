@@ -8,8 +8,9 @@ import boto3
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
+from ingestion.config_manager import load_pipeline_config
+
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
-TICKERS = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"]
 
 
 def record_lineage(
@@ -67,9 +68,10 @@ def get_lineage_for_ticker(ticker: str, bucket: str, date: str) -> list:
 
 def generate_lineage_report(bucket: str, date: str) -> dict:
     """Build a full lineage report for all tickers on the given date."""
+    pipeline_cfg = load_pipeline_config()
     report = {}
     total = 0
-    for ticker in TICKERS:
+    for ticker in pipeline_cfg.tickers:
         records = get_lineage_for_ticker(ticker, bucket, date)
         report[ticker] = records
         total += len(records)

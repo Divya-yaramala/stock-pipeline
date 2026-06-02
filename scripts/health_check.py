@@ -66,7 +66,7 @@ def check_openai_connectivity() -> dict:
 
 
 def run_health_check() -> None:
-    """Run all connectivity checks, print a report table, and exit 1 if any fail."""
+    """Run all connectivity checks, log a report table, and exit 1 if any fail."""
     checks = [
         check_s3_connectivity(),
         check_postgres_connectivity(),
@@ -74,15 +74,15 @@ def run_health_check() -> None:
         check_openai_connectivity(),
     ]
 
-    print(f"{'Service':<12}| {'Status':<12}| Message")
-    print("-" * 60)
+    logger.info("%-12s| %-12s| Message", "Service", "Status")
+    logger.info("-" * 60)
     any_unhealthy = False
     for result in checks:
         service = result["service"]
         status = result["status"]
         message = result["message"]
         icon = "✅" if status == "healthy" else "❌"
-        print(f"{service:<12}| {icon} {status:<10}| {message}")
+        logger.info("%-12s| %s %-10s| %s", service, icon, status, message)
         if status != "healthy":
             any_unhealthy = True
 

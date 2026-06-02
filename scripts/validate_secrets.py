@@ -66,13 +66,13 @@ def check_required_secrets() -> dict:
 
 
 def print_secrets_report(report: dict) -> None:
-    """Print a formatted table of secret validation results and exit on failure."""
+    """Log a formatted table of secret validation results and exit on failure."""
     col_service = 12
     col_status = 12
 
-    print()
-    print(f"  {'Service':<{col_service}} {'Status':<{col_status}} Missing Vars")
-    print("  " + "-" * 60)
+    logger.info("")
+    logger.info("  %-*s %-*s Missing Vars", col_service, "Service", col_status, "Status")
+    logger.info("  " + "-" * 60)
 
     required_missing = False
     optional_missing = False
@@ -88,9 +88,9 @@ def print_secrets_report(report: dict) -> None:
             required_missing = True
 
         missing_str = ", ".join(data["missing_vars"]) if data["missing_vars"] else ""
-        print(f"  {service:<{col_service}} {status_str:<{col_status}} {missing_str}")
+        logger.info("  %-*s %-*s %s", col_service, service, col_status, status_str, missing_str)
 
-    print()
+    logger.info("")
 
     if required_missing:
         logger.error("Required secrets are missing — pipeline cannot run")
