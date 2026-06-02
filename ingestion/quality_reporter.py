@@ -13,7 +13,16 @@ AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
 
 
 def load_validation_reports(bucket: str, date: str) -> list:
-    """Load all per-ticker validation reports from S3 for the given date."""
+    """
+    Load all per-ticker validation reports from S3 for the given date.
+
+    Args:
+        bucket: S3 bucket name.
+        date: Date string in YYYY/MM/DD format.
+
+    Returns:
+        List of validation report dicts; empty list if none found or on error.
+    """
     try:
         s3 = boto3.client("s3", region_name=AWS_REGION)
         prefix = f"processed/validation/{date}/"
@@ -35,7 +44,16 @@ def load_validation_reports(bucket: str, date: str) -> list:
 
 
 def calculate_quality_score(reports: list) -> dict:
-    """Derive overall quality metrics from a list of per-ticker validation reports."""
+    """
+    Derive overall quality metrics from a list of per-ticker validation reports.
+
+    Args:
+        reports: List of validation report dicts, each with 'passed' and 'checks' keys.
+
+    Returns:
+        Dict with keys: total_tickers, passed_tickers, failed_tickers,
+        quality_score_pct, failed_checks (list), most_common_failure (str or None).
+    """
     total = len(reports)
     if total == 0:
         return {
@@ -71,7 +89,16 @@ def calculate_quality_score(reports: list) -> dict:
 
 
 def generate_quality_report(bucket: str, date: str) -> dict:
-    """Build and save the daily quality report; return the full report dict."""
+    """
+    Build and save the daily quality report to S3; return the full report dict.
+
+    Args:
+        bucket: S3 bucket name.
+        date: Date string in YYYY/MM/DD format.
+
+    Returns:
+        Report dict with quality metrics plus date and generated_at fields.
+    """
     reports = load_validation_reports(bucket, date)
     metrics = calculate_quality_score(reports)
     report = {
@@ -97,7 +124,16 @@ def generate_quality_report(bucket: str, date: str) -> dict:
 
 
 def check_quality_sla(report: dict, threshold: float = 80.0) -> bool:
-    """Return True if quality_score_pct meets the threshold, False otherwise."""
+    """
+    Return True if quality_score_pct meets the threshold, False otherwise.
+
+    Args:
+        report: Quality report dict containing a 'quality_score_pct' key.
+        threshold: Minimum acceptable quality score percentage (default 80.0).
+
+    Returns:
+        True if the score meets or exceeds threshold; False if below.
+    """
     score = report.get("quality_score_pct", 0.0)
     if score >= threshold:
         logger.info("Quality SLA PASSED: %.1f%% >= %.1f%%", score, threshold)
@@ -107,7 +143,9 @@ def check_quality_sla(report: dict, threshold: float = 80.0) -> bool:
 
 
 def run_quality_reporting() -> None:
-    """Generate quality report, check SLA, and alert on failure."""
+    """
+    Generate quality report, check SLA, and send a Slack alert on failure.
+    """
     from ingestion import slack_alerter
 
     bucket = os.environ.get("AWS_BUCKET_NAME", "")

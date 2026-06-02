@@ -28,7 +28,19 @@ def record_pipeline_run(
     duration_seconds: float,
     bucket: str,
 ) -> bool:
-    """Save per-step run metrics to S3 at monitoring/YYYY/MM/DD/step/ticker.json."""
+    """
+    Save per-step run metrics to S3 at monitoring/YYYY/MM/DD/step/ticker.json.
+
+    Args:
+        step: Pipeline step name (e.g. 'fetch', 'anomaly').
+        ticker: Stock ticker symbol.
+        status: Outcome string, either 'success' or 'failure'.
+        duration_seconds: Wall-clock time the step took in seconds.
+        bucket: S3 bucket name.
+
+    Returns:
+        True if the record was saved successfully, False otherwise.
+    """
     try:
         s3 = boto3.client("s3", region_name=AWS_REGION)
         date = datetime.now().strftime("%Y/%m/%d")
@@ -49,7 +61,16 @@ def record_pipeline_run(
 
 
 def get_pipeline_metrics(bucket: str, date: str) -> list:
-    """List and download all monitoring records for the given date."""
+    """
+    List and download all monitoring records for the given date.
+
+    Args:
+        bucket: S3 bucket name.
+        date: Date string in YYYY/MM/DD format.
+
+    Returns:
+        List of monitoring record dicts; excludes report objects under /reports/.
+    """
     try:
         s3 = boto3.client("s3", region_name=AWS_REGION)
         prefix = f"monitoring/{date}/"
@@ -81,7 +102,17 @@ def get_pipeline_metrics(bucket: str, date: str) -> list:
 
 
 def generate_daily_report(bucket: str, date: str) -> dict:
-    """Calculate daily pipeline statistics and return a summary report dict."""
+    """
+    Calculate daily pipeline statistics and return a summary report dict.
+
+    Args:
+        bucket: S3 bucket name.
+        date: Date string in YYYY/MM/DD format.
+
+    Returns:
+        Dict with keys: date, total_runs, successful_runs, failed_runs,
+        success_rate_pct, avg_duration_seconds, slowest_step, fastest_step.
+    """
     metrics = get_pipeline_metrics(bucket, date)
 
     total_runs = len(metrics)
@@ -122,9 +153,10 @@ def generate_daily_report(bucket: str, date: str) -> dict:
 
 
 def run_monitoring_report() -> None:
-    """Generate daily report, log it, and save to S3.
+    """
+    Generate daily report, save it to S3, and send a Slack summary alert.
 
-    Report path: monitoring/reports/YYYY/MM/DD/daily_report.json
+    Report is saved to monitoring/reports/YYYY/MM/DD/daily_report.json.
     """
     bucket = os.environ.get("AWS_BUCKET_NAME", "")
     date = datetime.now().strftime("%Y/%m/%d")

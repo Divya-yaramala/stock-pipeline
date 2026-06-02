@@ -21,7 +21,20 @@ def record_lineage(
     transformation: str,
     bucket: str,
 ) -> bool:
-    """Save a lineage record to S3 at lineage/YYYY/MM/DD/ticker_timestamp.json."""
+    """
+    Save a lineage record to S3 at lineage/YYYY/MM/DD/ticker_timestamp.json.
+
+    Args:
+        source: Name of the data source (e.g. 'yahoo_finance_api', 's3_raw').
+        destination: Name of the data destination (e.g. 's3_processed_anomalies').
+        ticker: Stock ticker symbol.
+        row_count: Number of rows processed in this step.
+        transformation: Name of the transformation applied (e.g. 'isolation_forest').
+        bucket: S3 bucket name.
+
+    Returns:
+        True if the record was saved successfully, False otherwise.
+    """
     try:
         s3 = boto3.client("s3", region_name=AWS_REGION)
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -44,7 +57,17 @@ def record_lineage(
 
 
 def get_lineage_for_ticker(ticker: str, bucket: str, date: str) -> list:
-    """Fetch all lineage records for a ticker on a given date, ordered by recorded_at."""
+    """
+    Fetch all lineage records for a ticker on a given date, ordered by recorded_at.
+
+    Args:
+        ticker: Stock ticker symbol.
+        bucket: S3 bucket name.
+        date: Date string in YYYY/MM/DD format.
+
+    Returns:
+        List of lineage record dicts sorted ascending by recorded_at; empty on error.
+    """
     try:
         s3 = boto3.client("s3", region_name=AWS_REGION)
         prefix = f"lineage/{date}/{ticker}_"
@@ -67,7 +90,16 @@ def get_lineage_for_ticker(ticker: str, bucket: str, date: str) -> list:
 
 
 def generate_lineage_report(bucket: str, date: str) -> dict:
-    """Build a full lineage report for all tickers on the given date."""
+    """
+    Build a full lineage report for all configured tickers on the given date.
+
+    Args:
+        bucket: S3 bucket name.
+        date: Date string in YYYY/MM/DD format.
+
+    Returns:
+        Dict mapping each ticker to its list of lineage records for the day.
+    """
     pipeline_cfg = load_pipeline_config()
     report = {}
     total = 0

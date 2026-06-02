@@ -17,7 +17,18 @@ def record_sla_metric(
     actual_duration_seconds: float,
     bucket: str,
 ) -> bool:
-    """Save an SLA metric record to S3 at monitoring/sla/YYYY/MM/DD/step_timestamp.json."""
+    """
+    Save an SLA metric record to S3 at monitoring/sla/YYYY/MM/DD/step_timestamp.json.
+
+    Args:
+        step: Pipeline step name (e.g. 'fetch', 'anomaly').
+        expected_duration_seconds: Target maximum duration in seconds.
+        actual_duration_seconds: Measured wall-clock duration in seconds.
+        bucket: S3 bucket name.
+
+    Returns:
+        True if the record was saved successfully, False otherwise.
+    """
     try:
         s3 = boto3.client("s3", region_name=AWS_REGION)
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -46,7 +57,12 @@ def record_sla_metric(
 
 
 def get_sla_thresholds() -> dict:
-    """Return hardcoded per-step SLA thresholds in seconds."""
+    """
+    Return the per-step SLA thresholds in seconds.
+
+    Returns:
+        Dict mapping step name to maximum allowed duration in seconds.
+    """
     return {
         "fetch": 30,
         "validation": 10,
@@ -59,7 +75,17 @@ def get_sla_thresholds() -> dict:
 
 
 def check_all_slas(bucket: str, date: str) -> dict:
-    """Load today's SLA records from S3 and compare each step against its threshold."""
+    """
+    Load today's SLA records from S3 and compare each step against its threshold.
+
+    Args:
+        bucket: S3 bucket name.
+        date: Date string in YYYY/MM/DD format.
+
+    Returns:
+        Dict mapping step name to a dict with keys: met (bool), actual (float),
+        threshold (float). Returns empty dict on S3 error.
+    """
     thresholds = get_sla_thresholds()
     try:
         s3 = boto3.client("s3", region_name=AWS_REGION)
@@ -95,7 +121,13 @@ def check_all_slas(bucket: str, date: str) -> dict:
 
 
 def generate_sla_report(bucket: str, date: str) -> None:
-    """Log SLA table, alert on misses, and save report to S3."""
+    """
+    Log the SLA comparison table, alert Slack on misses, and save report to S3.
+
+    Args:
+        bucket: S3 bucket name.
+        date: Date string in YYYY/MM/DD format.
+    """
     from ingestion import slack_alerter
 
     results = check_all_slas(bucket, date)

@@ -10,7 +10,12 @@ logger = logging.getLogger(__name__)
 
 
 def check_s3_connectivity() -> dict:
-    """Try to list the configured S3 bucket and return a health status dict."""
+    """
+    Try to list the configured S3 bucket and return a health status dict.
+
+    Returns:
+        Dict with keys 'service', 'status' ('healthy'/'unhealthy'), and 'message'.
+    """
     bucket = os.environ.get("AWS_BUCKET_NAME", "")
     region = os.environ.get("AWS_REGION", "us-east-1")
     try:
@@ -22,7 +27,12 @@ def check_s3_connectivity() -> dict:
 
 
 def check_postgres_connectivity() -> dict:
-    """Try to connect to Postgres and return a health status dict."""
+    """
+    Try to connect to Postgres and return a health status dict.
+
+    Returns:
+        Dict with keys 'service', 'status' ('healthy'/'unhealthy'), and 'message'.
+    """
     try:
         conn = psycopg2.connect(
             host=os.environ.get("POSTGRES_HOST", "localhost"),
@@ -38,7 +48,12 @@ def check_postgres_connectivity() -> dict:
 
 
 def check_snowflake_connectivity() -> dict:
-    """Try to connect to Snowflake and return a health status dict."""
+    """
+    Try to connect to Snowflake and return a health status dict.
+
+    Returns:
+        Dict with keys 'service', 'status' ('healthy'/'unhealthy'), and 'message'.
+    """
     try:
         import snowflake.connector
 
@@ -54,7 +69,12 @@ def check_snowflake_connectivity() -> dict:
 
 
 def check_openai_connectivity() -> dict:
-    """Try a minimal OpenAI API call and return a health status dict."""
+    """
+    Try a minimal OpenAI API call and return a health status dict.
+
+    Returns:
+        Dict with keys 'service', 'status' ('healthy'/'unhealthy'), and 'message'.
+    """
     try:
         import openai
 
@@ -66,7 +86,13 @@ def check_openai_connectivity() -> dict:
 
 
 def run_health_check() -> None:
-    """Run all connectivity checks, log a report table, and exit 1 if any fail."""
+    """
+    Run all connectivity checks, log a report table, and exit 1 if any fail.
+
+    Calls check_s3_connectivity, check_postgres_connectivity,
+    check_snowflake_connectivity, and check_openai_connectivity, then logs
+    results and sends a Slack failure alert if any service is unhealthy.
+    """
     checks = [
         check_s3_connectivity(),
         check_postgres_connectivity(),

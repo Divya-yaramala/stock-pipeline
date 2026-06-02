@@ -11,7 +11,17 @@ SLACK_WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_URL", "")
 
 
 def send_slack_message(message: str, color: str = "good") -> bool:
-    """Send a message to Slack via webhook using the attachment format."""
+    """
+    Send a message to Slack via webhook using the attachment format.
+
+    Args:
+        message: Text body of the Slack message.
+        color: Attachment sidebar colour; 'good' (green), 'warning' (yellow),
+               or 'danger' (red).
+
+    Returns:
+        True if Slack returned HTTP 200, False otherwise or if webhook is unset.
+    """
     if not SLACK_WEBHOOK_URL:
         logger.warning("SLACK_WEBHOOK_URL not set — skipping Slack notification")
         return False
@@ -33,19 +43,48 @@ def send_slack_message(message: str, color: str = "good") -> bool:
 
 
 def alert_pipeline_success(step: str, ticker: str, duration: float) -> bool:
-    """Send a green success alert for a completed pipeline step."""
+    """
+    Send a green success alert for a completed pipeline step.
+
+    Args:
+        step: Pipeline step name (e.g. 'fetch', 'anomaly').
+        ticker: Stock ticker symbol.
+        duration: Wall-clock duration of the step in seconds.
+
+    Returns:
+        True if the Slack message was sent successfully, False otherwise.
+    """
     message = f"✅ {step} {ticker} completed in {duration:.1f}s"
     return send_slack_message(message, color="good")
 
 
 def alert_pipeline_failure(step: str, ticker: str, error: str) -> bool:
-    """Send a red failure alert for a failed pipeline step."""
+    """
+    Send a red failure alert for a failed pipeline step.
+
+    Args:
+        step: Pipeline step name (e.g. 'fetch', 'anomaly').
+        ticker: Stock ticker symbol or 'pipeline' for non-ticker failures.
+        error: Error message or description of the failure.
+
+    Returns:
+        True if the Slack message was sent successfully, False otherwise.
+    """
     message = f"❌ {step} {ticker} FAILED: {error}"
     return send_slack_message(message, color="danger")
 
 
 def alert_daily_summary(report: dict) -> bool:
-    """Send a daily pipeline summary to Slack with colour based on success rate."""
+    """
+    Send a daily pipeline summary to Slack with colour based on success rate.
+
+    Args:
+        report: Daily report dict containing success_rate_pct, total_runs,
+                and slowest_step keys.
+
+    Returns:
+        True if the Slack message was sent successfully, False otherwise.
+    """
     rate = report.get("success_rate_pct", 0)
     color = "good" if rate >= 80 else ("warning" if rate >= 50 else "danger")
     message = (
