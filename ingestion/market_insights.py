@@ -5,7 +5,7 @@ from datetime import datetime
 
 import boto3
 import openai
-from tenacity import retry, stop_after_attempt, wait_exponential
+from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
@@ -99,22 +99,23 @@ def build_prompt(ticker: str, data: dict) -> str:
 @retry(
     stop=stop_after_attempt(3),
     wait=wait_exponential(multiplier=1, min=2, max=30),
+    retry=retry_if_exception_type(openai.RateLimitError),
     reraise=True,
 )
 def generate_insight(prompt: str, ticker: str) -> str:
     """
     Send a prompt to OpenAI and return the generated insight text.
 
-    Retries up to 3 times with exponential backoff (2s → 4s → 8s capped at 30s).
-    Rate limit errors are logged as warnings and re-raised for tenacity to retry;
-    other API errors are logged as errors before re-raising.
+    Rate limit errors are retried up to 3 times with exponential backoff
+    (2s → 4s → 8s, capped at 30s). Other API errors fail immediately and
+    return an empty string.
 
     Args:
         prompt: Formatted market insight prompt.
         ticker: Stock ticker symbol (used for logging).
 
     Returns:
-        Generated insight string, or empty string on failure.
+        Generated insight string, or empty string on any API failure.
     """
     try:
         client = openai.OpenAI(api_key=OPENAI_API_KEY)
@@ -132,7 +133,7 @@ def generate_insight(prompt: str, ticker: str) -> str:
         raise
     except Exception as e:
         logger.error(f"OpenAI API error for {ticker}: {e}")
-        raise
+        return ""
 
 
 def save_insight_to_s3(insight: str, ticker: str, bucket: str, date: str) -> bool:
