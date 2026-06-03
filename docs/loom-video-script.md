@@ -56,3 +56,12 @@
 - Loom (free at loom.com)
 - Or OBS Studio (free)
 - Or Windows built-in: Windows + G
+
+## Tips for a Great Recording
+- Record in the morning when your energy is high
+- Do a practice run first without recording
+- Keep browser bookmarks ready for quick navigation
+- Close all unnecessary tabs before recording
+- Disable notifications during recording
+- Speak to the camera like you are explaining to a colleague
+- If you make a mistake just keep going — edit later
