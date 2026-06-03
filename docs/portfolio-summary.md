@@ -39,3 +39,9 @@ Skilled in Python, Apache Airflow, dbt, Snowflake, AWS, and ML pipeline developm
 Full-time Data Engineer or AI Engineer roles.
 Open to remote and hybrid opportunities.
 Available immediately.
+
+## Target Roles and Locations
+- Job titles: Data Engineer, Junior Data Engineer, Analytics Engineer, ETL Developer
+- Locations: Remote preferred, open to hybrid in NJ/NY area
+- Experience level: Entry to Mid level
+- Industries: Fintech, Healthcare, E-commerce, Consulting
