@@ -13,6 +13,13 @@
 
 ---
 
+## 🎬 Demo
+> 📹 [Watch 3-minute Loom walkthrough](#) — coming soon
+>
+> The video covers: architecture overview, AI components, code quality, and production patterns.
+
+---
+
 ## 📐 Architecture
 
 ```
@@ -241,6 +248,8 @@ stock-pipeline/
 | [Local Development Guide](docs/local-development.md) | Setup steps, common errors, adding tickers |
 | [Data Dictionary](docs/data-dictionary.md) | All tables and columns across Postgres, Snowflake, dbt |
 | [Architecture Decision Records](docs/adr/README.md) | Technology choices with rationale |
+| [Portfolio Summary](docs/portfolio-summary.md) | Skills, projects, and availability |
+| [Loom Video Script](docs/loom-video-script.md) | 3-minute walkthrough script and recording checklist |
 
 ---
 
@@ -255,6 +264,14 @@ stock-pipeline/
 | ADR-005 | [Why Prophet over ARIMA](docs/adr/005-why-prophet-over-arima.md) | Accepted |
 | ADR-006 | [S3 Cost Optimization Strategy](docs/adr/006-s3-cost-optimization-strategy.md) | Accepted |
 | ADR-007 | [Typed Config with Dataclasses](docs/adr/007-typed-config-with-dataclasses.md) | Accepted |
+
+---
+
+## 📬 Contact
+- GitHub: https://github.com/Divya-yaramala
+- LinkedIn: linkedin.com/in/divya-yaramala (update with your actual LinkedIn URL)
+- Email: divyayaramala145@gmail.com
+- Open to: Full-time Data Engineer roles
 
 ---
 
@@ -427,3 +444,9 @@ stock-pipeline/
 - Added retry logic with tenacity for API calls (yfinance, OpenAI)
 - All linters passing: black, isort, flake8, mypy
 - 108/108 tests still passing green
+
+### ✅ Day 24 — Loom Video Script + Portfolio Polish
+- Created 3-minute Loom video script with screen recording checklist
+- Created portfolio summary combining both projects
+- Added Demo and Contact sections to README
+- Portfolio ready to share with recruiters
