@@ -9,6 +9,10 @@
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
 
+---
+> 🎉 **Phase 1-4 Complete!** 108 tests · 13 Airflow tasks · 6 dbt models · 7 ADRs · 10 production patterns · 25 days of building
+---
+
 > An end-to-end AI-powered data engineering pipeline that ingests daily stock prices, detects anomalies with ML, predicts future prices with Prophet, and generates LLM market insights — orchestrated by Apache Airflow, transformed with dbt, and warehoused in Snowflake.
 
 ---
