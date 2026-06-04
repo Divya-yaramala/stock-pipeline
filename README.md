@@ -476,3 +476,6 @@ stock-pipeline/
 - Updated README with final stats table
 - Phase 4 Polish complete — portfolio ready!
 - Starting Phase 5: Real-time streaming with Kafka (Project 2)
+
+---
+*Built with ❤️ over 25 days as a portfolio project demonstrating production-grade data engineering.*
