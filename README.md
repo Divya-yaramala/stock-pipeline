@@ -14,9 +14,11 @@
 ---
 
 ## 🎬 Demo
-> 📹 [Watch 3-minute Loom walkthrough](#) — coming soon
+> 📹 Loom walkthrough coming soon
 >
-> The video covers: architecture overview, AI components, code quality, and production patterns.
+> The video will cover: architecture overview, AI components, code quality, and production patterns.
+>
+> **Live stats:** 108 tests passing · 13 Airflow tasks · 6 dbt models · 7 ADRs
 
 ---
 
@@ -50,6 +52,19 @@
 │              └─────────────────────┘                                        │
 └──────────────────────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 📊 Project Stats
+| Metric | Value |
+|---|---|
+| Total tests | 108 passing |
+| Airflow tasks | 13 |
+| dbt models | 6 |
+| ADRs | 7 |
+| Production patterns | 10 |
+| Days to build | 25 |
+| CI/CD workflows | 2 |
 
 ---
 
@@ -451,3 +466,9 @@ stock-pipeline/
 - Created portfolio summary combining both projects
 - Added Demo and Contact sections to README
 - Portfolio ready to share with recruiters
+
+### ✅ Day 25 — Final Portfolio Presentation
+- Created project statistics document
+- Updated README with final stats table
+- Phase 4 Polish complete — portfolio ready!
+- Starting Phase 5: Real-time streaming with Kafka (Project 2)
