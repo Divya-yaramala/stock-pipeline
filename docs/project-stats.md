@@ -48,3 +48,13 @@
 | CI/CD workflows | 2 (CI + Code Quality) |
 | Linters passing | 4 (black, isort, flake8, mypy) |
 | Documentation files | 8 |
+
+## Why This Stack Beats Alternatives
+| Our Choice | Alternative | Why We Won |
+|---|---|---|
+| Airflow | Prefect | Industry standard, more job postings |
+| Snowflake | Redshift | Better dbt integration, cost flexibility |
+| dbt | Custom SQL | Built-in tests, lineage, version control |
+| Prophet | ARIMA | Handles missing data, easier to configure |
+| Isolation Forest | Z-score | Multivariate, no labeled data needed |
+| GitHub Actions | Jenkins | Free, native GitHub integration |
