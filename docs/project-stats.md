@@ -65,3 +65,11 @@
 - Single Snowflake warehouse — would partition by date at scale
 - No real-time streaming — Project 2 adds Kafka streaming
 - Manual Loom video — would add automated pipeline screenshots
+
+## Lessons Learned
+1. Build idempotency from day one — retrofitting is painful
+2. Tests pay for themselves — caught 10+ regressions during refactoring
+3. Document decisions immediately — ADRs are easy to write when fresh
+4. CI/CD changes your confidence — green badge = ship with confidence
+5. AI integration is easy — the pipeline underneath is the hard part
+6. Dead letter queues prevent data loss — always build failure paths first
