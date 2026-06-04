@@ -58,3 +58,10 @@
 | Prophet | ARIMA | Handles missing data, easier to configure |
 | Isolation Forest | Z-score | Multivariate, no labeled data needed |
 | GitHub Actions | Jenkins | Free, native GitHub integration |
+
+## Known Limitations and Future Improvements
+- yfinance is not production-grade — would use Polygon.io at scale
+- LocalExecutor limits parallel task execution — KubernetesExecutor for scale
+- Single Snowflake warehouse — would partition by date at scale
+- No real-time streaming — Project 2 adds Kafka streaming
+- Manual Loom video — would add automated pipeline screenshots
