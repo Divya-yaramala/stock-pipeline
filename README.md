@@ -295,6 +295,7 @@ stock-pipeline/
 | [Portfolio Summary](docs/portfolio-summary.md) | Skills, projects, and availability |
 | [Loom Video Script](docs/loom-video-script.md) | 3-minute walkthrough script and recording checklist |
 | [Project Checklist](docs/project-checklist.md) | 90-day completion checklist with code quality, docs, production patterns |
+| [REST API Documentation](docs/api-docs.md) | Endpoint reference, request/response examples, Swagger UI guide |
 
 ---
 
