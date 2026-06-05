@@ -15,3 +15,5 @@ snowflake-connector-python
 dbt-snowflake
 psutil
 tenacity
+fastapi
+uvicorn
