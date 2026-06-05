@@ -10,6 +10,7 @@
 | Airflow tasks | 13 tasks in DAG |
 | ADRs | 7 architecture decisions |
 | Lines of Python code | ~2500+ |
+| REST API endpoints | 7 |
 
 ## Pipeline Statistics
 | Component | Details |
@@ -39,6 +40,7 @@
 8. Resource management (CPU/memory/disk checks)
 9. Incremental loading (auto gap detection)
 10. Retry logic (tenacity for API calls)
+11. REST API (FastAPI with Swagger UI)
 
 ## Development Statistics
 | Metric | Count |
