@@ -202,6 +202,31 @@ python scripts/backfill_stocks.py --start-date 2024-01-01 --end-date 2024-01-31
 
 ---
 
+## 🌐 REST API
+The pipeline exposes a REST API for querying results:
+
+| Endpoint | Description |
+|---|---|
+| GET /health | Health check |
+| GET /tickers | List available tickers |
+| GET /prices/{ticker} | Latest stock prices |
+| GET /anomalies/{ticker} | Anomaly detection results |
+| GET /predictions/{ticker} | Price predictions |
+| GET /insights/{ticker} | LLM market insights |
+| GET /summary/{ticker} | Combined summary |
+
+Start the API:
+```bash
+# With Docker
+docker-compose up -d stock-api
+# Open http://localhost:8000/docs for Swagger UI
+
+# Without Docker
+uvicorn api.main:app --reload --port 8000
+```
+
+---
+
 ## 📁 Project Structure
 
 ```
@@ -476,6 +501,13 @@ stock-pipeline/
 - Updated README with final stats table
 - Phase 4 Polish complete — portfolio ready!
 - Starting Phase 5: Real-time streaming with Kafka (Project 2)
+
+### ✅ Day 26 — REST API with FastAPI
+- Built 7 REST endpoints exposing pipeline results
+- Swagger UI auto-generated at /docs
+- Endpoints for prices, anomalies, predictions, insights, summary
+- 6 unit tests passing green
+- API containerized with Docker
 
 ---
 *Built with ❤️ over 25 days as a portfolio project demonstrating production-grade data engineering.*
