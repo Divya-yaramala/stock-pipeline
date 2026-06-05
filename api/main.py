@@ -1,11 +1,11 @@
 import logging
 import os
 from datetime import datetime
-from typing import List, Optional
+from typing import List
 
 import psycopg2
 import uvicorn
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI
 from pydantic import BaseModel
 
 logging.basicConfig(level=logging.INFO)
