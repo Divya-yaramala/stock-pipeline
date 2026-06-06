@@ -200,6 +200,16 @@ python scripts/backfill_stocks.py --ticker AAPL --start-date 2024-01-01 --end-da
 python scripts/backfill_stocks.py --start-date 2024-01-01 --end-date 2024-01-31
 ```
 
+### Rolling Back a Pipeline Step
+
+```bash
+# Rollback a pipeline step to a previous version
+python scripts/rollback_pipeline.py --ticker AAPL --step fetch --version-id abc12345
+
+# Preview rollback without executing
+python scripts/rollback_pipeline.py --ticker AAPL --step fetch --version-id abc12345 --dry-run
+```
+
 ---
 
 ## 🌐 REST API
@@ -509,6 +519,13 @@ stock-pipeline/
 - Endpoints for prices, anomalies, predictions, insights, summary
 - 6 unit tests passing green
 - API containerized with Docker
+
+### ✅ Day 27 — Data Versioning + Pipeline Rollback
+- Built data versioning module with MD5-based version IDs
+- Snapshots saved to S3 under versions/YYYY/MM/DD/step/
+- CLI rollback script with --dry-run preview mode
+- Can rollback any pipeline step to any previous version
+- 6 unit tests passing green
 
 ---
 *Built with ❤️ over 25 days as a portfolio project demonstrating production-grade data engineering.*

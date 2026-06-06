@@ -30,9 +30,7 @@ def validate_rollback_args(args: argparse.Namespace) -> bool:
         logger.error("Invalid step: %s. Must be one of %s", args.step, VALID_STEPS)
         return False
     if len(args.version_id) != 8:
-        logger.error(
-            "Invalid version_id: %s. Must be exactly 8 characters.", args.version_id
-        )
+        logger.error("Invalid version_id: %s. Must be exactly 8 characters.", args.version_id)
         return False
     return True
 

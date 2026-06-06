@@ -3,7 +3,6 @@ import json
 import logging
 import os
 from datetime import datetime
-from typing import Any
 
 import boto3
 
@@ -102,9 +101,11 @@ def list_versions(ticker: str, step: str, bucket: str, date: str) -> list:
         versions.append(
             {
                 "version_id": version_id,
-                "created_at": obj.get("LastModified", "").isoformat()
-                if hasattr(obj.get("LastModified", ""), "isoformat")
-                else str(obj.get("LastModified", "")),
+                "created_at": (
+                    obj.get("LastModified", "").isoformat()
+                    if hasattr(obj.get("LastModified", ""), "isoformat")
+                    else str(obj.get("LastModified", ""))
+                ),
             }
         )
 
