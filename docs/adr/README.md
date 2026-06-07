@@ -18,3 +18,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | 005 | Why Prophet over ARIMA for price prediction | Accepted |
 | [006](006-s3-cost-optimization-strategy.md) | S3 Cost Optimization Strategy | Accepted |
 | [007](007-typed-config-with-dataclasses.md) | Typed Configuration with Python Dataclasses | Accepted |
+| [008](008-ml-model-registry-pattern.md) | ML Model Registry Pattern | Accepted |
