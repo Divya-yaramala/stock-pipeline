@@ -527,5 +527,11 @@ stock-pipeline/
 - Can rollback any pipeline step to any previous version
 - 6 unit tests passing green
 
+### ✅ Day 28 — ML Model Registry + Experiment Tracking
+- Built ML model registry with versioning and promotion stages
+- Models tracked: staging → production → archived lifecycle
+- Experiment tracker logging params and metrics per run
+- 10 unit tests passing green
+
 ---
 *Built with ❤️ over 25 days as a portfolio project demonstrating production-grade data engineering.*
