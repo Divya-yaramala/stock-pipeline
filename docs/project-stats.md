@@ -3,9 +3,9 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 15 ingestion modules + 6 scripts |
+| Python files | 16 ingestion modules + 6 scripts |
 | Test files | 14 test files |
-| Total tests | 108 passing |
+| Total tests | 130 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 13 tasks in DAG |
 | ADRs | 7 architecture decisions |
@@ -41,6 +41,8 @@
 9. Incremental loading (auto gap detection)
 10. Retry logic (tenacity for API calls)
 11. REST API (FastAPI with Swagger UI)
+12. ML Model Registry (staging/production/archived lifecycle)
+13. Experiment Tracking (params + metrics per run)
 
 ## Development Statistics
 | Metric | Count |
