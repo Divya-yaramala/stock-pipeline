@@ -312,3 +312,13 @@ Update ANOMALY_CONTAMINATION in config_manager.py (default 0.05 = 5%)
 
 ### How do I disable Slack alerts?
 Leave SLACK_WEBHOOK_URL empty in .env file — alerts are optional
+
+## ML Model Registry
+
+```bash
+# Register a model
+python -c "from ingestion.model_registry import register_model; import os; register_model('anomaly_detector', 'v1.0', {'contamination': 0.05}, {'precision': 0.92}, os.getenv('AWS_BUCKET_NAME'))"
+
+# Promote model to production
+python -c "from ingestion.model_registry import promote_model; import os; promote_model('anomaly_detector', 'v1.0', os.getenv('AWS_BUCKET_NAME'), 'production')"
+```
