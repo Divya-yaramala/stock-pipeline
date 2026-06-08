@@ -3,11 +3,11 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 16 ingestion modules + 6 scripts |
+| Python files | 17 ingestion modules + 6 scripts |
 | Test files | 14 test files |
-| Total tests | 130 passing |
+| Total tests | 140 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
-| Airflow tasks | 13 tasks in DAG |
+| Airflow tasks | 16 tasks in DAG |
 | ADRs | 7 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
@@ -43,6 +43,8 @@
 11. REST API (FastAPI with Swagger UI)
 12. ML Model Registry (staging/production/archived lifecycle)
 13. Experiment Tracking (params + metrics per run)
+14. Automated HTML Reports (Jinja2 + S3)
+15. Email Notifications (SMTP + daily reports)
 
 ## Development Statistics
 | Metric | Count |
