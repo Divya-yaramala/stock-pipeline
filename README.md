@@ -533,5 +533,11 @@ stock-pipeline/
 - Experiment tracker logging params and metrics per run
 - 10 unit tests passing green
 
+### ✅ Day 29 — Automated Reports + Email Notifications
+- Built HTML report generator combining quality, SLA, and monitoring metrics
+- Email notifier with SMTP support for daily reports and alerts
+- Wired into Airflow DAG as final tasks
+- 10 unit tests passing green
+
 ---
 *Built with ❤️ over 25 days as a portfolio project demonstrating production-grade data engineering.*

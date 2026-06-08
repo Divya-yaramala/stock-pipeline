@@ -32,14 +32,14 @@ _HTML_TEMPLATE = """<!DOCTYPE html>
   <tr><th>Metric</th><th>Value</th></tr>
   <tr><td>Total Runs</td><td>{{ total_runs }}</td></tr>
   <tr><td>Success Rate</td>
-      <td class="{{ 'good' if success_rate_pct >= 80 else 'bad' }}">{{ success_rate_pct }}%</td></tr>
+  <td class="{{ 'good' if success_rate_pct >= 80 else 'bad' }}">{{ success_rate_pct }}%</td></tr>
 </table>
 
 <h2>Data Quality Score</h2>
 <table>
   <tr><th>Metric</th><th>Value</th></tr>
   <tr><td>Quality Score</td>
-      <td class="{{ 'good' if quality_score_pct >= 80 else 'bad' }}">{{ quality_score_pct }}%</td></tr>
+  <td class="{{ 'good' if quality_score_pct >= 80 else 'bad' }}">{{ quality_score_pct }}%</td></tr>
   <tr><td>Passed Tickers</td><td>{{ passed_tickers }}</td></tr>
   <tr><td>Total Tickers</td><td>{{ total_tickers }}</td></tr>
 </table>

@@ -185,6 +185,28 @@ def _generate_sla_report(**context) -> None:
     )
 
 
+def _run_report_generation(**context) -> None:
+    """Generate HTML pipeline report from quality, SLA, and monitoring data."""
+    from ingestion.report_generator import run_report_generation
+
+    run_report_generation()
+
+
+def _send_daily_report_email(**context) -> None:
+    """Load today's metrics, render the HTML report, and email it."""
+    import os
+    from datetime import datetime as _dt
+
+    from ingestion.email_notifier import send_daily_report_email
+    from ingestion.report_generator import generate_html_report, load_daily_metrics
+
+    bucket = os.environ.get("AWS_BUCKET_NAME", "")
+    date = _dt.utcnow().strftime("%Y-%m-%d")
+    metrics = load_daily_metrics(bucket, date)
+    html = generate_html_report(metrics, date)
+    send_daily_report_email(html, date)
+
+
 default_args = {
     "owner": "data-engineer",
     "depends_on_past": False,
@@ -330,6 +352,22 @@ with DAG(
         doc_md="Archive raw data older than 30 days and report estimated S3 monthly cost.",
     )
 
+    # Task 15 — Reporting: generate HTML report combining quality, SLA, and monitoring metrics
+    run_report_generation = PythonOperator(
+        task_id="run_report_generation",
+        python_callable=_run_report_generation,
+        trigger_rule=TriggerRule.ALL_DONE,
+        doc_md="Generate daily HTML pipeline report and save to S3.",
+    )
+
+    # Task 16 — Notification: email the daily report to the configured recipient
+    send_daily_report_email = PythonOperator(
+        task_id="send_daily_report_email",
+        python_callable=_send_daily_report_email,
+        trigger_rule=TriggerRule.ALL_DONE,
+        doc_md="Send daily HTML pipeline report via email.",
+    )
+
     (
         check_trading_day
         >> check_resources
@@ -346,4 +384,6 @@ with DAG(
         >> run_monitoring_report
         >> generate_sla_report
         >> run_s3_optimization
+        >> run_report_generation
+        >> send_daily_report_email
     )
