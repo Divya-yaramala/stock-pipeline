@@ -322,3 +322,20 @@ python -c "from ingestion.model_registry import register_model; import os; regis
 # Promote model to production
 python -c "from ingestion.model_registry import promote_model; import os; promote_model('anomaly_detector', 'v1.0', os.getenv('AWS_BUCKET_NAME'), 'production')"
 ```
+
+## Email Notifications Setup
+
+1. Enable 2FA on your Gmail account
+2. Generate an App Password at myaccount.google.com/apppasswords
+3. Add to .env:
+   ```
+   SMTP_HOST=smtp.gmail.com
+   SMTP_PORT=587
+   SMTP_USER=your-email@gmail.com
+   SMTP_PASSWORD=your-app-password
+   REPORT_EMAIL_TO=your-email@gmail.com
+   ```
+4. Test with:
+   ```bash
+   python -c "from ingestion.email_notifier import send_alert_email; send_alert_email('TEST', 'Test alert', 'AAPL')"
+   ```
