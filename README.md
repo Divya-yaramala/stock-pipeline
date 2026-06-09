@@ -539,5 +539,11 @@ stock-pipeline/
 - Wired into Airflow DAG as final tasks
 - 10 unit tests passing green
 
+### ✅ Day 30 — Portfolio Tracking + Technical Indicators
+- Built portfolio tracker calculating value, weights, daily returns
+- Implemented 4 technical indicators: SMA, RSI, Bollinger Bands, MACD
+- Portfolio snapshots saved to S3 daily
+- 10 unit tests passing green
+
 ---
 *Built with ❤️ over 25 days as a portfolio project demonstrating production-grade data engineering.*

@@ -45,8 +45,7 @@ def calculate_portfolio_value(portfolio: dict, prices: dict) -> dict:
         Dict with total_value, individual_values, weights, and top_holding.
     """
     individual_values = {
-        ticker: shares * prices.get(ticker, 0.0)
-        for ticker, shares in portfolio.items()
+        ticker: shares * prices.get(ticker, 0.0) for ticker, shares in portfolio.items()
     }
     total_value = sum(individual_values.values())
 
@@ -54,7 +53,9 @@ def calculate_portfolio_value(portfolio: dict, prices: dict) -> dict:
         ticker: round((value / total_value * 100) if total_value > 0 else 0.0, 2)
         for ticker, value in individual_values.items()
     }
-    top_holding = max(individual_values, key=lambda t: individual_values[t]) if individual_values else None
+    top_holding = (
+        max(individual_values, key=lambda t: individual_values[t]) if individual_values else None
+    )
 
     logger.info("Portfolio value calculated: $%.2f, top holding: %s", total_value, top_holding)
     return {
@@ -144,7 +145,10 @@ def run_portfolio_tracking() -> None:
     previous_prices: dict = {}
 
     for ticker in portfolio:
-        for date_path, price_store in [(today_path, current_prices), (yesterday_path, previous_prices)]:
+        for date_path, price_store in [
+            (today_path, current_prices),
+            (yesterday_path, previous_prices),
+        ]:
             try:
                 key = f"raw/stocks/{date_path}/{ticker}.json"
                 response = s3.get_object(Bucket=bucket, Key=key)

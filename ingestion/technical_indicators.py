@@ -132,10 +132,7 @@ def calculate_macd(
     ema_fast = _ema(prices, fast)
     ema_slow = _ema(prices, slow)
 
-    macd_line = [
-        None if (f is None or s is None) else f - s
-        for f, s in zip(ema_fast, ema_slow)
-    ]
+    macd_line = [None if (f is None or s is None) else f - s for f, s in zip(ema_fast, ema_slow)]
 
     valid_start = next((i for i, v in enumerate(macd_line) if v is not None), len(macd_line))
     valid_macd = [v for v in macd_line if v is not None]
@@ -143,8 +140,7 @@ def calculate_macd(
     signal_line = [None] * valid_start + signal_values
 
     histogram = [
-        None if (m is None or s is None) else m - s
-        for m, s in zip(macd_line, signal_line)
+        None if (m is None or s is None) else m - s for m, s in zip(macd_line, signal_line)
     ]
 
     return {"macd_line": macd_line, "signal_line": signal_line, "histogram": histogram}
