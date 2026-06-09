@@ -179,3 +179,14 @@ replayed without rerunning the full pipeline.
 - Archive S3 raw data older than 30 days to reduce storage costs
 - Monitor step durations using SLA monitor to identify bottlenecks
 - Use Snowflake warehouse auto-suspend to reduce compute costs
+
+## Technical Indicators
+
+The pipeline calculates 4 technical indicators daily for each ticker:
+
+| Indicator | Formula | Signal |
+|---|---|---|
+| SMA (20) | Average of last 20 closes | Trend direction |
+| RSI (14) | Wilder smoothed RS method | >70 overbought, <30 oversold |
+| Bollinger Bands | SMA ± 2 standard deviations | Volatility and breakouts |
+| MACD | EMA(12) - EMA(26) | Momentum and trend changes |
