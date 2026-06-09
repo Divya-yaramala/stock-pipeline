@@ -3,9 +3,9 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 17 ingestion modules + 6 scripts |
+| Python files | 19 ingestion modules + 6 scripts |
 | Test files | 14 test files |
-| Total tests | 140 passing |
+| Total tests | 150 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
 | ADRs | 7 architecture decisions |
@@ -45,6 +45,8 @@
 13. Experiment Tracking (params + metrics per run)
 14. Automated HTML Reports (Jinja2 + S3)
 15. Email Notifications (SMTP + daily reports)
+16. Portfolio Tracking (daily value + returns)
+17. Technical Indicators (SMA, RSI, Bollinger Bands, MACD)
 
 ## Development Statistics
 | Metric | Count |
