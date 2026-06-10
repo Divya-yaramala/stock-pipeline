@@ -190,3 +190,14 @@ The pipeline calculates 4 technical indicators daily for each ticker:
 | RSI (14) | Wilder smoothed RS method | >70 overbought, <30 oversold |
 | Bollinger Bands | SMA ± 2 standard deviations | Volatility and breakouts |
 | MACD | EMA(12) - EMA(26) | Momentum and trend changes |
+
+## Financial Analytics Layer
+
+The pipeline includes advanced financial analytics:
+
+| Module | Capability | Output |
+|---|---|---|
+| technical_indicators.py | SMA, RSI, Bollinger Bands, MACD | Daily signals per ticker |
+| news_sentiment.py | Keyword-based news scoring | BULLISH/BEARISH/NEUTRAL |
+| market_correlation.py | Pearson correlation matrix | Correlation pairs + Beta |
+| portfolio_tracker.py | Daily portfolio value | Value, weights, returns |
