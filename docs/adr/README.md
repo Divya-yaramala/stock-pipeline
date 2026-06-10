@@ -21,3 +21,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [008](008-ml-model-registry-pattern.md) | ML Model Registry Pattern | Accepted |
 | [009](009-html-reports-with-jinja2.md) | HTML Reports with Jinja2 | Accepted |
 | [010](010-technical-indicators-from-scratch.md) | Technical Indicators Built from Scratch | Accepted |
+| [011](011-keyword-sentiment-vs-nlp.md) | Keyword Sentiment vs NLP Models | Accepted |
