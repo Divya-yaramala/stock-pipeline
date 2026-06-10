@@ -545,5 +545,11 @@ stock-pipeline/
 - Portfolio snapshots saved to S3 daily
 - 10 unit tests passing green
 
+### ✅ Day 31 — News Sentiment + Market Correlation
+- Built news sentiment analyzer with NewsAPI + Yahoo RSS fallback
+- Keyword-based BULLISH/BEARISH/NEUTRAL scoring across 5 tickers
+- Built market correlation module: Pearson matrix, highly-correlated pairs, beta calculation
+- 10 unit tests passing green (160 total)
+
 ---
 *Built with ❤️ over 25 days as a portfolio project demonstrating production-grade data engineering.*
