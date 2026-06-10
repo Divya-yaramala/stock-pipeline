@@ -4,6 +4,7 @@ from unittest.mock import MagicMock, patch
 
 import numpy as np
 import pandas as pd
+
 from ingestion.market_correlation import (
     calculate_beta,
     calculate_correlation_matrix,
