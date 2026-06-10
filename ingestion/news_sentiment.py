@@ -97,7 +97,9 @@ def save_sentiment_to_s3(sentiment: dict, ticker: str, bucket: str, date: str) -
         path_date = date.replace("-", "/")
         key = f"processed/sentiment/{path_date}/{ticker}.json"
         body = json.dumps({**sentiment, "ticker": ticker, "date": date}, indent=2)
-        s3.put_object(Bucket=bucket, Key=key, Body=body.encode("utf-8"), ContentType="application/json")
+        s3.put_object(
+            Bucket=bucket, Key=key, Body=body.encode("utf-8"), ContentType="application/json"
+        )
         logger.info("Saved sentiment for %s to s3://%s/%s", ticker, bucket, key)
         return True
     except Exception as e:
@@ -128,7 +130,9 @@ def run_sentiment_analysis() -> dict:
         if bucket:
             save_sentiment_to_s3(sentiment, ticker, bucket, date)
 
-    logger.info("Sentiment analysis complete: %d BULLISH, %d BEARISH, %d NEUTRAL", bullish, bearish, neutral)
+    logger.info(
+        "Sentiment analysis complete: %d BULLISH, %d BEARISH, %d NEUTRAL", bullish, bearish, neutral
+    )
     return results
 
 

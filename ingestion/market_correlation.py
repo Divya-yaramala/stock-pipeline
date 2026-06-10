@@ -50,8 +50,12 @@ def calculate_correlation_matrix(df: pd.DataFrame) -> pd.DataFrame:
         upper = corr.where(np.triu(np.ones(corr.shape), k=1).astype(bool))
         max_pair = upper.stack().idxmax()
         min_pair = upper.stack().idxmin()
-        logger.info("Highest correlation: %s & %s = %.4f", max_pair[0], max_pair[1], upper.loc[max_pair])
-        logger.info("Lowest correlation: %s & %s = %.4f", min_pair[0], min_pair[1], upper.loc[min_pair])
+        logger.info(
+            "Highest correlation: %s & %s = %.4f", max_pair[0], max_pair[1], upper.loc[max_pair]
+        )
+        logger.info(
+            "Lowest correlation: %s & %s = %.4f", min_pair[0], min_pair[1], upper.loc[min_pair]
+        )
 
     return corr
 
@@ -113,7 +117,10 @@ def run_correlation_analysis(bucket: str = "") -> dict:
     results = {
         "date": date,
         "correlation_matrix": {
-            col: {row: round(float(v), 4) if not np.isnan(v) else None for row, v in corr_matrix[col].items()}
+            col: {
+                row: round(float(v), 4) if not np.isnan(v) else None
+                for row, v in corr_matrix[col].items()
+            }
             for col in corr_matrix.columns
         },
         "highly_correlated_pairs": highly_correlated,
