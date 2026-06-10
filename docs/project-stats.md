@@ -3,9 +3,9 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 19 ingestion modules + 6 scripts |
+| Python files | 21 ingestion modules + 6 scripts |
 | Test files | 14 test files |
-| Total tests | 150 passing |
+| Total tests | 160 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
 | ADRs | 7 architecture decisions |
@@ -47,6 +47,8 @@
 15. Email Notifications (SMTP + daily reports)
 16. Portfolio Tracking (daily value + returns)
 17. Technical Indicators (SMA, RSI, Bollinger Bands, MACD)
+18. News Sentiment Analysis (keyword-based BULLISH/BEARISH/NEUTRAL)
+19. Market Correlation Matrix (Pearson + Beta calculation)
 
 ## Development Statistics
 | Metric | Count |
