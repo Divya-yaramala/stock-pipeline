@@ -2,6 +2,7 @@ import json
 import logging
 import os
 from datetime import datetime, timedelta
+from typing import Dict, Optional
 
 import boto3
 import numpy as np
@@ -103,7 +104,7 @@ def run_correlation_analysis(bucket: str = "") -> dict:
     corr_matrix = calculate_correlation_matrix(df)
     highly_correlated = find_highly_correlated(corr_matrix, threshold=0.8)
 
-    betas = {}
+    betas: Dict[str, Optional[float]] = {}
     market_ticker = "MSFT"
     for ticker in TICKERS:
         if ticker == market_ticker:

@@ -2,6 +2,7 @@ import json
 import logging
 import os
 from datetime import datetime
+from typing import Any, Dict
 
 import boto3
 import requests
@@ -25,7 +26,7 @@ def fetch_news_headlines(ticker: str, company_name: str) -> list:
     if api_key:
         try:
             url = "https://newsapi.org/v2/everything"
-            params = {
+            params: Dict[str, Any] = {
                 "q": company_name,
                 "apiKey": api_key,
                 "pageSize": 20,
