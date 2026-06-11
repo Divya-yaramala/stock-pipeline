@@ -2,7 +2,6 @@ import json
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import Optional
 
 import boto3
 import numpy as np
@@ -60,7 +59,9 @@ def add_price_features(df: pd.DataFrame) -> pd.DataFrame:
     df["daily_return"] = (df["close"] - df["open"]) / df["open"] * 100
     df["high_low_range"] = df["high"] - df["low"]
     range_denom = df["high"] - df["low"]
-    df["price_position"] = (df["close"] - df["low"]) / range_denom.where(range_denom != 0, other=np.nan)
+    df["price_position"] = (df["close"] - df["low"]) / range_denom.where(
+        range_denom != 0, other=np.nan
+    )
     df["gap_up"] = df["open"] > df["close"].shift(1)
     df["body_size"] = (df["close"] - df["open"]).abs()
     return df
@@ -120,4 +121,5 @@ def create_feature_matrix(ticker: str, bucket: str) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
+    _bucket = os.getenv("AWS_BUCKET_NAME", "")
     pass

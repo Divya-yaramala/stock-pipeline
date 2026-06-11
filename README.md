@@ -545,6 +545,13 @@ stock-pipeline/
 - Portfolio snapshots saved to S3 daily
 - 10 unit tests passing green
 
+### ✅ Day 32 — Feature Engineering + Model Comparison
+- Built feature engineering module with price, volume, momentum features
+- Model comparison framework: Random Forest vs Linear Regression
+- Automatic winner selection based on lowest RMSE
+- Feature matrix saved to S3 for reproducibility
+- 10 unit tests passing green
+
 ### ✅ Day 31 — News Sentiment + Market Correlation
 - Built news sentiment analyzer with NewsAPI + Yahoo RSS fallback
 - Keyword-based BULLISH/BEARISH/NEUTRAL scoring across 5 tickers

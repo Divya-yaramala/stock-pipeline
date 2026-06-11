@@ -102,8 +102,12 @@ def compare_models(ticker: str, bucket: str) -> Dict[str, Any]:
     lr_metrics = evaluate_model(lr_result["model"], X_test, y_test, "LinearRegression")
 
     winner = "RandomForest" if rf_metrics["RMSE"] <= lr_metrics["RMSE"] else "LinearRegression"
-    logger.info("Winner for %s: %s (RMSE=%.4f)", ticker, winner,
-                rf_metrics["RMSE"] if winner == "RandomForest" else lr_metrics["RMSE"])
+    logger.info(
+        "Winner for %s: %s (RMSE=%.4f)",
+        ticker,
+        winner,
+        rf_metrics["RMSE"] if winner == "RandomForest" else lr_metrics["RMSE"],
+    )
 
     results = {
         "ticker": ticker,
@@ -127,4 +131,5 @@ def compare_models(ticker: str, bucket: str) -> Dict[str, Any]:
 
 
 if __name__ == "__main__":
+    _bucket = os.getenv("AWS_BUCKET_NAME", "")
     pass
