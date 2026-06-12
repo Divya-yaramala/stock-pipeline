@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 21 ingestion modules + 6 scripts |
-| Test files | 14 test files |
-| Total tests | 160 passing |
+| Python files | 23 ingestion modules + 6 scripts |
+| Test files | 16 test files |
+| Total tests | 180 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 7 architecture decisions |
+| ADRs | 12 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -49,6 +49,8 @@
 17. Technical Indicators (SMA, RSI, Bollinger Bands, MACD)
 18. News Sentiment Analysis (keyword-based BULLISH/BEARISH/NEUTRAL)
 19. Market Correlation Matrix (Pearson + Beta calculation)
+20. Data Observability (freshness, completeness, consistency)
+21. Pipeline Health Scoring (weighted score + letter grade)
 
 ## Development Statistics
 | Metric | Count |
