@@ -4,7 +4,6 @@ import os
 from datetime import datetime, timezone
 
 import boto3
-import pandas as pd
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -69,7 +68,14 @@ def check_data_completeness(bucket: str, ticker: str, date: str) -> dict:
 
     present = len(REQUIRED_PATHS) - len(missing)
     completeness_pct = round(present / len(REQUIRED_PATHS) * 100, 1)
-    logger.info("%s completeness on %s: %.1f%% (%d/%d files)", ticker, date, completeness_pct, present, len(REQUIRED_PATHS))
+    logger.info(
+        "%s completeness on %s: %.1f%% (%d/%d files)",
+        ticker,
+        date,
+        completeness_pct,
+        present,
+        len(REQUIRED_PATHS),
+    )
     return {
         "ticker": ticker,
         "date": date,
@@ -117,7 +123,12 @@ def check_data_consistency(bucket: str, ticker: str, date: str) -> dict:
         issues.append(f"Date mismatch: price={price_date}, anomaly={anomaly_date}")
 
     is_consistent = len(issues) == 0
-    logger.info("%s consistency on %s: %s", ticker, date, "OK" if is_consistent else f"{len(issues)} issue(s)")
+    logger.info(
+        "%s consistency on %s: %s",
+        ticker,
+        date,
+        "OK" if is_consistent else f"{len(issues)} issue(s)",
+    )
     return {"ticker": ticker, "is_consistent": is_consistent, "issues": issues}
 
 
@@ -163,7 +174,11 @@ def run_observability_check(bucket: str) -> dict:
         else:
             needs_attention += 1
 
-    logger.info("Observability check complete: %d tickers healthy, %d need attention", healthy, needs_attention)
+    logger.info(
+        "Observability check complete: %d tickers healthy, %d need attention",
+        healthy,
+        needs_attention,
+    )
     return {
         "date": date,
         "tickers": results,

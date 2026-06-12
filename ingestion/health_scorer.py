@@ -17,7 +17,9 @@ def score_test_coverage(test_count: int, module_count: int) -> float:
     if module_count == 0:
         return 0.0
     score = min(test_count / module_count / 5 * 100, 100.0)
-    logger.info("Test coverage score: %.1f (%d tests / %d modules)", score, test_count, module_count)
+    logger.info(
+        "Test coverage score: %.1f (%d tests / %d modules)", score, test_count, module_count
+    )
     return round(score, 2)
 
 
@@ -43,12 +45,7 @@ def calculate_overall_portfolio_score(
     ci_health: float,
     documentation: float,
 ) -> Dict:
-    overall = (
-        data_health * 0.40
-        + test_coverage * 0.30
-        + ci_health * 0.20
-        + documentation * 0.10
-    )
+    overall = data_health * 0.40 + test_coverage * 0.30 + ci_health * 0.20 + documentation * 0.10
     overall = round(overall, 2)
 
     if overall >= 90:
@@ -85,7 +82,9 @@ def run_health_scoring() -> Dict:
     data_health = 85.0
 
     result = calculate_overall_portfolio_score(data_health, test_cov, ci, docs)
-    logger.info("Pipeline Health Score: %.1f/100 (Grade: %s)", result["overall_score"], result["grade"])
+    logger.info(
+        "Pipeline Health Score: %.1f/100 (Grade: %s)", result["overall_score"], result["grade"]
+    )
     return result
 
 
