@@ -98,26 +98,31 @@ def check_data_contracts(bucket: str) -> List[Dict]:
                         last_dt = datetime.fromisoformat(last_updated.replace("Z", "+00:00"))
                         if last_dt.tzinfo is None:
                             from datetime import timezone as tz
+
                             last_dt = last_dt.replace(tzinfo=tz.utc)
                         hours_since = (datetime.now(timezone.utc) - last_dt).total_seconds() / 3600
                         if hours_since > freshness_sla:
-                            violations.append({
-                                "dataset": dataset_name,
-                                "violation": "freshness_sla_breach",
-                                "hours_since_update": round(hours_since, 1),
-                                "sla_hours": freshness_sla,
-                            })
+                            violations.append(
+                                {
+                                    "dataset": dataset_name,
+                                    "violation": "freshness_sla_breach",
+                                    "hours_since_update": round(hours_since, 1),
+                                    "sla_hours": freshness_sla,
+                                }
+                            )
                     except Exception:
                         pass
 
                 actual_quality = entry.get("quality_score", 100.0)
                 if actual_quality < quality_threshold:
-                    violations.append({
-                        "dataset": dataset_name,
-                        "violation": "quality_below_threshold",
-                        "actual": actual_quality,
-                        "threshold": quality_threshold,
-                    })
+                    violations.append(
+                        {
+                            "dataset": dataset_name,
+                            "violation": "quality_below_threshold",
+                            "actual": actual_quality,
+                            "threshold": quality_threshold,
+                        }
+                    )
             except Exception:
                 pass
     except Exception as e:

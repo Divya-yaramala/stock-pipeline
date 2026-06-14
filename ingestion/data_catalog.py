@@ -30,14 +30,25 @@ DATASETS = [
         "description": "Isolation Forest anomaly detection results per ticker per day",
         "source": "ingestion/anomaly_detector.py",
         "owner": "ml-team",
-        "schema": {"ticker": "VARCHAR(10)", "trade_date": "DATE", "is_anomaly": "BOOLEAN", "anomaly_score": "NUMERIC(10,6)"},
+        "schema": {
+            "ticker": "VARCHAR(10)",
+            "trade_date": "DATE",
+            "is_anomaly": "BOOLEAN",
+            "anomaly_score": "NUMERIC(10,6)",
+        },
     },
     {
         "name": "stock_predictions",
         "description": "Prophet 5-day price forecasts with confidence bounds",
         "source": "ingestion/price_predictor.py",
         "owner": "ml-team",
-        "schema": {"ticker": "VARCHAR(10)", "prediction_date": "DATE", "predicted_close": "NUMERIC(12,4)", "lower_bound": "NUMERIC(12,4)", "upper_bound": "NUMERIC(12,4)"},
+        "schema": {
+            "ticker": "VARCHAR(10)",
+            "prediction_date": "DATE",
+            "predicted_close": "NUMERIC(12,4)",
+            "lower_bound": "NUMERIC(12,4)",
+            "upper_bound": "NUMERIC(12,4)",
+        },
     },
     {
         "name": "stock_insights",
@@ -51,14 +62,25 @@ DATASETS = [
         "description": "Keyword-based news sentiment scores (BULLISH/BEARISH/NEUTRAL)",
         "source": "ingestion/news_sentiment.py",
         "owner": "data-engineering",
-        "schema": {"ticker": "VARCHAR(10)", "date": "DATE", "sentiment_label": "VARCHAR(10)", "sentiment_score": "NUMERIC(6,2)"},
+        "schema": {
+            "ticker": "VARCHAR(10)",
+            "date": "DATE",
+            "sentiment_label": "VARCHAR(10)",
+            "sentiment_score": "NUMERIC(6,2)",
+        },
     },
     {
         "name": "stock_technical",
         "description": "SMA, RSI, Bollinger Bands, and MACD technical indicators",
         "source": "ingestion/technical_indicators.py",
         "owner": "data-engineering",
-        "schema": {"ticker": "VARCHAR(10)", "date": "DATE", "sma_20": "NUMERIC(12,4)", "rsi_14": "NUMERIC(6,2)", "macd": "NUMERIC(10,4)"},
+        "schema": {
+            "ticker": "VARCHAR(10)",
+            "date": "DATE",
+            "sma_20": "NUMERIC(12,4)",
+            "rsi_14": "NUMERIC(6,2)",
+            "macd": "NUMERIC(10,4)",
+        },
     },
 ]
 
@@ -118,7 +140,9 @@ def update_dataset_stats(
             Body=json.dumps(entry, indent=2).encode("utf-8"),
             ContentType="application/json",
         )
-        logger.info("Stats updated for %s: %d rows, last_updated=%s", dataset_name, row_count, last_updated)
+        logger.info(
+            "Stats updated for %s: %d rows, last_updated=%s", dataset_name, row_count, last_updated
+        )
         return True
     except Exception as e:
         logger.error("Failed to update stats for %s: %s", dataset_name, e)
@@ -137,7 +161,10 @@ def search_catalog(query: str, bucket: str) -> list:
                 data = s3.get_object(Bucket=bucket, Key=obj["Key"])
                 entry = json.loads(data["Body"].read().decode("utf-8"))
                 q = query.lower()
-                if q in entry.get("dataset_name", "").lower() or q in entry.get("description", "").lower():
+                if (
+                    q in entry.get("dataset_name", "").lower()
+                    or q in entry.get("description", "").lower()
+                ):
                     results.append(entry)
             except Exception:
                 pass
