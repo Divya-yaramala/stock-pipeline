@@ -199,15 +199,82 @@ def get_dataset_lineage(dataset_name: str, bucket: str) -> dict:
 
 def run_catalog_registration() -> None:
     bucket = os.getenv("AWS_BUCKET_NAME", "")
-    for ds in DATASETS:
-        register_dataset(
-            dataset_name=ds["name"],
-            description=ds["description"],
-            schema=ds["schema"],
-            source=ds["source"],
-            owner=ds["owner"],
-            bucket=bucket,
-        )
+    register_dataset(
+        dataset_name="stock_prices_raw",
+        description="Raw OHLCV data from Yahoo Finance for 5 tickers",
+        schema={
+            "ticker": "VARCHAR(10)",
+            "trade_date": "DATE",
+            "open_price": "NUMERIC(12,4)",
+            "close_price": "NUMERIC(12,4)",
+            "volume": "BIGINT",
+        },
+        source="Yahoo Finance via yfinance",
+        owner="data-engineering",
+        bucket=bucket,
+    )
+    register_dataset(
+        dataset_name="stock_anomalies",
+        description="Isolation Forest anomaly detection results per ticker per day",
+        schema={
+            "ticker": "VARCHAR(10)",
+            "trade_date": "DATE",
+            "is_anomaly": "BOOLEAN",
+            "anomaly_score": "NUMERIC(10,6)",
+        },
+        source="ingestion/anomaly_detector.py",
+        owner="ml-team",
+        bucket=bucket,
+    )
+    register_dataset(
+        dataset_name="stock_predictions",
+        description="Prophet 5-day price forecasts with confidence bounds",
+        schema={
+            "ticker": "VARCHAR(10)",
+            "prediction_date": "DATE",
+            "predicted_close": "NUMERIC(12,4)",
+            "lower_bound": "NUMERIC(12,4)",
+            "upper_bound": "NUMERIC(12,4)",
+        },
+        source="ingestion/price_predictor.py",
+        owner="ml-team",
+        bucket=bucket,
+    )
+    register_dataset(
+        dataset_name="stock_insights",
+        description="GPT-3.5 generated 3-sentence market insight summaries",
+        schema={"ticker": "VARCHAR(10)", "insight_date": "DATE", "insight_text": "TEXT"},
+        source="ingestion/market_insights.py",
+        owner="ai-team",
+        bucket=bucket,
+    )
+    register_dataset(
+        dataset_name="stock_sentiment",
+        description="Keyword-based news sentiment scores (BULLISH/BEARISH/NEUTRAL)",
+        schema={
+            "ticker": "VARCHAR(10)",
+            "date": "DATE",
+            "sentiment_label": "VARCHAR(10)",
+            "sentiment_score": "NUMERIC(6,2)",
+        },
+        source="ingestion/news_sentiment.py",
+        owner="data-engineering",
+        bucket=bucket,
+    )
+    register_dataset(
+        dataset_name="stock_technical",
+        description="SMA, RSI, Bollinger Bands, and MACD technical indicators",
+        schema={
+            "ticker": "VARCHAR(10)",
+            "date": "DATE",
+            "sma_20": "NUMERIC(12,4)",
+            "rsi_14": "NUMERIC(6,2)",
+            "macd": "NUMERIC(10,4)",
+        },
+        source="ingestion/technical_indicators.py",
+        owner="data-engineering",
+        bucket=bucket,
+    )
     logger.info("Catalog registration complete")
 
 
