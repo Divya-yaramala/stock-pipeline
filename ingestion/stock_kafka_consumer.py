@@ -91,9 +91,7 @@ def run_stock_consumer() -> None:
     finally:
         consumer.close()
         conn.close()
-        logger.info(
-            "Consumer shut down — total processed: %d, failed: %d", processed, failed
-        )
+        logger.info("Consumer shut down — total processed: %d, failed: %d", processed, failed)
 
 
 if __name__ == "__main__":

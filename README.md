@@ -237,6 +237,19 @@ uvicorn api.main:app --reload --port 8000
 
 ---
 
+## 🔄 Real-Time Streaming (Optional)
+Run the pipeline in real-time mode using Kafka:
+
+```bash
+# Start Kafka producer (publishes every 5 minutes)
+python ingestion/stock_kafka_producer.py
+
+# Start Kafka consumer (processes events)
+python ingestion/stock_kafka_consumer.py
+```
+
+---
+
 ## 📁 Project Structure
 
 ```
@@ -562,6 +575,12 @@ stock-pipeline/
 - Built data observability module checking freshness, completeness, consistency
 - Pipeline health scorer with weighted scoring and letter grades
 - Overall portfolio score combining data health, tests, CI, docs
+- 10 unit tests passing green
+
+### ✅ Day 35 — Real-Time Kafka Streaming Layer
+- Built Kafka producer publishing stock price events every 5 minutes
+- Built Kafka consumer processing events into PostgreSQL
+- Bridges batch pipeline with real-time streaming capability
 - 10 unit tests passing green
 
 ### ✅ Day 34 — Data Catalog + Metadata Management
