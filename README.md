@@ -577,17 +577,17 @@ stock-pipeline/
 - Overall portfolio score combining data health, tests, CI, docs
 - 10 unit tests passing green
 
-### ✅ Day 35 — Real-Time Kafka Streaming Layer
-- Built Kafka producer publishing stock price events every 5 minutes
-- Built Kafka consumer processing events into PostgreSQL
-- Bridges batch pipeline with real-time streaming capability
-- 10 unit tests passing green
-
 ### ✅ Day 34 — Data Catalog + Metadata Management
 - Built data catalog registering all 6 key datasets
 - Metadata manager with tagging, ownership, and data contracts
 - Data contract monitoring checking SLA and quality thresholds
 - Catalog search functionality for dataset discovery
+- 10 unit tests passing green
+
+### ✅ Day 35 — Real-Time Kafka Streaming Layer
+- Built Kafka producer publishing stock price events every 5 minutes
+- Built Kafka consumer processing events into PostgreSQL
+- Bridges batch pipeline with real-time streaming capability
 - 10 unit tests passing green
 
 ---
