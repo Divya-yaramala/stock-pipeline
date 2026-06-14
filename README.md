@@ -545,18 +545,11 @@ stock-pipeline/
 - Portfolio snapshots saved to S3 daily
 - 10 unit tests passing green
 
-### ✅ Day 34 — Data Catalog + Metadata Management
-- Built data catalog registering all 6 key datasets
-- Metadata manager with tagging, ownership, and data contracts
-- Data contract monitoring checking SLA and quality thresholds
-- Catalog search functionality for dataset discovery
-- 10 unit tests passing green
-
-### ✅ Day 33 — Data Observability + Health Scoring
-- Built data observability module checking freshness, completeness, consistency
-- Pipeline health scorer with weighted scoring and letter grades
-- Overall portfolio score combining data health, tests, CI, docs
-- 10 unit tests passing green
+### ✅ Day 31 — News Sentiment + Market Correlation
+- Built news sentiment analyzer with NewsAPI + Yahoo RSS fallback
+- Keyword-based BULLISH/BEARISH/NEUTRAL scoring across 5 tickers
+- Built market correlation module: Pearson matrix, highly-correlated pairs, beta calculation
+- 10 unit tests passing green (160 total)
 
 ### ✅ Day 32 — Feature Engineering + Model Comparison
 - Built feature engineering module with price, volume, momentum features
@@ -565,11 +558,18 @@ stock-pipeline/
 - Feature matrix saved to S3 for reproducibility
 - 10 unit tests passing green
 
-### ✅ Day 31 — News Sentiment + Market Correlation
-- Built news sentiment analyzer with NewsAPI + Yahoo RSS fallback
-- Keyword-based BULLISH/BEARISH/NEUTRAL scoring across 5 tickers
-- Built market correlation module: Pearson matrix, highly-correlated pairs, beta calculation
-- 10 unit tests passing green (160 total)
+### ✅ Day 33 — Data Observability + Health Scoring
+- Built data observability module checking freshness, completeness, consistency
+- Pipeline health scorer with weighted scoring and letter grades
+- Overall portfolio score combining data health, tests, CI, docs
+- 10 unit tests passing green
+
+### ✅ Day 34 — Data Catalog + Metadata Management
+- Built data catalog registering all 6 key datasets
+- Metadata manager with tagging, ownership, and data contracts
+- Data contract monitoring checking SLA and quality thresholds
+- Catalog search functionality for dataset discovery
+- 10 unit tests passing green
 
 ---
 *Built with ❤️ over 25 days as a portfolio project demonstrating production-grade data engineering.*
