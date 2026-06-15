@@ -20,3 +20,4 @@ uvicorn
 jinja2
 requests
 kafka-python
+strawberry-graphql
