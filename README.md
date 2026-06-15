@@ -212,27 +212,45 @@ python scripts/rollback_pipeline.py --ticker AAPL --step fetch --version-id abc1
 
 ---
 
-## 🌐 REST API
-The pipeline exposes a REST API for querying results:
+## 🌐 APIs
 
+### REST API (port 8000)
 | Endpoint | Description |
 |---|---|
 | GET /health | Health check |
-| GET /tickers | List available tickers |
-| GET /prices/{ticker} | Latest stock prices |
-| GET /anomalies/{ticker} | Anomaly detection results |
+| GET /prices/{ticker} | Stock prices |
+| GET /anomalies/{ticker} | Anomaly results |
 | GET /predictions/{ticker} | Price predictions |
-| GET /insights/{ticker} | LLM market insights |
 | GET /summary/{ticker} | Combined summary |
 
-Start the API:
+Start REST API:
 ```bash
-# With Docker
-docker-compose up -d stock-api
-# Open http://localhost:8000/docs for Swagger UI
-
-# Without Docker
 uvicorn api.main:app --reload --port 8000
+```
+
+### GraphQL API (port 8001)
+Interactive GraphQL playground at http://localhost:8001/graphql
+
+Example queries:
+```graphql
+query {
+  tickers
+  stockPrices(ticker: "AAPL", days: 7) {
+    ticker
+    closePrice
+    tradeDate
+  }
+  anomalies(ticker: "AAPL", onlyAnomalies: true) {
+    ticker
+    isAnomaly
+    anomalyScore
+  }
+}
+```
+
+Start GraphQL API:
+```bash
+uvicorn api.graphql_api:app --reload --port 8001
 ```
 
 ---
@@ -589,6 +607,13 @@ stock-pipeline/
 - Built Kafka consumer processing events into PostgreSQL
 - Bridges batch pipeline with real-time streaming capability
 - 10 unit tests passing green
+
+### ✅ Day 36 — GraphQL API
+- Built GraphQL API using Strawberry framework
+- Queries for stock prices, anomalies, portfolio summary
+- Interactive GraphQL playground at /graphql
+- Both REST and GraphQL APIs running on separate ports
+- 6 unit tests passing green
 
 ---
 *Built with ❤️ over 25 days as a portfolio project demonstrating production-grade data engineering.*
