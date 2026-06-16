@@ -23,3 +23,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [010](010-technical-indicators-from-scratch.md) | Technical Indicators Built from Scratch | Accepted |
 | [011](011-keyword-sentiment-vs-nlp.md) | Keyword Sentiment vs NLP Models | Accepted |
 | [012](012-data-observability-pattern.md) | Data Observability Pattern | Accepted |
+| [013](013-graphql-with-strawberry.md) | GraphQL API with Strawberry | Accepted |
