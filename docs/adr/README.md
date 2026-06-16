@@ -24,3 +24,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [011](011-keyword-sentiment-vs-nlp.md) | Keyword Sentiment vs NLP Models | Accepted |
 | [012](012-data-observability-pattern.md) | Data Observability Pattern | Accepted |
 | [013](013-graphql-with-strawberry.md) | GraphQL API with Strawberry | Accepted |
+| [014](014-websocket-for-realtime.md) | WebSocket for Real-Time Streaming | Accepted |

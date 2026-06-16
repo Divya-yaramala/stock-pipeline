@@ -5,10 +5,10 @@
 |---|---|
 | Python files | 23 ingestion modules + 6 scripts |
 | Test files | 16 test files |
-| Total tests | 180 passing |
+| Total tests | 211 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 12 architecture decisions |
+| ADRs | 14 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -51,6 +51,8 @@
 19. Market Correlation Matrix (Pearson + Beta calculation)
 20. Data Observability (freshness, completeness, consistency)
 21. Pipeline Health Scoring (weighted score + letter grade)
+22. GraphQL API (Strawberry framework)
+23. WebSocket Real-Time Streaming
 
 ## Development Statistics
 | Metric | Count |
