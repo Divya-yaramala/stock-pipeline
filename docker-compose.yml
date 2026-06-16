@@ -101,5 +101,18 @@ services:
     volumes:
       - ./api:/app
 
+  websocket-server:
+    build: ./api
+    ports:
+      - "8002:8002"
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./api:/app
+    command: uvicorn websocket_server:app --host 0.0.0.0 --port 8002
+
 volumes:
   postgres_data:

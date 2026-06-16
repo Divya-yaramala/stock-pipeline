@@ -253,6 +253,38 @@ Start GraphQL API:
 uvicorn api.graphql_api:app --reload --port 8001
 ```
 
+### WebSocket API (port 8002)
+Real-time price streaming via WebSocket:
+
+Connect to live prices:
+```
+ws://localhost:8002/ws/prices
+```
+
+Connect to alerts:
+```
+ws://localhost:8002/ws/alerts
+```
+
+Check status:
+```
+GET http://localhost:8002/ws/status
+```
+
+Example JavaScript client:
+```javascript
+const ws = new WebSocket('ws://localhost:8002/ws/prices');
+ws.onmessage = (event) => {
+  const prices = JSON.parse(event.data);
+  console.log(prices);
+};
+```
+
+Start WebSocket server:
+```bash
+uvicorn api.websocket_server:app --reload --port 8002
+```
+
 ---
 
 ## 🔄 Real-Time Streaming (Optional)
@@ -614,6 +646,13 @@ stock-pipeline/
 - Interactive GraphQL playground at /graphql
 - Both REST and GraphQL APIs running on separate ports
 - 6 unit tests passing green
+
+### ✅ Day 37 — WebSocket Real-Time Streaming
+- Built WebSocket server streaming live prices every 30 seconds
+- Two endpoints: /ws/prices and /ws/alerts
+- Containerized in Docker Compose on port 8002
+- Three APIs now: REST (8000), GraphQL (8001), WebSocket (8002)
+- 5 unit tests passing green
 
 ---
 *Built with ❤️ over 25 days as a portfolio project demonstrating production-grade data engineering.*
