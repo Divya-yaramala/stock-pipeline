@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 23 ingestion modules + 6 scripts |
+| Python files | 25 ingestion modules + 6 scripts |
 | Test files | 16 test files |
-| Total tests | 211 passing |
+| Total tests | 221 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 14 architecture decisions |
+| ADRs | 15 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -53,6 +53,8 @@
 21. Pipeline Health Scoring (weighted score + letter grade)
 22. GraphQL API (Strawberry framework)
 23. WebSocket Real-Time Streaming
+24. S3 Caching with TTL expiry
+25. Parallel Processing with ThreadPoolExecutor
 
 ## Development Statistics
 | Metric | Count |
