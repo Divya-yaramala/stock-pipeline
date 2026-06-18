@@ -654,5 +654,13 @@ stock-pipeline/
 - Three APIs now: REST (8000), GraphQL (8001), WebSocket (8002)
 - 5 unit tests passing green
 
+### ✅ Day 38 — Caching + Performance Optimization
+- Built S3-based caching with TTL expiry
+- Cache decorator for wrapping expensive functions
+- Parallel fetching with ThreadPoolExecutor
+- Batch processing for large datasets
+- Performance benchmark comparing sequential vs parallel
+- 10 unit tests passing green
+
 ---
 *Built with ❤️ over 25 days as a portfolio project demonstrating production-grade data engineering.*

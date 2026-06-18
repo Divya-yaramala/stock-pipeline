@@ -1,4 +1,3 @@
-import json
 import logging
 import os
 import time
@@ -94,11 +93,12 @@ def run_performance_benchmark() -> dict:
         return {"ticker": ticker, "price": getattr(info, "last_price", None)}
 
     seq_start = time.time()
-    sequential_results = {ticker: fetch_ticker(ticker) for ticker in TICKERS}
+    for ticker in TICKERS:
+        fetch_ticker(ticker)
     seq_time = time.time() - seq_start
 
     par_start = time.time()
-    parallel_results = parallel_fetch(TICKERS, fetch_ticker)
+    parallel_fetch(TICKERS, fetch_ticker)
     par_time = time.time() - par_start
 
     speedup = seq_time / par_time if par_time > 0 else 1.0
