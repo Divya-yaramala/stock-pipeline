@@ -1,6 +1,5 @@
 import json
 import logging
-import os
 from datetime import datetime, timezone
 
 import boto3
@@ -90,7 +89,6 @@ def evaluate_rule(rule: dict, metrics: dict) -> bool:
 
 def evaluate_all_rules(metrics: dict) -> list:
     triggered = []
-    rules = load_custom_rules.__wrapped__ if hasattr(load_custom_rules, "__wrapped__") else RULES
     for rule in RULES:
         if evaluate_rule(rule, metrics):
             triggered.append(rule)
