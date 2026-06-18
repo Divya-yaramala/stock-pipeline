@@ -201,3 +201,16 @@ The pipeline includes advanced financial analytics:
 | news_sentiment.py | Keyword-based news scoring | BULLISH/BEARISH/NEUTRAL |
 | market_correlation.py | Pearson correlation matrix | Correlation pairs + Beta |
 | portfolio_tracker.py | Daily portfolio value | Value, weights, returns |
+
+## Alerting Rules Engine
+The pipeline evaluates 5 default rules daily:
+
+| Rule | Metric | Threshold | Severity |
+|---|---|---|---|
+| R001 | Anomaly rate | > 20% | HIGH |
+| R002 | Quality score | < 80% | HIGH |
+| R003 | SLA met rate | < 90% | MEDIUM |
+| R004 | Error rate | > 5% | HIGH |
+| R005 | Prediction accuracy | < 70% | MEDIUM |
+
+Custom rules can be added via S3: monitoring/rules/custom_rules.json
