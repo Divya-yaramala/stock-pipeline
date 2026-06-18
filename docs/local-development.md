@@ -339,3 +339,13 @@ python -c "from ingestion.model_registry import promote_model; import os; promot
    ```bash
    python -c "from ingestion.email_notifier import send_alert_email; send_alert_email('TEST', 'Test alert', 'AAPL')"
    ```
+
+## Caching
+
+```bash
+# Clear expired cache entries
+python -c "from ingestion.cache_manager import clear_expired_cache; import os; print(clear_expired_cache(os.getenv('AWS_BUCKET_NAME')))"
+
+# Run performance benchmark
+python -c "from ingestion.performance_optimizer import run_performance_benchmark; print(run_performance_benchmark())"
+```
