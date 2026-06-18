@@ -25,3 +25,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [012](012-data-observability-pattern.md) | Data Observability Pattern | Accepted |
 | [013](013-graphql-with-strawberry.md) | GraphQL API with Strawberry | Accepted |
 | [014](014-websocket-for-realtime.md) | WebSocket for Real-Time Streaming | Accepted |
+| [015](015-s3-caching-vs-redis.md) | S3 Caching vs Redis | Accepted |
