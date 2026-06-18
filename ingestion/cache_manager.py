@@ -4,6 +4,7 @@ import logging
 import os
 from datetime import datetime, timezone
 from functools import wraps
+from typing import Any, Optional
 
 import boto3
 
@@ -18,7 +19,7 @@ def generate_cache_key(func_name: str, args: dict) -> str:
     return key
 
 
-def get_from_cache(cache_key: str, bucket: str) -> dict:
+def get_from_cache(cache_key: str, bucket: str) -> Optional[dict[str, Any]]:
     s3 = boto3.client("s3")
     s3_key = f"cache/{cache_key}.json"
     try:
