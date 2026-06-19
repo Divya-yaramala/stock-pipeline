@@ -1,6 +1,5 @@
 import json
 import logging
-import os
 from datetime import datetime
 
 import boto3
@@ -46,9 +45,7 @@ def check_no_pii_in_raw(bucket: str, date: str) -> dict:
                     keys = {k.lower() for k in content.keys()}
                     found = keys & PII_FIELDS
                     if found:
-                        violations.append(
-                            f"{obj['Key']}: PII fields detected: {sorted(found)}"
-                        )
+                        violations.append(f"{obj['Key']}: PII fields detected: {sorted(found)}")
             except Exception:
                 pass
     except Exception as e:

@@ -1,7 +1,6 @@
 import hashlib
 import json
 import logging
-import os
 from datetime import datetime, timezone
 
 import boto3
@@ -130,9 +129,7 @@ def generate_compliance_report(bucket: str) -> dict:
             violations.append(f"{name}: missing classification record")
 
     score = (compliant / total * 100) if total > 0 else 0.0
-    logger.info(
-        "Compliance score: %d/%d datasets compliant (%.1f%%)", compliant, total, score
-    )
+    logger.info("Compliance score: %d/%d datasets compliant (%.1f%%)", compliant, total, score)
     return {
         "total_datasets": total,
         "classified": classified,

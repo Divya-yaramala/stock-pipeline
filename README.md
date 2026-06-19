@@ -670,5 +670,13 @@ stock-pipeline/
 - 7-day trend data for pipeline performance tracking
 - 10 unit tests passing green
 
+### ✅ Day 40 — Data Governance + Compliance
+- Built data governance module with classification and masking
+- Compliance checker with 5 compliance rules
+- Audit logging for all data access
+- Retention policy management
+- Compliance score reporting
+- 10 unit tests passing green
+
 ---
 *Built with ❤️ over 25 days as a portfolio project demonstrating production-grade data engineering.*
