@@ -349,3 +349,16 @@ python -c "from ingestion.cache_manager import clear_expired_cache; import os; p
 # Run performance benchmark
 python -c "from ingestion.performance_optimizer import run_performance_benchmark; print(run_performance_benchmark())"
 ```
+
+## Data Governance
+
+```bash
+# Run full governance check
+python -c "from ingestion.data_governance import run_governance_check; import os; print(run_governance_check(os.getenv('AWS_BUCKET_NAME')))"
+
+# Run compliance check
+python -c "from ingestion.compliance_checker import run_compliance_check; import os; print(run_compliance_check(os.getenv('AWS_BUCKET_NAME')))"
+
+# Generate compliance report
+python -c "from ingestion.data_governance import generate_compliance_report; import os; print(generate_compliance_report(os.getenv('AWS_BUCKET_NAME')))"
+```
