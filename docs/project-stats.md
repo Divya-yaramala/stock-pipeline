@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 25 ingestion modules + 6 scripts |
+| Python files | 29 ingestion modules + 6 scripts |
 | Test files | 16 test files |
-| Total tests | 221 passing |
+| Total tests | 241 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 15 architecture decisions |
+| ADRs | 17 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -55,6 +55,11 @@
 23. WebSocket Real-Time Streaming
 24. S3 Caching with TTL expiry
 25. Parallel Processing with ThreadPoolExecutor
+26. Alerting Rules Engine (5 rules + custom rule support)
+27. Monitoring Dashboard (HTML KPI report + ticker health)
+28. Data Classification (PUBLIC/INTERNAL/CONFIDENTIAL)
+29. Compliance Checker (5 rules + scoring)
+30. Audit Logging (S3-based access logs)
 
 ## Development Statistics
 | Metric | Count |
