@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 29 ingestion modules + 6 scripts |
+| Python files | 31 ingestion modules + 6 scripts |
 | Test files | 16 test files |
-| Total tests | 241 passing |
+| Total tests | 251 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 17 architecture decisions |
+| ADRs | 18 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -60,6 +60,8 @@
 28. Data Classification (PUBLIC/INTERNAL/CONFIDENTIAL)
 29. Compliance Checker (5 rules + scoring)
 30. Audit Logging (S3-based access logs)
+31. ML Model Serving (production inference)
+32. Feature Store (S3-based feature management)
 
 ## Development Statistics
 | Metric | Count |
