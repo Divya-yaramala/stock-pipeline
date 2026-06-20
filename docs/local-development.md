@@ -362,3 +362,16 @@ python -c "from ingestion.compliance_checker import run_compliance_check; import
 # Generate compliance report
 python -c "from ingestion.data_governance import generate_compliance_report; import os; print(generate_compliance_report(os.getenv('AWS_BUCKET_NAME')))"
 ```
+
+## ML Model Serving
+
+```bash
+# Check all models are registered
+python ingestion/model_server.py
+
+# Check feature store
+python -c "from ingestion.feature_store import run_feature_store_check; import os; print(run_feature_store_check(os.getenv('AWS_BUCKET_NAME')))"
+
+# Get serving stats
+python -c "from ingestion.model_server import get_model_serving_stats; import os, datetime; print(get_model_serving_stats(os.getenv('AWS_BUCKET_NAME'), datetime.datetime.now().strftime('%Y/%m/%d')))"
+```
