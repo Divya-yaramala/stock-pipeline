@@ -66,8 +66,7 @@ def list_feature_groups(bucket: str) -> list:
     try:
         response = s3.list_objects_v2(Bucket=bucket, Prefix="features/", Delimiter="/")
         groups = [
-            p["Prefix"].rstrip("/").split("/")[-1]
-            for p in response.get("CommonPrefixes", [])
+            p["Prefix"].rstrip("/").split("/")[-1] for p in response.get("CommonPrefixes", [])
         ]
         logger.info("list_feature_groups: %d groups found", len(groups))
         return groups

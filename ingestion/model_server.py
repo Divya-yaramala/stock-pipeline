@@ -134,9 +134,7 @@ def get_model_serving_stats(bucket: str, date: str) -> dict:
         for t, v in by_ticker.items()
     }
 
-    logger.info(
-        "Serving stats: %d requests, avg_confidence=%.4f", total_requests, avg_confidence
-    )
+    logger.info("Serving stats: %d requests, avg_confidence=%.4f", total_requests, avg_confidence)
     return {
         "total_requests": total_requests,
         "avg_confidence": avg_confidence,
