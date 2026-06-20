@@ -27,3 +27,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [014](014-websocket-for-realtime.md) | WebSocket for Real-Time Streaming | Accepted |
 | [015](015-s3-caching-vs-redis.md) | S3 Caching vs Redis | Accepted |
 | [017](017-data-governance-pattern.md) | Data Governance Pattern | Accepted |
+| [018](018-feature-store-pattern.md) | S3-Based Feature Store | Accepted |
