@@ -131,7 +131,8 @@ def get_ready_steps(bucket: str, date: str) -> list:
         status = get_step_status(str(step["step_id"]), bucket, date)
         if status != "pending":
             continue
-        dep_statuses = [get_step_status(str(dep), bucket, date) for dep in step["depends_on"]]  # type: ignore[attr-defined]
+        deps = step["depends_on"]  # type: ignore[attr-defined]
+        dep_statuses = [get_step_status(str(dep), bucket, date) for dep in deps]
         if all(s == "success" for s in dep_statuses):
             ready.append(step)
     logger.info("Ready steps: %s", [s["step_id"] for s in ready])
