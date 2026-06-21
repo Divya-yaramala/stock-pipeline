@@ -1,7 +1,7 @@
 import json
 import logging
 from datetime import datetime
-from typing import Optional
+from typing import List, Optional, cast
 
 import boto3
 
@@ -131,8 +131,8 @@ def get_ready_steps(bucket: str, date: str) -> list:
         status = get_step_status(str(step["step_id"]), bucket, date)
         if status != "pending":
             continue
-        deps = step["depends_on"]  # type: ignore[attr-defined]
-        dep_statuses = [get_step_status(str(dep), bucket, date) for dep in deps]
+        deps = cast(List[str], step.get("depends_on", []))
+        dep_statuses = [get_step_status(dep, bucket, date) for dep in deps]
         if all(s == "success" for s in dep_statuses):
             ready.append(step)
     logger.info("Ready steps: %s", [s["step_id"] for s in ready])
