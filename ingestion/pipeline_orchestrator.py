@@ -1,24 +1,83 @@
-import boto3
 import json
 import logging
-import os
 from datetime import datetime
-import time
+
+import boto3
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 PIPELINE_STEPS = [
-    {"step_id": "S001", "name": "incremental_load", "timeout_seconds": 300, "retry_count": 3, "depends_on": []},
-    {"step_id": "S002", "name": "validation", "timeout_seconds": 60, "retry_count": 2, "depends_on": ["S001"]},
-    {"step_id": "S003", "name": "quality_reporting", "timeout_seconds": 30, "retry_count": 1, "depends_on": ["S002"]},
-    {"step_id": "S004", "name": "postgres_load", "timeout_seconds": 120, "retry_count": 3, "depends_on": ["S002"]},
-    {"step_id": "S005", "name": "dbt_run", "timeout_seconds": 180, "retry_count": 2, "depends_on": ["S004"]},
-    {"step_id": "S006", "name": "anomaly_detection", "timeout_seconds": 120, "retry_count": 2, "depends_on": ["S004"]},
-    {"step_id": "S007", "name": "price_prediction", "timeout_seconds": 180, "retry_count": 2, "depends_on": ["S004"]},
-    {"step_id": "S008", "name": "market_insights", "timeout_seconds": 60, "retry_count": 2, "depends_on": ["S004"]},
-    {"step_id": "S009", "name": "snowflake_sync", "timeout_seconds": 120, "retry_count": 3, "depends_on": ["S005"]},
-    {"step_id": "S010", "name": "report_generation", "timeout_seconds": 60, "retry_count": 1, "depends_on": ["S006", "S007", "S008"]},
+    {
+        "step_id": "S001",
+        "name": "incremental_load",
+        "timeout_seconds": 300,
+        "retry_count": 3,
+        "depends_on": [],
+    },
+    {
+        "step_id": "S002",
+        "name": "validation",
+        "timeout_seconds": 60,
+        "retry_count": 2,
+        "depends_on": ["S001"],
+    },
+    {
+        "step_id": "S003",
+        "name": "quality_reporting",
+        "timeout_seconds": 30,
+        "retry_count": 1,
+        "depends_on": ["S002"],
+    },
+    {
+        "step_id": "S004",
+        "name": "postgres_load",
+        "timeout_seconds": 120,
+        "retry_count": 3,
+        "depends_on": ["S002"],
+    },
+    {
+        "step_id": "S005",
+        "name": "dbt_run",
+        "timeout_seconds": 180,
+        "retry_count": 2,
+        "depends_on": ["S004"],
+    },
+    {
+        "step_id": "S006",
+        "name": "anomaly_detection",
+        "timeout_seconds": 120,
+        "retry_count": 2,
+        "depends_on": ["S004"],
+    },
+    {
+        "step_id": "S007",
+        "name": "price_prediction",
+        "timeout_seconds": 180,
+        "retry_count": 2,
+        "depends_on": ["S004"],
+    },
+    {
+        "step_id": "S008",
+        "name": "market_insights",
+        "timeout_seconds": 60,
+        "retry_count": 2,
+        "depends_on": ["S004"],
+    },
+    {
+        "step_id": "S009",
+        "name": "snowflake_sync",
+        "timeout_seconds": 120,
+        "retry_count": 3,
+        "depends_on": ["S005"],
+    },
+    {
+        "step_id": "S010",
+        "name": "report_generation",
+        "timeout_seconds": 60,
+        "retry_count": 1,
+        "depends_on": ["S006", "S007", "S008"],
+    },
 ]
 
 

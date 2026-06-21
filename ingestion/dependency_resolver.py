@@ -1,6 +1,4 @@
-import json
 import logging
-from datetime import datetime
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
@@ -66,7 +64,6 @@ def find_circular_dependencies(steps: list) -> list:
 
 def get_critical_path(steps: list, durations: dict) -> list:
     graph = {step["step_id"]: step.get("depends_on", []) for step in steps}
-    step_ids = [step["step_id"] for step in steps]
 
     earliest_finish = {}
     try:
@@ -80,7 +77,9 @@ def get_critical_path(steps: list, durations: dict) -> list:
         if not deps:
             earliest_finish[node] = durations.get(node, 0)
         else:
-            earliest_finish[node] = max(earliest_finish.get(d, 0) for d in deps) + durations.get(node, 0)
+            earliest_finish[node] = max(earliest_finish.get(d, 0) for d in deps) + durations.get(
+                node, 0
+            )
 
     makespan = max(earliest_finish.values()) if earliest_finish else 0
 
