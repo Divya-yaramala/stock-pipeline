@@ -5,7 +5,7 @@ logger = logging.getLogger(__name__)
 
 
 def build_dependency_graph(steps: list) -> dict:
-    graph = {step["step_id"]: [] for step in steps}
+    graph: dict[str, list[str]] = {step["step_id"]: [] for step in steps}
     for step in steps:
         for dep in step.get("depends_on", []):
             if dep in graph:
@@ -54,7 +54,7 @@ def find_circular_dependencies(steps: list) -> list:
         path.pop()
         stack.discard(node)
 
-    visited = set()
+    visited: set[str] = set()
     for step_id in graph:
         if step_id not in visited:
             dfs(step_id, visited, set(), [])
@@ -83,8 +83,10 @@ def get_critical_path(steps: list, durations: dict) -> list:
 
     makespan = max(earliest_finish.values()) if earliest_finish else 0
 
-    critical = []
-    end_node = max(earliest_finish, key=earliest_finish.get) if earliest_finish else None
+    critical: list[str] = []
+    end_node = (
+        max(earliest_finish, key=lambda n: earliest_finish.get(n, 0)) if earliest_finish else None
+    )
     node = end_node
     while node:
         critical.insert(0, node)

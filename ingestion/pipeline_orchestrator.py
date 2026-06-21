@@ -1,6 +1,7 @@
 import json
 import logging
 from datetime import datetime
+from typing import Optional
 
 import boto3
 
@@ -98,7 +99,7 @@ def update_step_status(
     status: str,
     bucket: str,
     date: str,
-    error: str = None,
+    error: Optional[str] = None,
 ) -> bool:
     dt = datetime.strptime(date, "%Y-%m-%d")
     key = f"orchestration/{dt.strftime('%Y/%m/%d')}/{step_id}.json"
@@ -127,10 +128,10 @@ def update_step_status(
 def get_ready_steps(bucket: str, date: str) -> list:
     ready = []
     for step in PIPELINE_STEPS:
-        status = get_step_status(step["step_id"], bucket, date)
+        status = get_step_status(str(step["step_id"]), bucket, date)
         if status != "pending":
             continue
-        dep_statuses = [get_step_status(dep, bucket, date) for dep in step["depends_on"]]
+        dep_statuses = [get_step_status(str(dep), bucket, date) for dep in step["depends_on"]]  # type: ignore[attr-defined]
         if all(s == "success" for s in dep_statuses):
             ready.append(step)
     logger.info("Ready steps: %s", [s["step_id"] for s in ready])
@@ -140,7 +141,7 @@ def get_ready_steps(bucket: str, date: str) -> list:
 def run_orchestration_check(bucket: str, date: str) -> dict:
     counts = {"total": len(PIPELINE_STEPS), "success": 0, "failed": 0, "pending": 0, "running": 0}
     for step in PIPELINE_STEPS:
-        status = get_step_status(step["step_id"], bucket, date)
+        status = get_step_status(str(step["step_id"]), bucket, date)
         if status in counts:
             counts[status] += 1
     logger.info(
@@ -157,9 +158,9 @@ def run_orchestration_check(bucket: str, date: str) -> dict:
 def reset_failed_steps(bucket: str, date: str) -> int:
     reset_count = 0
     for step in PIPELINE_STEPS:
-        status = get_step_status(step["step_id"], bucket, date)
+        status = get_step_status(str(step["step_id"]), bucket, date)
         if status == "failed":
-            update_step_status(step["step_id"], "pending", bucket, date)
+            update_step_status(str(step["step_id"]), "pending", bucket, date)
             reset_count += 1
     logger.info("Reset %d failed steps to pending", reset_count)
     return reset_count
