@@ -5,10 +5,10 @@
 |---|---|
 | Python files | 31 ingestion modules + 6 scripts |
 | Test files | 16 test files |
-| Total tests | 251 passing |
+| Total tests | 261 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 18 architecture decisions |
+| ADRs | 19 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -62,6 +62,9 @@
 30. Audit Logging (S3-based access logs)
 31. ML Model Serving (production inference)
 32. Feature Store (S3-based feature management)
+33. Automated Test Suite (8 tests, 4 categories)
+34. Data Quality Scoring (5 dimensions + letter grades)
+35. Quality Trend Analysis (7-day history)
 
 ## Development Statistics
 | Metric | Count |
