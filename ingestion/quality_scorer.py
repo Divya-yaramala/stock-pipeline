@@ -160,8 +160,13 @@ def calculate_dq_score(ticker: str, bucket: str, date: str) -> dict:
         "timeliness": score_timeliness(bucket, ticker),
         "validity": score_validity(bucket, ticker, date),
     }
-    overall = sum(scores[dim["dimension"]] * dim["weight"] for dim in QUALITY_DIMENSIONS)
-    overall = round(overall, 1)
+    total_score: float = 0.0
+    for dimension in QUALITY_DIMENSIONS:
+        dim_name: str = str(dimension["dimension"])
+        weight: float = float(str(dimension["weight"]))
+        dim_score: float = float(scores.get(dim_name, 0.0))
+        total_score += dim_score * weight
+    overall = round(total_score, 1)
     grade = _assign_grade(overall)
     logger.info("DQ score for %s: %.1f (%s)", ticker, overall, grade)
     return {
