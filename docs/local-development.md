@@ -363,6 +363,16 @@ python -c "from ingestion.compliance_checker import run_compliance_check; import
 python -c "from ingestion.data_governance import generate_compliance_report; import os; print(generate_compliance_report(os.getenv('AWS_BUCKET_NAME')))"
 ```
 
+## Data Quality Scoring
+
+```bash
+# Score all tickers for today
+python -c "from ingestion.quality_scorer import run_quality_scoring; import os, datetime; print(run_quality_scoring(os.getenv('AWS_BUCKET_NAME'), datetime.datetime.now().strftime('%Y-%m-%d')))"
+
+# Run automated test suite
+python -c "from ingestion.test_framework import run_test_suite; import os, datetime; print(run_test_suite(os.getenv('AWS_BUCKET_NAME'), datetime.datetime.now().strftime('%Y-%m-%d')))"
+```
+
 ## ML Model Serving
 
 ```bash
