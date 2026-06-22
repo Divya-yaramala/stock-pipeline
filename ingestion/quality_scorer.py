@@ -14,7 +14,11 @@ TICKERS = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"]
 QUALITY_DIMENSIONS = [
     {"dimension": "completeness", "weight": 0.25, "description": "All required data present"},
     {"dimension": "accuracy", "weight": 0.25, "description": "Data values are correct"},
-    {"dimension": "consistency", "weight": 0.20, "description": "Data is consistent across sources"},
+    {
+        "dimension": "consistency",
+        "weight": 0.20,
+        "description": "Data is consistent across sources",
+    },
     {"dimension": "timeliness", "weight": 0.15, "description": "Data is up to date"},
     {"dimension": "validity", "weight": 0.15, "description": "Data conforms to rules"},
 ]
@@ -156,9 +160,7 @@ def calculate_dq_score(ticker: str, bucket: str, date: str) -> dict:
         "timeliness": score_timeliness(bucket, ticker),
         "validity": score_validity(bucket, ticker, date),
     }
-    overall = sum(
-        scores[dim["dimension"]] * dim["weight"] for dim in QUALITY_DIMENSIONS
-    )
+    overall = sum(scores[dim["dimension"]] * dim["weight"] for dim in QUALITY_DIMENSIONS)
     overall = round(overall, 1)
     grade = _assign_grade(overall)
     logger.info("DQ score for %s: %.1f (%s)", ticker, overall, grade)
@@ -172,15 +174,11 @@ def calculate_dq_score(ticker: str, bucket: str, date: str) -> dict:
 
 def run_quality_scoring(bucket: str, date: str) -> dict:
     ticker_scores = [calculate_dq_score(t, bucket, date) for t in TICKERS]
-    portfolio_avg = round(
-        sum(t["overall_score"] for t in ticker_scores) / len(ticker_scores), 1
-    )
+    portfolio_avg = round(sum(t["overall_score"] for t in ticker_scores) / len(ticker_scores), 1)
     portfolio_grade = _assign_grade(portfolio_avg)
     for ts in ticker_scores:
         logger.info("  %s: %.1f (%s)", ts["ticker"], ts["overall_score"], ts["grade"])
-    logger.info(
-        "Portfolio quality score: %.1f (%s)", portfolio_avg, portfolio_grade
-    )
+    logger.info("Portfolio quality score: %.1f (%s)", portfolio_avg, portfolio_grade)
     return {
         "date": date,
         "portfolio_score": portfolio_avg,
