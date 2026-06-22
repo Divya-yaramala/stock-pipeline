@@ -28,3 +28,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [015](015-s3-caching-vs-redis.md) | S3 Caching vs Redis | Accepted |
 | [017](017-data-governance-pattern.md) | Data Governance Pattern | Accepted |
 | [018](018-feature-store-pattern.md) | S3-Based Feature Store | Accepted |
+| [019](019-automated-testing-framework.md) | Automated Testing Framework | Accepted |
