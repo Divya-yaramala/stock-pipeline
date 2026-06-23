@@ -373,6 +373,16 @@ python -c "from ingestion.quality_scorer import run_quality_scoring; import os, 
 python -c "from ingestion.test_framework import run_test_suite; import os, datetime; print(run_test_suite(os.getenv('AWS_BUCKET_NAME'), datetime.datetime.now().strftime('%Y-%m-%d')))"
 ```
 
+## ML Model Explainability
+
+```bash
+# Run ensemble prediction for a ticker
+python -c "from ingestion.ensemble_model import run_ensemble_prediction; import os; print(run_ensemble_prediction('AAPL', os.getenv('AWS_BUCKET_NAME')))"
+
+# Get model explanation
+python -c "from ingestion.model_explainer import run_model_explanation; import os; print(run_model_explanation('AAPL', os.getenv('AWS_BUCKET_NAME')))"
+```
+
 ## ML Model Serving
 
 ```bash
