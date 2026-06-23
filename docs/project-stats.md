@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 31 ingestion modules + 6 scripts |
+| Python files | 33 ingestion modules + 6 scripts |
 | Test files | 16 test files |
-| Total tests | 261 passing |
+| Total tests | 281 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 19 architecture decisions |
+| ADRs | 20 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -65,6 +65,9 @@
 33. Automated Test Suite (8 tests, 4 categories)
 34. Data Quality Scoring (5 dimensions + letter grades)
 35. Quality Trend Analysis (7-day history)
+36. Ensemble ML Models (RF + GB + Linear)
+37. Model Explainability (SHAP approximation)
+38. Human-readable Prediction Explanations
 
 ## Development Statistics
 | Metric | Count |
