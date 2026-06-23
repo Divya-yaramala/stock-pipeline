@@ -29,3 +29,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [017](017-data-governance-pattern.md) | Data Governance Pattern | Accepted |
 | [018](018-feature-store-pattern.md) | S3-Based Feature Store | Accepted |
 | [019](019-automated-testing-framework.md) | Automated Testing Framework | Accepted |
+| [020](020-ensemble-models-pattern.md) | Ensemble Models over Single Model | Accepted |
