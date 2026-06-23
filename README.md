@@ -699,5 +699,12 @@ stock-pipeline/
 - Portfolio-level quality score combining all tickers
 - 10 unit tests passing green
 
+### ✅ Day 44 — Ensemble Models + Model Explainability
+- Built ensemble model combining Random Forest, Gradient Boosting, Linear Regression
+- Weighted averaging for ensemble predictions
+- Model explainability with feature importance and SHAP approximation
+- Human-readable prediction explanations per ticker
+- 10 unit tests passing green
+
 ---
 *Built with ❤️ over 25 days as a portfolio project demonstrating production-grade data engineering.*

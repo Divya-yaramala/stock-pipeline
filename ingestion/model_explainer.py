@@ -22,13 +22,8 @@ def calculate_feature_importance(model: Any, feature_names: list) -> dict:
     else:
         importances = np.ones(len(feature_names)) / len(feature_names)
 
-    importance_dict = {
-        name: round(float(imp), 6)
-        for name, imp in zip(feature_names, importances)
-    }
-    sorted_dict = dict(
-        sorted(importance_dict.items(), key=lambda x: x[1], reverse=True)
-    )
+    importance_dict = {name: round(float(imp), 6) for name, imp in zip(feature_names, importances)}
+    sorted_dict = dict(sorted(importance_dict.items(), key=lambda x: x[1], reverse=True))
     top5 = list(sorted_dict.items())[:5]
     logger.info("Top 5 features: %s", top5)
     return sorted_dict
@@ -46,12 +41,8 @@ def calculate_shap_values(model: Any, X: pd.DataFrame) -> dict:
         avg_impact = round(base_importance * col_std, 6)
         shap_approx[feature] = avg_impact
 
-    shap_approx = dict(
-        sorted(shap_approx.items(), key=lambda x: abs(x[1]), reverse=True)
-    )
-    logger.info(
-        "SHAP approximation computed for %d features", len(shap_approx)
-    )
+    shap_approx = dict(sorted(shap_approx.items(), key=lambda x: abs(x[1]), reverse=True))
+    logger.info("SHAP approximation computed for %d features", len(shap_approx))
     return shap_approx
 
 
@@ -80,14 +71,11 @@ def generate_explanation_report(
 
     reasons = []
     for i, (feat, imp) in enumerate(top_features, start=1):
-        desc, signal = signal_map.get(
-            feat, (f"{feat} was influential", "notable signal")
-        )
+        desc, signal = signal_map.get(feat, (f"{feat} was influential", "notable signal"))
         reasons.append(f"{i}. {desc} ({signal}, importance={imp:.4f})")
 
-    explanation_text = (
-        f"The model predicted ${prediction:.2f} for {ticker} because:\n"
-        + "\n".join(reasons)
+    explanation_text = f"The model predicted ${prediction:.2f} for {ticker} because:\n" + "\n".join(
+        reasons
     )
 
     report = {
@@ -101,9 +89,7 @@ def generate_explanation_report(
     return report
 
 
-def save_explanation_to_s3(
-    explanation: dict, ticker: str, bucket: str, date: str
-) -> bool:
+def save_explanation_to_s3(explanation: dict, ticker: str, bucket: str, date: str) -> bool:
     dt = datetime.strptime(date, "%Y-%m-%d")
     key = f"models/explanations/{dt.strftime('%Y/%m/%d')}/{ticker}.json"
     try:
