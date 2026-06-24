@@ -50,7 +50,7 @@ def should_inject_chaos(scenario_id: str) -> bool:
     scenario = next((s for s in CHAOS_SCENARIOS if s["scenario_id"] == scenario_id), None)
     if not scenario:
         return False
-    result = random.random() < scenario["probability"]
+    result = random.random() < float(str(scenario["probability"]))
     if result:
         logger.info(f"Chaos injected: {scenario['name']} ({scenario_id})")
     return result
@@ -88,7 +88,7 @@ def run_chaos_report(bucket: str, date: str) -> dict:
         prefix = f"chaos/{dt.year:04d}/{dt.month:02d}/{dt.day:02d}/"
         response = s3.list_objects_v2(Bucket=bucket, Prefix=prefix)
         objects = response.get("Contents", [])
-        by_scenario = {}
+        by_scenario: dict[str, int] = {}
         for obj in objects:
             try:
                 body = s3.get_object(Bucket=bucket, Key=obj["Key"])["Body"].read()
