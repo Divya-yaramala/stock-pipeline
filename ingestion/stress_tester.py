@@ -1,10 +1,12 @@
 import concurrent.futures
-import time
-import logging
-import os
 import datetime
-import boto3
 import json
+import logging
+import random
+import time
+
+import boto3
+import yfinance as yf
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -37,7 +39,9 @@ def stress_test_s3_uploads(bucket: str, num_files: int = 100, num_workers: int =
     total_time = time.time() - start
     success_rate = results["success"] / num_files if num_files > 0 else 0
     files_per_second = results["success"] / total_time if total_time > 0 else 0
-    logger.info(f"S3 stress test done: {files_per_second:.1f} files/sec, {success_rate:.1%} success")
+    logger.info(
+        f"S3 stress test done: {files_per_second:.1f} files/sec, {success_rate:.1%} success"
+    )
     return {
         "total_time": total_time,
         "files_per_second": files_per_second,
@@ -47,8 +51,6 @@ def stress_test_s3_uploads(bucket: str, num_files: int = 100, num_workers: int =
 
 
 def stress_test_api_calls(num_calls: int = 50, num_workers: int = 5) -> dict:
-    import yfinance as yf
-
     tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "META"]
     latencies = []
     results = {"success": 0, "failure": 0}
@@ -57,7 +59,7 @@ def stress_test_api_calls(num_calls: int = 50, num_workers: int = 5) -> dict:
         ticker = tickers[i % len(tickers)]
         t0 = time.time()
         try:
-            data = yf.Ticker(ticker).history(period="1d")
+            yf.Ticker(ticker).history(period="1d")
             elapsed = (time.time() - t0) * 1000
             return True, elapsed
         except Exception:
@@ -81,7 +83,10 @@ def stress_test_api_calls(num_calls: int = 50, num_workers: int = 5) -> dict:
     success_rate = results["success"] / num_calls if num_calls > 0 else 0
     calls_per_second = num_calls / total_time if total_time > 0 else 0
     avg_latency_ms = sum(latencies) / len(latencies) if latencies else 0
-    logger.info(f"API stress test done: {calls_per_second:.1f} calls/sec, avg latency {avg_latency_ms:.0f}ms")
+    logger.info(
+        f"API stress test done: {calls_per_second:.1f} calls/sec, "
+        f"avg latency {avg_latency_ms:.0f}ms"
+    )
     return {
         "total_time": total_time,
         "calls_per_second": calls_per_second,
@@ -92,8 +97,6 @@ def stress_test_api_calls(num_calls: int = 50, num_workers: int = 5) -> dict:
 
 
 def stress_test_data_processing(num_records: int = 1000) -> dict:
-    import random
-
     tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "META"]
     records = [
         {
@@ -121,7 +124,10 @@ def stress_test_data_processing(num_records: int = 1000) -> dict:
     validation_time = time.time() - start
     records_per_second = num_records / validation_time if validation_time > 0 else 0
     quality_score = (valid_count / num_records * 100) if num_records > 0 else 0
-    logger.info(f"Data processing stress test done: {records_per_second:.0f} records/sec, quality {quality_score:.1f}%")
+    logger.info(
+        f"Data processing stress test done: {records_per_second:.0f} records/sec, "
+        f"quality {quality_score:.1f}%"
+    )
     return {
         "records_per_second": records_per_second,
         "validation_time": validation_time,

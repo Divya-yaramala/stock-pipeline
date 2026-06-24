@@ -1,20 +1,46 @@
-import boto3
-import json
-import os
-import logging
 import datetime
+import json
+import logging
+import os
 import random
 import time
+
+import boto3
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 CHAOS_SCENARIOS = [
-    {"scenario_id": "C001", "name": "s3_latency", "description": "Simulate S3 high latency", "probability": 0.1},
-    {"scenario_id": "C002", "name": "api_timeout", "description": "Simulate API timeout", "probability": 0.1},
-    {"scenario_id": "C003", "name": "data_corruption", "description": "Simulate corrupted data", "probability": 0.05},
-    {"scenario_id": "C004", "name": "partial_failure", "description": "Simulate partial ticker failure", "probability": 0.15},
-    {"scenario_id": "C005", "name": "network_partition", "description": "Simulate network issues", "probability": 0.05},
+    {
+        "scenario_id": "C001",
+        "name": "s3_latency",
+        "description": "Simulate S3 high latency",
+        "probability": 0.1,
+    },
+    {
+        "scenario_id": "C002",
+        "name": "api_timeout",
+        "description": "Simulate API timeout",
+        "probability": 0.1,
+    },
+    {
+        "scenario_id": "C003",
+        "name": "data_corruption",
+        "description": "Simulate corrupted data",
+        "probability": 0.05,
+    },
+    {
+        "scenario_id": "C004",
+        "name": "partial_failure",
+        "description": "Simulate partial ticker failure",
+        "probability": 0.15,
+    },
+    {
+        "scenario_id": "C005",
+        "name": "network_partition",
+        "description": "Simulate network issues",
+        "probability": 0.05,
+    },
 ]
 
 
