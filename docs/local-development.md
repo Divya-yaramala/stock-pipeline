@@ -383,6 +383,22 @@ python -c "from ingestion.ensemble_model import run_ensemble_prediction; import 
 python -c "from ingestion.model_explainer import run_model_explanation; import os; print(run_model_explanation('AAPL', os.getenv('AWS_BUCKET_NAME')))"
 ```
 
+## Chaos Engineering
+
+```bash
+# Enable chaos mode (use with caution!)
+export CHAOS_ENABLED=true
+
+# Run chaos report for today
+python -c "from ingestion.chaos_engineer import run_chaos_report; import os, datetime; print(run_chaos_report(os.getenv('AWS_BUCKET_NAME'), datetime.datetime.now().strftime('%Y/%m/%d')))"
+
+# Run full stress test
+python -c "from ingestion.stress_tester import run_full_stress_test; import os; print(run_full_stress_test(os.getenv('AWS_BUCKET_NAME')))"
+```
+
+## Warning
+Never enable `CHAOS_ENABLED=true` in production without a rollback plan!
+
 ## ML Model Serving
 
 ```bash
