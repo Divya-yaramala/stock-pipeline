@@ -113,9 +113,9 @@ def stress_test_data_processing(num_records: int = 1000) -> dict:
     for rec in records:
         if (
             rec.get("price") is not None
-            and int(str(rec["price"])) > 0
+            and float(str(rec["price"])) > 0
             and rec.get("volume") is not None
-            and int(str(rec["volume"])) >= 0
+            and float(str(rec["volume"])) >= 0
             and rec.get("ticker")
             and rec.get("date")
         ):
