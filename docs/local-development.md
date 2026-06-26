@@ -418,6 +418,22 @@ python -c "from ingestion.secrets_manager import store_secret; import os; store_
 - Rotate secrets every 90 days
 - Check audit logs monthly
 
+## Workflow Management
+
+```bash
+# Check which workflows are due now
+python -c "from ingestion.workflow_manager import run_workflow_check; import os; print(run_workflow_check(os.getenv('AWS_BUCKET_NAME')))"
+
+# Get workflow history for last 7 days
+python -c "from ingestion.workflow_manager import get_workflow_history; import os; print(get_workflow_history('W001', os.getenv('AWS_BUCKET_NAME')))"
+
+# Create a custom schedule
+python -c "from ingestion.pipeline_scheduler import create_schedule; import os; create_schedule('my_schedule', '0 9 * * 1-5', ['fetch', 'validate'], os.getenv('AWS_BUCKET_NAME'))"
+
+# Check next run time
+python -c "from ingestion.pipeline_scheduler import get_next_run_time; from datetime import datetime; print(get_next_run_time('0 6 * * 1-5', datetime.now()))"
+```
+
 ## ML Model Serving
 
 ```bash
