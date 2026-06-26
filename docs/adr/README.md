@@ -31,3 +31,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [019](019-automated-testing-framework.md) | Automated Testing Framework | Accepted |
 | [020](020-ensemble-models-pattern.md) | Ensemble Models over Single Model | Accepted |
 | [021](021-chaos-engineering-pattern.md) | Chaos Engineering Pattern | Accepted |
+| [022](022-secrets-management-pattern.md) | Secrets Management Pattern | Accepted |
