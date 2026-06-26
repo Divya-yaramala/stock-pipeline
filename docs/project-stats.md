@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 35 ingestion modules + 6 scripts |
+| Python files | 37 ingestion modules + 6 scripts |
 | Test files | 16 test files |
-| Total tests | 291 passing |
+| Total tests | 301 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 21 architecture decisions |
+| ADRs | 22 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -70,6 +70,9 @@
 38. Human-readable Prediction Explanations
 39. Chaos Engineering (5 failure scenarios)
 40. Stress Testing (S3, API, data processing benchmarks)
+41. Secrets Manager (encryption + audit logging)
+42. Security Scanner (hardcoded credential detection)
+43. Secret Rotation (timestamp tracking)
 
 ## Development Statistics
 | Metric | Count |
