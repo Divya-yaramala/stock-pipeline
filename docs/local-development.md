@@ -399,6 +399,25 @@ python -c "from ingestion.stress_tester import run_full_stress_test; import os; 
 ## Warning
 Never enable `CHAOS_ENABLED=true` in production without a rollback plan!
 
+## Security
+
+```bash
+# Scan codebase for hardcoded secrets
+python -c "from ingestion.security_scanner import run_security_scan; import os; print(run_security_scan('ingestion/', os.getenv('AWS_BUCKET_NAME')))"
+
+# List all stored secrets (names only)
+python -c "from ingestion.secrets_manager import list_secrets; import os; print(list_secrets(os.getenv('AWS_BUCKET_NAME')))"
+
+# Store a new secret
+python -c "from ingestion.secrets_manager import store_secret; import os; store_secret('my_api_key', 'value', os.getenv('AWS_BUCKET_NAME'))"
+```
+
+## Security Best Practices
+- Never commit .env files
+- Run security scanner before every PR
+- Rotate secrets every 90 days
+- Check audit logs monthly
+
 ## ML Model Serving
 
 ```bash
