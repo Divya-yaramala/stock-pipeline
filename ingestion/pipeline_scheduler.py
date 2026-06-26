@@ -1,9 +1,9 @@
-import boto3
-import json
-import os
-import logging
 import datetime
+import json
+import logging
 import time
+
+import boto3
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
@@ -71,7 +71,9 @@ def get_next_run_time(cron_expr: str, from_time: datetime.datetime) -> datetime.
     if candidate <= from_time:
         candidate += datetime.timedelta(hours=1 if parts[1] == "*" else 24)
 
-    logger.info("Next run for '%s' after %s is %s", cron_expr, from_time.isoformat(), candidate.isoformat())
+    logger.info(
+        "Next run for '%s' after %s is %s", cron_expr, from_time.isoformat(), candidate.isoformat()
+    )
     return candidate
 
 

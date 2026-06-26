@@ -1,9 +1,8 @@
-import boto3
-import json
-import os
-import logging
 import datetime
-import time
+import json
+import logging
+
+import boto3
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
@@ -89,7 +88,10 @@ def is_workflow_due(workflow: dict, current_time: datetime.datetime) -> bool:
 def trigger_workflow(workflow_id: str, bucket: str) -> bool:
     now = datetime.datetime.utcnow()
     timestamp = now.strftime("%Y%m%d%H%M%S")
-    key = f"workflows/triggers/{now.year}/{now.month:02d}/{now.day:02d}/{workflow_id}_{timestamp}.json"
+    key = (
+        f"workflows/triggers/{now.year}/{now.month:02d}"
+        f"/{now.day:02d}/{workflow_id}_{timestamp}.json"
+    )
     record = {
         "workflow_id": workflow_id,
         "triggered_at": now.isoformat(),
