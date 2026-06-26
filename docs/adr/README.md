@@ -32,3 +32,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [020](020-ensemble-models-pattern.md) | Ensemble Models over Single Model | Accepted |
 | [021](021-chaos-engineering-pattern.md) | Chaos Engineering Pattern | Accepted |
 | [022](022-secrets-management-pattern.md) | Secrets Management Pattern | Accepted |
+| [023](023-workflow-management-pattern.md) | Workflow Management Pattern | Accepted |
