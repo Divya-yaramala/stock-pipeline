@@ -33,3 +33,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [021](021-chaos-engineering-pattern.md) | Chaos Engineering Pattern | Accepted |
 | [022](022-secrets-management-pattern.md) | Secrets Management Pattern | Accepted |
 | [023](023-workflow-management-pattern.md) | Workflow Management Pattern | Accepted |
+| [024](024-business-intelligence-metrics.md) | Business Intelligence Metrics | Accepted |
