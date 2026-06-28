@@ -418,6 +418,19 @@ python -c "from ingestion.secrets_manager import store_secret; import os; store_
 - Rotate secrets every 90 days
 - Check audit logs monthly
 
+## Property-Based Testing
+
+```bash
+# Run all property tests
+python -c "from ingestion.property_tester import run_all_property_tests; import os; print(run_all_property_tests(os.getenv('AWS_BUCKET_NAME')))"
+
+# Run mutation analysis on ingestion folder
+python -c "from ingestion.mutation_analyzer import run_mutation_analysis; print(run_mutation_analysis('ingestion/'))"
+
+# Generate edge case events
+python -c "from ingestion.property_tester import generate_edge_case_events; import json; print(json.dumps(generate_edge_case_events(), indent=2))"
+```
+
 ## Workflow Management
 
 ```bash
