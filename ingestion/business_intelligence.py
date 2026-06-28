@@ -1,11 +1,9 @@
 import json
 import logging
-import os
 from datetime import datetime, timedelta
 
 import boto3
 import numpy as np
-import pandas as pd
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -31,9 +29,7 @@ def calculate_market_cap_weighted_index(prices: dict, market_caps: dict) -> floa
     total_cap = sum(market_caps[t] for t in prices if t in market_caps)
     if total_cap == 0:
         return 0.0
-    index = sum(
-        prices[t] * market_caps[t] / total_cap for t in prices if t in market_caps
-    )
+    index = sum(prices[t] * market_caps[t] / total_cap for t in prices if t in market_caps)
     logger.info("Market cap weighted index calculated: %.2f", index)
     return round(index, 2)
 
@@ -47,8 +43,7 @@ def calculate_sector_performance(prices: dict, sectors: dict) -> dict:
             sector_totals[sector] = sector_totals.get(sector, 0.0) + ret
             sector_counts[sector] = sector_counts.get(sector, 0) + 1
     result = {
-        sector: round(sector_totals[sector] / sector_counts[sector], 4)
-        for sector in sector_totals
+        sector: round(sector_totals[sector] / sector_counts[sector], 4) for sector in sector_totals
     }
     logger.info("Sector performance calculated: %s", result)
     return result
