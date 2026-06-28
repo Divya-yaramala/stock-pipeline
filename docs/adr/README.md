@@ -34,3 +34,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [022](022-secrets-management-pattern.md) | Secrets Management Pattern | Accepted |
 | [023](023-workflow-management-pattern.md) | Workflow Management Pattern | Accepted |
 | [024](024-business-intelligence-metrics.md) | Business Intelligence Metrics | Accepted |
+| [025](025-property-based-testing.md) | Property-Based Testing Pattern | Accepted |
