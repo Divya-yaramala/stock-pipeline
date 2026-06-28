@@ -81,8 +81,8 @@ def get_kpi_status(kpi_id: str, value: float) -> str:
     kpi = next((k for k in PIPELINE_KPIS if k["kpi_id"] == kpi_id), None)
     if not kpi:
         return "off_track"
-    target = kpi["target"]
-    direction = kpi["direction"]
+    target = float(str(kpi["target"]))
+    direction = str(kpi["direction"])
     if direction == "higher_is_better":
         if value >= target * 0.95:
             return "on_track"
@@ -122,7 +122,7 @@ def get_kpi_trend(kpi_id: str, bucket: str, days: int = 7) -> str:
     change_pct = (recent - older) / abs(older) if older != 0 else 0
     if abs(change_pct) < 0.01:
         return "stable"
-    if kpi["direction"] == "higher_is_better":
+    if str(kpi["direction"]) == "higher_is_better":
         return "improving" if change_pct > 0 else "declining"
     else:
         return "improving" if change_pct < 0 else "declining"
@@ -133,14 +133,14 @@ def generate_kpi_dashboard(bucket: str, date: str) -> dict:
     dt = datetime.strptime(date, "%Y-%m-%d")
     kpi_results = []
     for kpi in PIPELINE_KPIS:
-        kpi_id = kpi["kpi_id"]
+        kpi_id = str(kpi["kpi_id"])
         key = f"kpis/{dt.strftime('%Y/%m/%d')}/{kpi_id}.json"
         try:
             resp = s3.get_object(Bucket=bucket, Key=key)
             data = json.loads(resp["Body"].read().decode("utf-8"))
-            value = float(data.get("value", kpi["target"]))
+            value = float(data.get("value", float(str(kpi["target"]))))
         except Exception:
-            value = float(kpi["target"])
+            value = float(str(kpi["target"]))
         status = get_kpi_status(kpi_id, value)
         trend = get_kpi_trend(kpi_id, bucket)
         kpi_results.append(
@@ -175,8 +175,8 @@ def run_kpi_tracking(bucket: str) -> dict:
         "K006": 280.0,
     }
     for kpi in PIPELINE_KPIS:
-        kpi_id = kpi["kpi_id"]
-        value = current_values.get(kpi_id, float(kpi["target"]))
+        kpi_id = str(kpi["kpi_id"])
+        value = current_values.get(kpi_id, float(str(kpi["target"])))
         record_kpi(kpi_id, value, bucket, date)
     dashboard = generate_kpi_dashboard(bucket, date)
     s3 = boto3.client("s3")
