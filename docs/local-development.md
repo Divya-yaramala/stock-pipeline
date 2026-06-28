@@ -434,6 +434,24 @@ python -c "from ingestion.pipeline_scheduler import create_schedule; import os; 
 python -c "from ingestion.pipeline_scheduler import get_next_run_time; from datetime import datetime; print(get_next_run_time('0 6 * * 1-5', datetime.now()))"
 ```
 
+## Business Intelligence
+
+```bash
+# Run full BI analysis for all tickers
+python -c "from ingestion.business_intelligence import run_bi_analysis; import os; print(run_bi_analysis(os.getenv('AWS_BUCKET_NAME')))"
+
+# Get KPI dashboard
+python -c "from ingestion.kpi_tracker import run_kpi_tracking; import os; print(run_kpi_tracking(os.getenv('AWS_BUCKET_NAME')))"
+
+# Calculate Sharpe ratio manually
+python -c "from ingestion.business_intelligence import calculate_sharpe_ratio; print(calculate_sharpe_ratio([0.01, 0.02, -0.005, 0.015, 0.008]))"
+```
+
+## Key Financial Metrics
+- Sharpe Ratio > 1.0 = good risk-adjusted return
+- Max Drawdown < -20% = high risk portfolio
+- Market-cap weighted index mirrors S&P 500 methodology
+
 ## ML Model Serving
 
 ```bash
