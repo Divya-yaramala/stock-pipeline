@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 39 ingestion modules + 6 scripts |
+| Python files | 41 ingestion modules + 6 scripts |
 | Test files | 16 test files |
-| Total tests | 311 passing |
+| Total tests | 321 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 23 architecture decisions |
+| ADRs | 24 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -76,6 +76,9 @@
 44. Workflow Manager (5 predefined workflows)
 45. Pipeline Scheduler (cron-based scheduling)
 46. Next Run Time Calculator
+47. Business Intelligence (Sharpe ratio, max drawdown)
+48. KPI Tracking (6 KPIs with status and trends)
+49. Market-Cap Weighted Index calculation
 
 ## Development Statistics
 | Metric | Count |
