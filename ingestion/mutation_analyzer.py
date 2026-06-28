@@ -77,9 +77,7 @@ def calculate_mutation_score(total_mutations: int, killed_mutations: int) -> flo
     if total_mutations == 0:
         return 0.0
     score = round(killed_mutations / total_mutations * 100, 2)
-    logger.info(
-        "Mutation score: %.2f%% (%d/%d killed)", score, killed_mutations, total_mutations
-    )
+    logger.info("Mutation score: %.2f%% (%d/%d killed)", score, killed_mutations, total_mutations)
     return score
 
 

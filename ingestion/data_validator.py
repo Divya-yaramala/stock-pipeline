@@ -87,7 +87,7 @@ def validate_anomaly_data(data: dict, ticker: str) -> dict:
 
 
 def validate_price_event(event: dict) -> bool:
-    """Validate a stock price event dict. Returns True if all required fields are present and valid."""
+    """Validate a stock price event dict. Returns True if required fields are present and valid."""
     required_keys = {"ticker", "price_usd", "timestamp", "volume"}
     if not required_keys.issubset(event.keys()):
         return False
