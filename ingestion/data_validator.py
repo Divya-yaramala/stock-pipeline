@@ -86,6 +86,21 @@ def validate_anomaly_data(data: dict, ticker: str) -> dict:
     return report
 
 
+def validate_price_event(event: dict) -> bool:
+    """Validate a stock price event dict. Returns True if all required fields are present and valid."""
+    required_keys = {"ticker", "price_usd", "timestamp", "volume"}
+    if not required_keys.issubset(event.keys()):
+        return False
+    try:
+        if float(event["price_usd"]) <= 0:
+            return False
+        if int(event["volume"]) < 0:
+            return False
+    except (TypeError, ValueError):
+        return False
+    return True
+
+
 def save_validation_report(report: dict, ticker: str, bucket: str, date: str) -> bool:
     """Save a validation report JSON to S3 at processed/validation/YYYY/MM/DD/ticker.json."""
     try:
