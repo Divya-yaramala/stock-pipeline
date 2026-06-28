@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-108%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-321%20passing-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
@@ -62,12 +62,13 @@
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 108 passing |
-| Airflow tasks | 13 |
-| dbt models | 6 |
-| ADRs | 7 |
-| Production patterns | 10 |
-| Days to build | 25 |
+| Total tests | 321 passing |
+| Ingestion modules | 41 |
+| Test files | 66 |
+| ADRs | 24 |
+| Production patterns | 49 |
+| Airflow tasks | 16 |
+| Days built | 48 |
 | CI/CD workflows | 2 |
 
 ---
@@ -308,22 +309,48 @@ stock-pipeline/
 │   └── stock_price_pipeline.py     # Airflow DAG — 13-task daily pipeline
 │
 ├── ingestion/
-│   ├── fetch_stocks.py             # Yahoo Finance → S3 with date partitioning
-│   ├── anomaly_detector.py         # Isolation Forest ML anomaly detection
-│   ├── price_predictor.py          # Facebook Prophet 5-day price forecasting
-│   ├── market_insights.py          # GPT-3.5 daily market summary generation
-│   ├── data_validator.py           # 7-point data quality validation checks
-│   ├── pipeline_monitor.py         # Per-step execution metrics tracking
-│   ├── dead_letter_queue.py        # Failed record capture and replay
-│   ├── slack_alerter.py            # Slack webhook notifications
-│   ├── lineage_tracker.py          # End-to-end data lineage recording
-│   ├── incremental_loader.py       # Gap detection and automatic backfill
-│   ├── quality_reporter.py         # Ticker-level quality scoring (0–100%)
-│   ├── sla_monitor.py              # SLA compliance tracking and alerting
-│   ├── s3_optimizer.py             # S3 cost analysis and archiving
-│   ├── resource_manager.py         # CPU/memory/disk resource gate
-│   ├── snowflake_sync.py           # Snowflake bulk load from S3
-│   └── config_manager.py           # Typed config via Python dataclasses
+│   ├── fetch_stocks.py             # Yahoo Finance API ingestion
+│   ├── anomaly_detector.py         # Isolation Forest ML model
+│   ├── price_predictor.py          # Prophet forecasting
+│   ├── market_insights.py          # GPT market summaries
+│   ├── snowflake_sync.py           # Snowflake data sync
+│   ├── data_validator.py           # 7-point data quality checks
+│   ├── dead_letter_queue.py        # Failed record capture/replay
+│   ├── lineage_tracker.py          # Data lineage recording
+│   ├── pipeline_monitor.py         # Run metrics tracking
+│   ├── quality_reporter.py         # Quality score reporting
+│   ├── sla_monitor.py              # SLA threshold monitoring
+│   ├── slack_alerter.py            # Slack notifications
+│   ├── s3_optimizer.py             # S3 cost optimization
+│   ├── resource_manager.py         # System resource checks
+│   ├── config_manager.py           # Typed configuration
+│   ├── report_generator.py         # HTML report generation
+│   ├── email_notifier.py           # Email notifications
+│   ├── portfolio_tracker.py        # Portfolio value tracking
+│   ├── technical_indicators.py     # SMA, RSI, BB, MACD
+│   ├── news_sentiment.py           # News sentiment analysis
+│   ├── market_correlation.py       # Correlation matrix + Beta
+│   ├── feature_engineer.py         # ML feature engineering
+│   ├── model_comparator.py         # RF vs Linear comparison
+│   ├── model_registry.py           # ML model versioning
+│   ├── experiment_tracker.py       # ML experiment tracking
+│   ├── model_server.py             # Production ML serving
+│   ├── feature_store.py            # S3-based feature store
+│   ├── ensemble_model.py           # RF + GB + Linear ensemble
+│   ├── model_explainer.py          # SHAP explainability
+│   ├── data_versioner.py           # Data versioning + rollback
+│   ├── data_catalog.py             # Dataset catalog
+│   ├── metadata_manager.py         # Tags + data contracts
+│   ├── data_governance.py          # Classification + masking
+│   ├── compliance_checker.py       # 5 compliance rules
+│   ├── cache_manager.py            # S3 caching with TTL
+│   ├── performance_optimizer.py    # Parallel processing
+│   ├── alerting_rules.py           # 5-rule alerting engine
+│   ├── monitoring_dashboard.py     # HTML KPI dashboard
+│   ├── pipeline_orchestrator.py    # Step status tracking
+│   ├── dependency_resolver.py      # Topological sort + critical path
+│   ├── business_intelligence.py    # Sharpe ratio, max drawdown, sector perf
+│   └── kpi_tracker.py              # 6 KPIs with status and trend tracking
 │
 ├── dbt_project/
 │   └── models/
