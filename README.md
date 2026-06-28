@@ -49,15 +49,15 @@ Power BI / AI Insights
 
 ## 📂 Project Structure
 
-```text
 stock-pipeline/
 │
-├── dags/                  # Airflow DAGs
-├── dbt/                   # dbt models and transformations
-├── src/                   # Python ingestion scripts
-├── sql/                   # SQL scripts
-├── data/                  # Sample data files
-├── images/                # Screenshots and architecture images
-├── config/                # Configuration files
-├── requirements.txt       # Python dependencies
-└── README.md              # Project documentation
+├── infrastructure/
+├── ingestion/
+├── postgres/
+├── scripts/
+├── tests/
+├── docker-compose.yml
+├── requirements.txt
+├── pyproject.toml
+├── Makefile
+└── README.md
