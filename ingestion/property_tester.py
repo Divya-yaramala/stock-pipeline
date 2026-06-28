@@ -4,6 +4,7 @@ import os
 import random
 import string
 from datetime import datetime
+from typing import Optional
 
 import boto3
 
@@ -13,7 +14,7 @@ logger = logging.getLogger(__name__)
 TICKERS = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"]
 
 
-def generate_random_stock_event(ticker: str = None) -> dict:
+def generate_random_stock_event(ticker: Optional[str] = None) -> dict:
     if ticker is None:
         ticker = random.choice(TICKERS)
     price = round(random.uniform(10.0, 10000.0), 4)
