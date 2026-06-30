@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 43 ingestion modules + 6 scripts |
+| Python files | 45 ingestion modules + 6 scripts |
 | Test files | 16 test files |
-| Total tests | 331 passing |
+| Total tests | 341 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 25 architecture decisions |
+| ADRs | 26 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -82,6 +82,10 @@
 50. Property-Based Testing (100 random samples)
 51. Mutation Testing Analysis (AST-based)
 52. Edge Case Generator (7 boundary conditions)
+53. Incremental Loading (watermark-based)
+54. Gap Detection (missing date finder)
+55. Data Versioning (version ID + rollback)
+56. Version Comparison (diff between versions)
 
 ## Development Statistics
 | Metric | Count |
