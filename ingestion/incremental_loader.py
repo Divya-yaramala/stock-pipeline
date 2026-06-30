@@ -2,7 +2,7 @@ import json
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import Any
+from typing import Any, Dict, List, Optional
 
 import boto3
 import yfinance as yf
@@ -10,153 +10,132 @@ import yfinance as yf
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
-from ingestion.config_manager import load_pipeline_config
-
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
 
-INSERT_SQL = """
-    INSERT INTO staging.stock_prices_raw
-        (ticker, trade_date, open_price, high_price, low_price, close_price, volume)
-    VALUES (%s, %s, %s, %s, %s, %s, %s)
-    ON CONFLICT (ticker, trade_date) DO NOTHING
-"""
 
-
-def get_last_loaded_date(ticker: str, conn: Any) -> str | None:
-    """Return MAX(trade_date) for ticker from Postgres, or None if no rows exist."""
-    with conn.cursor() as cur:
-        cur.execute(
-            "SELECT MAX(trade_date) FROM staging.stock_prices_raw WHERE ticker = %s",
-            (ticker,),
-        )
-        result = cur.fetchone()
-    if result and result[0]:
-        date_str = result[0].strftime("%Y-%m-%d")
+def get_last_loaded_date(ticker: str, bucket: str) -> Optional[str]:
+    s3 = boto3.client("s3", region_name=AWS_REGION)
+    key = f"watermarks/{ticker}.json"
+    try:
+        response = s3.get_object(Bucket=bucket, Key=key)
+        data = json.loads(response["Body"].read().decode("utf-8"))
+        date_str = str(data["last_loaded_date"])
         logger.info("Last loaded date for %s: %s", ticker, date_str)
         return date_str
-    logger.info("No data found in Postgres for %s", ticker)
-    return None
+    except Exception:
+        logger.info("No watermark found for %s", ticker)
+        return None
 
 
-def get_missing_dates(ticker: str, conn: Any) -> list:
-    """Return weekday dates (YYYY/MM/DD) between last loaded date and yesterday."""
-    last_date_str = get_last_loaded_date(ticker, conn)
-    if not last_date_str:
-        logger.info("No baseline date for %s — skipping gap detection", ticker)
-        return []
+def save_watermark(ticker: str, date: str, bucket: str) -> bool:
+    s3 = boto3.client("s3", region_name=AWS_REGION)
+    key = f"watermarks/{ticker}.json"
+    payload = json.dumps({"last_loaded_date": date})
+    try:
+        s3.put_object(Bucket=bucket, Key=key, Body=payload)
+        logger.info("Saved watermark for %s: %s", ticker, date)
+        return True
+    except Exception as e:
+        logger.error("Failed to save watermark for %s: %s", ticker, e)
+        return False
 
-    last_date = datetime.strptime(last_date_str, "%Y-%m-%d").date()
-    yesterday = (datetime.now() - timedelta(days=1)).date()
 
-    missing = []
-    current = last_date + timedelta(days=1)
-    while current <= yesterday:
+def detect_data_gaps(
+    ticker: str,
+    bucket: str,
+    start_date: str,
+    end_date: str,
+) -> List[str]:
+    s3 = boto3.client("s3", region_name=AWS_REGION)
+    start = datetime.strptime(start_date, "%Y-%m-%d").date()
+    end = datetime.strptime(end_date, "%Y-%m-%d").date()
+
+    missing: List[str] = []
+    current = start
+    while current <= end:
         if current.weekday() < 5:
-            missing.append(current.strftime("%Y/%m/%d"))
+            date_slash = current.strftime("%Y/%m/%d")
+            key = f"raw/stocks/{date_slash}/{ticker}.json"
+            try:
+                s3.head_object(Bucket=bucket, Key=key)
+            except Exception:
+                missing.append(current.strftime("%Y-%m-%d"))
         current += timedelta(days=1)
 
-    logger.info("Found %d missing dates for %s", len(missing), ticker)
+    logger.info(
+        "Detected %d gaps for %s between %s and %s",
+        len(missing),
+        ticker,
+        start_date,
+        end_date,
+    )
     return missing
 
 
-def backfill_ticker(ticker: str, conn: Any, bucket: str, start_date: str, end_date: str) -> int:
-    """Download historical data from yfinance, upload to S3, and insert into Postgres.
-
-    start_date / end_date must be in YYYY-MM-DD format. end_date is exclusive (yfinance).
-    Returns number of rows successfully loaded.
-    """
-    s3 = boto3.client("s3", region_name=AWS_REGION)
+def load_incremental_data(
+    ticker: str,
+    start_date: str,
+    end_date: str,
+) -> Dict[str, Any]:
     df = yf.download(ticker, start=start_date, end=end_date, progress=False)
+    result: Dict[str, Any] = {}
 
     if df.empty:
-        logger.warning(
-            "No data from yfinance for %s between %s and %s", ticker, start_date, end_date
-        )
-        return 0
+        logger.info("No data from yfinance for %s between %s and %s", ticker, start_date, end_date)
+        return result
 
     if hasattr(df.columns, "levels"):
         df.columns = df.columns.get_level_values(0)
     df.columns = [col.lower() for col in df.columns]
 
-    rows_loaded = 0
-    for i, (date_idx, row) in enumerate(df.iterrows()):
-        try:
-            date_slash = date_idx.strftime("%Y/%m/%d")
-            trade_date = date_idx.strftime("%Y-%m-%d")
-            key = f"raw/stocks/{date_slash}/{ticker}.json"
+    for date_idx, row in df.iterrows():
+        trade_date = date_idx.strftime("%Y-%m-%d")
+        result[trade_date] = {
+            "open": float(str(row.get("open") or 0)),
+            "high": float(str(row.get("high") or 0)),
+            "low": float(str(row.get("low") or 0)),
+            "close": float(str(row.get("close") or 0)),
+            "volume": int(str(int(row.get("volume") or 0))),
+        }
 
-            day_data = {
-                "open": {trade_date: float(row.get("open") or 0)},
-                "high": {trade_date: float(row.get("high") or 0)},
-                "low": {trade_date: float(row.get("low") or 0)},
-                "close": {trade_date: float(row.get("close") or 0)},
-                "volume": {trade_date: int(row.get("volume") or 0)},
-            }
-            s3.put_object(Bucket=bucket, Key=key, Body=json.dumps(day_data))
-
-            with conn.cursor() as cur:
-                cur.execute(
-                    INSERT_SQL,
-                    (
-                        ticker,
-                        trade_date,
-                        float(row.get("open") or 0),
-                        float(row.get("high") or 0),
-                        float(row.get("low") or 0),
-                        float(row.get("close") or 0),
-                        int(row.get("volume") or 0),
-                    ),
-                )
-            conn.commit()
-            rows_loaded += 1
-
-            if (i + 1) % 10 == 0:
-                logger.info("Backfilled %d/%d rows for %s", i + 1, len(df), ticker)
-        except Exception as e:
-            logger.error("Failed to backfill %s for %s: %s", trade_date, ticker, e)
-
-    logger.info("Backfill complete for %s: %d rows loaded", ticker, rows_loaded)
-    return rows_loaded
+    logger.info("Loaded %d records for %s", len(result), ticker)
+    return result
 
 
-def run_incremental_load() -> None:
-    """Detect data gaps for all tickers and backfill missing dates from yfinance."""
-    from scripts.setup_postgres import get_connection
+def run_incremental_load(tickers: List[str], bucket: str) -> Dict[str, Any]:
+    tickers_updated = 0
+    total_records = 0
+    gaps_filled = 0
 
-    bucket = os.environ.get("AWS_BUCKET_NAME", "")
-    conn = get_connection()
+    for ticker in tickers:
+        last_date = get_last_loaded_date(ticker, bucket)
+        start_date = (
+            last_date if last_date else (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
+        )
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
-    pipeline_cfg = load_pipeline_config()
-    tickers = pipeline_cfg.tickers
+        gaps = detect_data_gaps(ticker, bucket, start_date, end_date)
+        if not gaps:
+            logger.info("No gaps found for %s", ticker)
+            continue
 
-    total_rows = 0
-    tickers_loaded = 0
+        data = load_incremental_data(ticker, gaps[0], gaps[-1])
+        total_records += len(data)
+        gaps_filled += len(gaps)
 
-    try:
-        for ticker in tickers:
-            missing = get_missing_dates(ticker, conn)
-            if not missing:
-                logger.info("No missing dates for %s — skipping", ticker)
-                continue
+        if data:
+            new_watermark = max(data.keys())
+            save_watermark(ticker, new_watermark, bucket)
+            tickers_updated += 1
 
-            start = datetime.strptime(missing[0], "%Y/%m/%d").strftime("%Y-%m-%d")
-            end = (datetime.strptime(missing[-1], "%Y/%m/%d") + timedelta(days=1)).strftime(
-                "%Y-%m-%d"
-            )
-
-            rows = backfill_ticker(ticker, conn, bucket, start, end)
-            total_rows += rows
-            if rows > 0:
-                tickers_loaded += 1
-    finally:
-        conn.close()
-
-    logger.info(
-        "Incremental load complete: %d total rows loaded across %d tickers",
-        total_rows,
-        tickers_loaded,
-    )
+    result: Dict[str, Any] = {
+        "tickers_updated": tickers_updated,
+        "total_records": total_records,
+        "gaps_filled": gaps_filled,
+    }
+    logger.info("Incremental load summary: %s", result)
+    return result
 
 
 if __name__ == "__main__":
-    run_incremental_load()
+    pass
