@@ -497,3 +497,16 @@ python -c "from ingestion.data_versioner import list_versions; import os, dateti
 # Compare two versions
 python -c "from ingestion.data_versioner import compare_versions; import os, datetime; print(compare_versions('AAPL', 'prices', 'v1id1234', 'v2id5678', os.getenv('AWS_BUCKET_NAME'), datetime.datetime.now().strftime('%Y/%m/%d')))"
 ```
+
+## Model Drift Detection
+
+```bash
+# Run drift detection for a ticker
+python -c "from ingestion.drift_detector import run_drift_detection; import os; print(run_drift_detection('AAPL', os.getenv('AWS_BUCKET_NAME')))"
+
+# Check retraining schedule
+python -c "from ingestion.retraining_trigger import check_retraining_schedule; import os; print(check_retraining_schedule('anomaly_detector', os.getenv('AWS_BUCKET_NAME')))"
+
+# Run full retraining check across all tickers
+python -c "from ingestion.retraining_trigger import run_retraining_check; import os; print(run_retraining_check(['AAPL','MSFT','GOOGL','AMZN','TSLA'], os.getenv('AWS_BUCKET_NAME')))"
+```
