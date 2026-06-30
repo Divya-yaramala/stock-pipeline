@@ -775,5 +775,12 @@ stock-pipeline/
 - Version comparison shows added, removed, changed keys between versions
 - 10 unit tests passing green
 
+### ✅ Day 51 — Model Drift Detection + Retraining Triggers
+- Built PSI-based drift detector for features and predictions
+- Severity levels: none, moderate, significant
+- Retraining trigger combining drift signals and time-based schedule
+- Retraining job queue with pending/completed/failed status
+- 10 unit tests passing green
+
 ---
 *Built with ❤️ over 25 days as a portfolio project demonstrating production-grade data engineering.*
