@@ -214,3 +214,20 @@ The pipeline evaluates 5 default rules daily:
 | R005 | Prediction accuracy | < 70% | MEDIUM |
 
 Custom rules can be added via S3: monitoring/rules/custom_rules.json
+
+## API Quick Reference
+| API | Port | URL |
+|---|---|---|
+| REST | 8000 | http://localhost:8000/docs |
+| GraphQL | 8001 | http://localhost:8001/graphql |
+| WebSocket | 8002 | ws://localhost:8002/ws/prices |
+
+## MLOps Quick Reference
+| Stage | Module |
+|---|---|
+| Train | model_comparator.py, ensemble_model.py |
+| Register | model_registry.py |
+| Track | experiment_tracker.py |
+| Serve | model_server.py |
+| Monitor | drift_detector.py |
+| Retrain | retraining_trigger.py |
