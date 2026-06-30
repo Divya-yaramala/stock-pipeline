@@ -477,3 +477,23 @@ python -c "from ingestion.feature_store import run_feature_store_check; import o
 # Get serving stats
 python -c "from ingestion.model_server import get_model_serving_stats; import os, datetime; print(get_model_serving_stats(os.getenv('AWS_BUCKET_NAME'), datetime.datetime.now().strftime('%Y/%m/%d')))"
 ```
+
+## Incremental Loading
+
+```bash
+# Run incremental load for all tickers
+python -c "from ingestion.incremental_loader import run_incremental_load; import os; print(run_incremental_load(['AAPL','MSFT','GOOGL','AMZN','TSLA'], os.getenv('AWS_BUCKET_NAME')))"
+
+# Check last loaded date for a ticker
+python -c "from ingestion.incremental_loader import get_last_loaded_date; import os; print(get_last_loaded_date('AAPL', os.getenv('AWS_BUCKET_NAME')))"
+```
+
+## Data Versioning
+
+```bash
+# List all versions for a ticker
+python -c "from ingestion.data_versioner import list_versions; import os, datetime; print(list_versions('AAPL', 'prices', os.getenv('AWS_BUCKET_NAME'), datetime.datetime.now().strftime('%Y/%m/%d')))"
+
+# Compare two versions
+python -c "from ingestion.data_versioner import compare_versions; import os, datetime; print(compare_versions('AAPL', 'prices', 'v1id1234', 'v2id5678', os.getenv('AWS_BUCKET_NAME'), datetime.datetime.now().strftime('%Y/%m/%d')))"
+```
