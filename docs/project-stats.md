@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 45 ingestion modules + 6 scripts |
+| Python files | 47 ingestion modules + 6 scripts |
 | Test files | 16 test files |
-| Total tests | 341 passing |
+| Total tests | 361 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 26 architecture decisions |
+| ADRs | 27 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -86,6 +86,9 @@
 54. Gap Detection (missing date finder)
 55. Data Versioning (version ID + rollback)
 56. Version Comparison (diff between versions)
+57. Model Drift Detection (PSI-based)
+58. Retraining Triggers (schedule + drift based)
+59. Feature Distribution Monitoring
 
 ## Development Statistics
 | Metric | Count |
