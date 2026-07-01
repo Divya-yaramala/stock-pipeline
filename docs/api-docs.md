@@ -1,44 +1,56 @@
-# REST API Documentation
+# API Documentation — Stock Pipeline
 
-## Base URL
-http://localhost:8000
+## REST API (Port 8000)
+Start: uvicorn api.main:app --reload --port 8000
+Docs: http://localhost:8000/docs
 
-## Endpoints
+### Endpoints
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | /health | Health check |
+| GET | /prices/{ticker} | Latest stock prices |
+| GET | /anomalies/{ticker} | Anomaly detection results |
+| GET | /predictions/{ticker} | 5-day price predictions |
+| GET | /insights/{ticker} | GPT market insights |
+| GET | /sentiment/{ticker} | News sentiment score |
+| GET | /summary/{ticker} | Combined ticker summary |
 
-### Health Check
-GET /health
-Response: {"status": "healthy", "timestamp": "2026-06-04T12:00:00"}
+## GraphQL API (Port 8001)
+Start: uvicorn api.graphql_api:app --reload --port 8001
+Playground: http://localhost:8001/graphql
 
-### Get All Tickers
-GET /tickers
-Response: ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"]
+### Example Queries
+query {
+  tickers
+  stockPrices(ticker: "AAPL", days: 7) {
+    ticker
+    closePrice
+    tradeDate
+  }
+  anomalies(ticker: "AAPL", onlyAnomalies: true) {
+    ticker
+    isAnomaly
+    anomalyScore
+  }
+  portfolioSummary {
+    totalValue
+    dailyReturnPct
+  }
+}
 
-### Get Stock Prices
-GET /prices/{ticker}?days=30
-Response: List of StockPrice objects
+## WebSocket API (Port 8002)
+Start: uvicorn api.websocket_server:app --reload --port 8002
 
-### Get Anomalies
-GET /anomalies/{ticker}?days=30
-Response: List of AnomalyResult objects
+### Endpoints
+| Endpoint | Description | Interval |
+|---|---|---|
+| ws://localhost:8002/ws/prices | Live price stream | 30 seconds |
+| ws://localhost:8002/ws/alerts | Live alert stream | 60 seconds |
+| GET /ws/status | WebSocket health check | - |
 
-### Get Predictions
-GET /predictions/{ticker}
-Response: List of PredictionResult objects
-
-### Get Insights
-GET /insights/{ticker}
-Response: Latest LLM insight text
-
-### Get Summary
-GET /summary/{ticker}
-Response: Combined price + anomaly + prediction + insight
-
-## Running Locally
-uvicorn api.main:app --reload --port 8000
-
-## Swagger UI
-http://localhost:8000/docs
-
-## Authentication
-Currently no authentication required.
-Future: Add API key authentication.
+### JavaScript Client Example
+const ws = new WebSocket('ws://localhost:8002/ws/prices');
+ws.onmessage = (event) => {
+  const prices = JSON.parse(event.data);
+  console.log(prices);
+};
