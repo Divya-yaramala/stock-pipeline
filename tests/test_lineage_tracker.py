@@ -3,73 +3,57 @@ import re
 from unittest.mock import MagicMock, patch
 
 from ingestion.lineage_tracker import (
+    find_impacted_datasets,
     generate_lineage_report,
-    get_lineage_for_ticker,
-    record_lineage,
+    get_dataset_lineage,
+    record_lineage_event,
 )
 
 
-def test_record_lineage_success():
+def test_record_lineage_event_success():
     with patch("ingestion.lineage_tracker.boto3") as mock_boto3:
         mock_s3 = MagicMock()
         mock_boto3.client.return_value = mock_s3
-        result = record_lineage(
-            source="yahoo_finance_api",
-            destination="s3_raw",
+        result = record_lineage_event(
+            source_dataset="yahoo_finance",
+            target_dataset="raw_prices",
+            transformation="ingestion",
             ticker="AAPL",
-            row_count=5,
-            transformation="extract_ohlcv",
             bucket="test-bucket",
         )
-    assert result is True
-    mock_s3.put_object.assert_called_once()
+    assert isinstance(result, str)
+    assert len(result) > 0
 
 
-def test_record_lineage_failure():
-    with patch("ingestion.lineage_tracker.boto3") as mock_boto3:
-        mock_s3 = MagicMock()
-        mock_s3.put_object.side_effect = Exception("S3 error")
-        mock_boto3.client.return_value = mock_s3
-        result = record_lineage(
-            source="yahoo_finance_api",
-            destination="s3_raw",
-            ticker="AAPL",
-            row_count=5,
-            transformation="extract_ohlcv",
-            bucket="test-bucket",
-        )
-    assert result is False
-
-
-def test_record_lineage_correct_s3_path():
+def test_record_lineage_event_correct_path():
     with patch("ingestion.lineage_tracker.boto3") as mock_boto3:
         mock_s3 = MagicMock()
         mock_boto3.client.return_value = mock_s3
-        record_lineage(
-            source="s3_raw",
-            destination="s3_processed_anomalies",
+        record_lineage_event(
+            source_dataset="raw_prices",
+            target_dataset="validated_prices",
+            transformation="validation",
             ticker="MSFT",
-            row_count=10,
-            transformation="isolation_forest",
             bucket="test-bucket",
         )
     key = mock_s3.put_object.call_args[1]["Key"]
-    assert re.match(r"lineage/\d{4}/\d{2}/\d{2}/MSFT_", key)
+    assert re.match(r"lineage/\d{4}/\d{2}/\d{2}/", key)
 
 
-def test_get_lineage_for_ticker_success():
+def test_get_dataset_lineage_structure():
     sample_record = {
-        "source": "yahoo_finance_api",
-        "destination": "s3_raw",
-        "ticker": "GOOGL",
-        "row_count": 1,
-        "transformation": "extract_ohlcv",
-        "recorded_at": "2026-05-25T10:00:00",
+        "lineage_id": "abc123",
+        "source_dataset": "yahoo_finance",
+        "target_dataset": "raw_prices",
+        "transformation": "ingestion",
+        "ticker": "AAPL",
+        "metadata": {},
+        "recorded_at": "2026-07-01T10:00:00",
     }
     with patch("ingestion.lineage_tracker.boto3") as mock_boto3:
         mock_s3 = MagicMock()
         mock_s3.list_objects_v2.return_value = {
-            "Contents": [{"Key": "lineage/2026/05/25/GOOGL_20260525_100000.json"}]
+            "Contents": [{"Key": "lineage/2026/07/01/abc123.json"}]
         }
         mock_s3.get_object.return_value = {
             "Body": MagicMock(
@@ -77,22 +61,56 @@ def test_get_lineage_for_ticker_success():
             )
         }
         mock_boto3.client.return_value = mock_s3
-        result = get_lineage_for_ticker("GOOGL", "test-bucket", "2026/05/25")
-    assert isinstance(result, list)
-    assert len(result) == 1
-    assert result[0]["ticker"] == "GOOGL"
+        result = get_dataset_lineage("raw_prices", "test-bucket")
+    assert "upstream" in result
+    assert "downstream" in result
 
 
-def test_get_lineage_for_ticker_empty():
+def test_find_impacted_datasets_returns_list():
+    sample_record = {
+        "lineage_id": "abc123",
+        "source_dataset": "raw_prices",
+        "target_dataset": "validated_prices",
+        "transformation": "validation",
+        "ticker": "AAPL",
+        "metadata": {},
+        "recorded_at": "2026-07-01T10:00:00",
+    }
     with patch("ingestion.lineage_tracker.boto3") as mock_boto3:
         mock_s3 = MagicMock()
-        mock_s3.list_objects_v2.return_value = {"Contents": []}
+        mock_s3.list_objects_v2.return_value = {
+            "Contents": [{"Key": "lineage/2026/07/01/abc123.json"}]
+        }
+        mock_s3.get_object.return_value = {
+            "Body": MagicMock(
+                read=MagicMock(return_value=json.dumps(sample_record).encode("utf-8"))
+            )
+        }
         mock_boto3.client.return_value = mock_s3
-        result = get_lineage_for_ticker("TSLA", "test-bucket", "2026/05/25")
-    assert result == []
+        result = find_impacted_datasets("raw_prices", "test-bucket")
+    assert isinstance(result, list)
 
 
 def test_generate_lineage_report_structure():
-    with patch("ingestion.lineage_tracker.get_lineage_for_ticker", return_value=[]):
-        report = generate_lineage_report("test-bucket", "2026/05/25")
-    assert set(report.keys()) == {"AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"}
+    sample_record = {
+        "lineage_id": "abc123",
+        "source_dataset": "yahoo_finance",
+        "target_dataset": "raw_prices",
+        "transformation": "ingestion",
+        "ticker": "AAPL",
+        "metadata": {},
+        "recorded_at": "2026-07-01T10:00:00",
+    }
+    with patch("ingestion.lineage_tracker.boto3") as mock_boto3:
+        mock_s3 = MagicMock()
+        mock_s3.list_objects_v2.return_value = {
+            "Contents": [{"Key": "lineage/2026/07/01/abc123.json"}]
+        }
+        mock_s3.get_object.return_value = {
+            "Body": MagicMock(
+                read=MagicMock(return_value=json.dumps(sample_record).encode("utf-8"))
+            )
+        }
+        mock_boto3.client.return_value = mock_s3
+        result = generate_lineage_report("test-bucket", "2026/07/01")
+    assert "total_events" in result

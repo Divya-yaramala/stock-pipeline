@@ -131,12 +131,11 @@ def run_anomaly_detection() -> None:
             if save_anomaly_results(df, ticker, bucket, date):
                 processed += 1
                 slack_alerter.alert_pipeline_success("anomaly", ticker, time.time() - start)
-                lineage_tracker.record_lineage(
-                    source="s3_raw",
-                    destination="s3_processed_anomalies",
-                    ticker=ticker,
-                    row_count=len(df),
+                lineage_tracker.record_lineage_event(
+                    source_dataset="raw_prices",
+                    target_dataset="anomaly_results",
                     transformation="isolation_forest",
+                    ticker=ticker,
                     bucket=bucket,
                 )
         except Exception as e:

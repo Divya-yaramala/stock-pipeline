@@ -189,12 +189,11 @@ def run_market_insights() -> None:
                 succeeded += 1
                 from ingestion import lineage_tracker
 
-                lineage_tracker.record_lineage(
-                    source="s3_processed",
-                    destination="s3_insights",
-                    ticker=ticker,
-                    row_count=1,
+                lineage_tracker.record_lineage_event(
+                    source_dataset="raw_prices",
+                    target_dataset="sentiment_scores",
                     transformation="gpt_summarization",
+                    ticker=ticker,
                     bucket=bucket,
                 )
         except Exception as e:

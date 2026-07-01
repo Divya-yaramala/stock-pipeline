@@ -39,9 +39,7 @@ def record_lineage_event(
         "recorded_at": recorded_at,
     }
     s3.put_object(Bucket=bucket, Key=key, Body=json.dumps(record))
-    logger.info(
-        "Lineage event recorded: %s -> %s (%s)", source_dataset, target_dataset, lineage_id
-    )
+    logger.info("Lineage event recorded: %s -> %s (%s)", source_dataset, target_dataset, lineage_id)
     return lineage_id
 
 
@@ -127,9 +125,7 @@ def find_impacted_datasets(
                     to_check.append(target)
 
     result = list(impacted)
-    logger.info(
-        "Impact analysis complete: %s affects %d datasets", source_dataset, len(result)
-    )
+    logger.info("Impact analysis complete: %s affects %d datasets", source_dataset, len(result))
     return result
 
 

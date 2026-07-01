@@ -111,12 +111,11 @@ def run_pipeline() -> None:
             s3_client.put_object(Bucket=bucket, Key=key, Body=json.dumps(data))
             succeeded += 1
             slack_alerter.alert_pipeline_success("fetch", ticker, time.time() - start)
-            lineage_tracker.record_lineage(
-                source="yahoo_finance_api",
-                destination="s3_raw",
-                ticker=ticker,
-                row_count=len(df),
+            lineage_tracker.record_lineage_event(
+                source_dataset="yahoo_finance",
+                target_dataset="raw_prices",
                 transformation="extract_ohlcv",
+                ticker=ticker,
                 bucket=bucket,
             )
         except Exception as e:

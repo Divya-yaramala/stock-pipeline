@@ -161,12 +161,11 @@ def run_price_prediction() -> None:
                 succeeded += 1
                 from ingestion import lineage_tracker
 
-                lineage_tracker.record_lineage(
-                    source="s3_raw",
-                    destination="s3_processed_predictions",
-                    ticker=ticker,
-                    row_count=len(forecast),
+                lineage_tracker.record_lineage_event(
+                    source_dataset="raw_prices",
+                    target_dataset="predictions",
                     transformation="prophet_forecast",
+                    ticker=ticker,
                     bucket=bucket,
                 )
             else:
