@@ -177,6 +177,33 @@ replayed without rerunning the full pipeline.
 - Run pipeline during off-peak hours (6 AM UTC) to avoid API rate limits
 - Use incremental loading instead of full refresh whenever possible
 - Archive S3 raw data older than 30 days to reduce storage costs
+
+---
+
+## Data Lineage Map
+```
+Yahoo Finance API
+      ↓
+raw_prices (S3 + PostgreSQL)
+      ↓
+validated_prices (data_validator)
+      ↓
+├── postgres_staging (PostgreSQL)
+│       ↓
+│   snowflake_raw (Snowflake sync)
+│       ↓
+│   snowflake_marts (dbt transformations)
+│
+├── anomaly_results (Isolation Forest ML)
+├── price_predictions (Prophet forecasting)
+├── ensemble_predictions (RF + GB + Linear)
+├── sentiment_scores (keyword NLP)
+├── technical_indicators (SMA, RSI, BB, MACD)
+├── market_correlation (Pearson matrix)
+└── feature_store (S3 feature cache)
+      ↓
+REST API + GraphQL API + WebSocket API
+```
 - Monitor step durations using SLA monitor to identify bottlenecks
 - Use Snowflake warehouse auto-suspend to reduce compute costs
 
