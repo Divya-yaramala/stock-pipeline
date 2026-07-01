@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 47 ingestion modules + 6 scripts |
+| Python files | 49 ingestion modules + 6 scripts |
 | Test files | 16 test files |
-| Total tests | 361 passing |
+| Total tests | 371 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 27 architecture decisions |
+| ADRs | 28 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -89,6 +89,9 @@
 57. Model Drift Detection (PSI-based)
 58. Retraining Triggers (schedule + drift based)
 59. Feature Distribution Monitoring
+60. Data Lineage Tracking (source → target relationships)
+61. Impact Analysis (schema change + quality drop impact)
+62. Data Flow Tracing (end-to-end pipeline trace)
 
 ## Development Statistics
 | Metric | Count |
