@@ -93,6 +93,13 @@
 61. Impact Analysis (schema change + quality drop impact)
 62. Data Flow Tracing (end-to-end pipeline trace)
 
+## API Statistics
+| API | Port | Endpoints | Type |
+|---|---|---|---|
+| REST | 8000 | 7 endpoints | HTTP/JSON |
+| GraphQL | 8001 | 4 resolvers | GraphQL |
+| WebSocket | 8002 | 2 streams | ws:// |
+
 ## Development Statistics
 | Metric | Count |
 |---|---|
