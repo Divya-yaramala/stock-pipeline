@@ -358,6 +358,23 @@ python -c "from ingestion.data_governance import run_governance_check; import os
 
 # Run compliance check
 python -c "from ingestion.compliance_checker import run_compliance_check; import os; print(run_compliance_check(os.getenv('AWS_BUCKET_NAME')))"
+```
+
+## Data Lineage
+
+```bash
+# Run lineage tracking for a ticker
+python -c "from ingestion.lineage_tracker import run_lineage_tracking; import os; run_lineage_tracking('AAPL', os.getenv('AWS_BUCKET_NAME'))"
+
+# Get lineage for a dataset
+python -c "from ingestion.lineage_tracker import get_dataset_lineage; import os; print(get_dataset_lineage('raw_prices', os.getenv('AWS_BUCKET_NAME')))"
+
+# Run impact analysis
+python -c "from ingestion.impact_analyzer import run_impact_analysis; import os, datetime; print(run_impact_analysis(os.getenv('AWS_BUCKET_NAME'), datetime.datetime.now().strftime('%Y/%m/%d')))"
+
+# Analyze schema change impact
+python -c "from ingestion.impact_analyzer import analyze_schema_change_impact; import os; print(analyze_schema_change_impact('raw_prices', ['volume', 'open'], os.getenv('AWS_BUCKET_NAME')))"
+```
 
 # Generate compliance report
 python -c "from ingestion.data_governance import generate_compliance_report; import os; print(generate_compliance_report(os.getenv('AWS_BUCKET_NAME')))"
