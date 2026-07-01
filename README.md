@@ -782,5 +782,12 @@ stock-pipeline/
 - Retraining job queue with pending/completed/failed status
 - 10 unit tests passing green
 
+### ✅ Day 52 — Data Lineage + Impact Analysis
+- Built lineage tracker recording upstream/downstream relationships
+- Impact analyzer estimating severity of schema changes and quality drops
+- Full data flow trace from Yahoo Finance to serving APIs
+- Impact reports saved to S3 for audit trail
+- 10 unit tests passing green
+
 ---
 *Built with ❤️ over 25 days as a portfolio project demonstrating production-grade data engineering.*
