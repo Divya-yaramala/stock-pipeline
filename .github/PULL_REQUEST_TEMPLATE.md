@@ -1,16 +1,8 @@
-## Description
-
-<!-- What does this PR do? Why is it needed? -->
-
-## Changes
-
-<!-- List the key changes made -->
-
-## Checklist
-
-- [ ] Tests pass (`pytest tests/ -v`)
-- [ ] Code formatted (`black ingestion/ tests/` and `isort ingestion/ tests/`)
-- [ ] Linting clean (`flake8 ingestion/ tests/`)
-- [ ] Type checking passes (`mypy ingestion/`)
+## Pull Request Checklist
+- [ ] Tests pass: pytest tests/ -v
+- [ ] Black formatted: black ingestion/ scripts/ tests/
+- [ ] Imports sorted: isort ingestion/ scripts/ tests/
+- [ ] Linting clean: flake8 ingestion/ scripts/ tests/
+- [ ] Type checking: mypy ingestion/ --ignore-missing-imports
 - [ ] README updated if needed
-- [ ] Progress log updated
+- [ ] ADR added if major decision made
