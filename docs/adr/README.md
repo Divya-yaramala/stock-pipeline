@@ -38,3 +38,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [026](026-incremental-loading-pattern.md) | Incremental Loading with Watermarks | Accepted |
 | [027](027-model-drift-detection.md) | Model Drift Detection with PSI | Accepted |
 | [028](028-data-lineage-tracking.md) | Data Lineage Tracking | Accepted |
+| [029](029-data-dictionary-as-code.md) | Data Dictionary as Code | Accepted |

@@ -8,7 +8,7 @@
 | Total tests | 371 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 28 architecture decisions |
+| ADRs | 29 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -92,6 +92,9 @@
 60. Data Lineage Tracking (source → target relationships)
 61. Impact Analysis (schema change + quality drop impact)
 62. Data Flow Tracing (end-to-end pipeline trace)
+63. Data Dictionary (version-controlled schema docs)
+64. MIT License (open source ready)
+65. GitHub Templates (PR + Contributing guides)
 
 ## API Statistics
 | API | Port | Endpoints | Type |
