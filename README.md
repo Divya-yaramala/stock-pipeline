@@ -1,144 +1,89 @@
-# 🚀 AI-Powered Stock Price Pipeline
+# 🤖 AI-Powered Stock Price Pipeline
 
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-321%20passing-brightgreen)
-![License](https://img.shields.io/badge/license-MIT-green)
+![Tests](https://img.shields.io/badge/tests-371%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
+![AWS](https://img.shields.io/badge/AWS-S3-yellow)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+> A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Phase 1-4 Complete!** 108 tests · 13 Airflow tasks · 6 dbt models · 7 ADRs · 10 production patterns · 25 days of building
----
-
-> An end-to-end AI-powered data engineering pipeline that ingests daily stock prices, detects anomalies with ML, predicts future prices with Prophet, and generates LLM market insights — orchestrated by Apache Airflow, transformed with dbt, and warehoused in Snowflake.
-
----
-
-## 🎬 Demo
-> 📹 Loom walkthrough coming soon
->
-> The video will cover: architecture overview, AI components, code quality, and production patterns.
->
-> **Live stats:** 108 tests passing · 13 Airflow tasks · 6 dbt models · 7 ADRs
-
+> 🎉 **Day 53/90 of my 90-day portfolio challenge!** 371 tests · 49 modules · 28 ADRs · 62 production patterns · 3 APIs
 ---
 
 ## 📐 Architecture
 
 ```
-┌──────────────────────────────────────────────────────────────────────────────┐
-│                         APACHE AIRFLOW (Orchestration)                       │
-│                                                                              │
-│  ┌─────────────┐   ┌──────────┐   ┌──────────┐   ┌────────────────────────┐│
-│  │  Yahoo      │──▶│  AWS S3  │──▶│ Postgres │──▶│        dbt Core        ││
-│  │  Finance API│   │ (Raw /   │   │(Staging) │   │  stg_stock_prices      ││
-│  │  yfinance   │   │  errors/ │   │  4 tables│   │  stg_stock_anomalies   ││
-│  └─────────────┘   │  archive)│   └────┬─────┘   │  fct_stock_prices      ││
-│                    └──────────┘        │          │  dim_tickers           ││
-│                         ▲             │          │  fct_daily_summary     ││
-│                         │             │          └────────────┬───────────┘│
-│              ┌──────────┴──────────┐  │                       │            │
-│              │      AI Layer       │  │                       ▼            │
-│              │                     │  │          ┌────────────────────────┐│
-│              │ 🔍 Anomaly Detection│  │          │       Snowflake        ││
-│              │  Isolation Forest   │  │          │   STOCK_DB.RAW         ││
-│              │                     │  │          │   STOCK_DB.ANALYTICS   ││
-│              │ 📈 Price Prediction │  │          └────────────────────────┘│
-│              │  Facebook Prophet   │◀─┘                                    │
-│              │  (5-day forecast)   │                                        │
-│              │                     │                                        │
-│              │ 💬 LLM Insights     │                                        │
-│              │  GPT-3.5 Turbo      │                                        │
-│              │  (daily summaries)  │                                        │
-│              └─────────────────────┘                                        │
-└──────────────────────────────────────────────────────────────────────────────┘
+Yahoo Finance API → Airflow DAG (16 tasks)
+      ↓
+PostgreSQL (staging) → dbt → Snowflake (MARTS)
+      ↓
+ML Pipeline:
+  ├── Isolation Forest (anomaly detection)
+  ├── Prophet (5-day forecasting)
+  ├── Ensemble Models (RF + GB + Linear)
+  └── GPT-3.5 (market insights)
+      ↓
+APIs:
+  ├── REST API (port 8000) — 7 endpoints
+  ├── GraphQL API (port 8001) — 4 resolvers
+  └── WebSocket API (port 8002) — live streaming
 ```
 
----
+## ✨ Key Features
+- 📥 Daily OHLCV ingestion from Yahoo Finance (5 tickers)
+- 🤖 ML anomaly detection with Isolation Forest
+- 📈 5-day price forecasting with Facebook Prophet
+- 💬 GPT-3.5 market insights per ticker
+- 🔄 Real-time Kafka streaming layer
+- 🧠 Ensemble ML (Random Forest + Gradient Boosting + Linear)
+- 🔍 Model explainability with SHAP approximation
+- 📊 Technical indicators (SMA, RSI, Bollinger Bands, MACD)
+- 📰 News sentiment analysis (BULLISH/BEARISH/NEUTRAL)
+- 🔗 Market correlation matrix + Beta calculation
+- 💼 Portfolio tracking with daily returns
+- 🌐 REST + GraphQL + WebSocket APIs
+- 🛡️ Data governance with compliance checking
+- 🔒 Secrets management with audit logging
+- ⚡ Chaos engineering with 5 failure scenarios
+- 📅 Workflow management with cron scheduling
+- 📉 Model drift detection with PSI
+- 🔁 Automated retraining triggers
+- 🗺️ Data lineage tracking + impact analysis
+- ✅ 371 automated tests with CI/CD
+
+## 🛠️ Tech Stack
+| Layer | Technology |
+|---|---|
+| Orchestration | Apache Airflow |
+| Transformation | dbt Core |
+| Data Warehouse | Snowflake |
+| Staging DB | PostgreSQL |
+| Data Lake | AWS S3 |
+| Streaming | Apache Kafka |
+| ML/AI | scikit-learn, Prophet, OpenAI GPT-3.5 |
+| REST API | FastAPI |
+| GraphQL | Strawberry |
+| WebSocket | FastAPI WebSockets |
+| Testing | pytest (371 tests) |
+| Code Quality | black, isort, flake8, mypy |
+| CI/CD | GitHub Actions |
 
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 321 passing |
-| Ingestion modules | 41 |
-| Test files | 66 |
-| ADRs | 24 |
-| Production patterns | 49 |
+| Total tests | 371 passing |
+| Ingestion modules | 49 |
 | Airflow tasks | 16 |
-| Days built | 48 |
-| CI/CD workflows | 2 |
-
----
-
-## ✨ Key Features
-
-- 🤖 **AI Anomaly Detection** — Isolation Forest ML model flags unusual price/volume movements across 5 features
-- 📈 **Price Prediction** — Facebook Prophet forecasts next 5 days of closing prices per ticker
-- 💬 **LLM Market Insights** — GPT-3.5 generates daily professional market summaries
-- 🔄 **Incremental Loading** — Automatically detects and backfills missing date gaps
-- ✅ **Data Validation** — 7-point quality checks per ticker with configurable SLA alerting
-- 🔔 **Slack Alerting** — Real-time pipeline notifications on success, failure, and SLA breaches
-- 💰 **Cost Optimization** — S3 storage analysis, old-data archiving, and monthly cost estimation
-- 🛡️ **Dead Letter Queue** — Failed records captured to S3 and replayed automatically
-- 📊 **Pipeline Monitoring** — Per-step execution metrics and daily SLA compliance reports
-- 🔍 **Data Lineage** — Full audit trail tracking every record from Yahoo Finance API to Snowflake
-
----
-
-## 🛠️ Tech Stack
-
-| Layer | Technology |
-|---|---|
-| Orchestration | Apache Airflow 2.9 |
-| Ingestion | Python 3.11 + yfinance |
-| AI / ML | scikit-learn (Isolation Forest) + Prophet + OpenAI GPT-3.5 |
-| Raw Storage | AWS S3 |
-| Staging DB | PostgreSQL 15 (Docker) |
-| Transformation | dbt Core |
-| Data Warehouse | Snowflake |
-| Alerting | Slack Webhooks |
-| CI / CD | GitHub Actions |
-| Testing | pytest — 108 tests |
-| Code Quality | black + isort + flake8 + mypy |
-
----
-
-## 🏗️ Pipeline DAG (13 Tasks)
-
-```
-check_trading_day
-       │
-       ▼
-validate_data ──────────────────────────────────────────┐
-       │                                                 │
-       ▼                                                 │
-fetch_and_upload_to_s3                                   │
-       │                                                 │
-       ▼                                                 │
-load_to_postgres_staging                                 │
-       │                                                 │
-       ├──────────────────────────────────┐              │
-       ▼                                  ▼              │
-run_anomaly_detection           run_dbt_models           │
-       │                                  │              │
-       ▼                                  ▼              │
-run_price_prediction            run_snowflake_sync       │
-       │                                                 │
-       ▼                                                 │
-run_market_insights                                      │
-       │                                                 │
-       ▼                                                 │
-run_quality_report ◀─────────────────────────────────────┘
-       │
-       ▼
-run_monitoring_report
-       │
-       ▼
-replay_dead_letter_queue
-```
+| ADRs | 28 |
+| Production patterns | 62 |
+| S3 prefixes | 15+ |
+| Days built | 53 |
 
 ---
 
