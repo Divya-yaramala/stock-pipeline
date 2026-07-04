@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-371%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-385%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -77,13 +77,28 @@ APIs:
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 371 passing |
+| Total tests | 385 passing |
 | Ingestion modules | 49 |
 | Airflow tasks | 16 |
-| ADRs | 28 |
-| Production patterns | 62 |
+| ADRs | 30 |
+| Production patterns | 68 |
 | S3 prefixes | 15+ |
 | Days built | 53 |
+
+## 🧪 Testing Strategy
+Three-tier testing approach:
+
+| Tier | Location | Count | Purpose |
+|---|---|---|---|
+| Unit tests | tests/ | 371 | Test individual functions |
+| Integration | tests/integration/ | 5 | Test module interactions |
+| E2E | tests/e2e/ | 6 | Test full API contracts |
+| **Total** | | **385** | |
+
+Run all tests:
+```bash
+pytest tests/ tests/integration/ tests/e2e/ -v
+```
 
 ---
 
@@ -740,6 +755,13 @@ stock-pipeline/
 - MIT License added for open source readiness
 - GitHub PR and Contributing templates added
 - 29 ADRs now documented
+
+### ✅ Day 54 — Integration Tests + E2E Tests
+- Built 5 integration tests covering pipeline flows
+- Built 6 E2E tests covering all 3 APIs
+- Three-tier testing strategy: unit + integration + E2E
+- CI updated to run all three test suites
+- 385 total tests now passing
 
 ---
 *Built with ❤️ over 25 days as a portfolio project demonstrating production-grade data engineering.*
