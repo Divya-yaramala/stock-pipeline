@@ -5,10 +5,10 @@
 |---|---|
 | Python files | 49 ingestion modules + 6 scripts |
 | Test files | 16 test files |
-| Total tests | 371 passing |
+| Total tests | 385 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 29 architecture decisions |
+| ADRs | 30 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -95,6 +95,9 @@
 63. Data Dictionary (version-controlled schema docs)
 64. MIT License (open source ready)
 65. GitHub Templates (PR + Contributing guides)
+66. Integration Tests (pipeline flow tests)
+67. E2E API Tests (full API contract validation)
+68. Three-tier test strategy (unit + integration + e2e)
 
 ## API Statistics
 | API | Port | Endpoints | Type |
