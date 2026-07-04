@@ -1,8 +1,5 @@
-import json
-from typing import Any, Dict, List, Optional
 from unittest.mock import MagicMock
 
-import pytest
 from fastapi.testclient import TestClient
 
 

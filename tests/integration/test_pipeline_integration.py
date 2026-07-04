@@ -1,11 +1,10 @@
 import json
 import os
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict
 from unittest.mock import MagicMock, patch
 
 import pandas as pd
-import pytest
 
 
 class TestPipelineIntegration:
@@ -98,9 +97,7 @@ class TestPipelineIntegration:
             mock_s3 = MagicMock()
             mock_boto3.client.return_value = mock_s3
             mock_s3.get_object.return_value = {
-                "Body": MagicMock(
-                    read=MagicMock(return_value=json.dumps(cache_entry).encode())
-                )
+                "Body": MagicMock(read=MagicMock(return_value=json.dumps(cache_entry).encode()))
             }
 
             from ingestion.cache_manager import get_from_cache, save_to_cache
