@@ -376,6 +376,27 @@ python -c "from ingestion.impact_analyzer import run_impact_analysis; import os,
 python -c "from ingestion.impact_analyzer import analyze_schema_change_impact; import os; print(analyze_schema_change_impact('raw_prices', ['volume', 'open'], os.getenv('AWS_BUCKET_NAME')))"
 ```
 
+## Testing Strategy
+```bash
+# Run all tests (unit + integration + e2e)
+pytest tests/ tests/integration/ tests/e2e/ -v
+
+# Run only unit tests
+pytest tests/ -v
+
+# Run only integration tests
+pytest tests/integration/ -v
+
+# Run only e2e tests
+pytest tests/e2e/ -v
+
+# Run with coverage report
+pytest tests/ tests/integration/ tests/e2e/ --cov=ingestion --cov-report=html
+
+# Run specific test file
+pytest tests/test_anomaly_detector.py -v
+```
+
 # Generate compliance report
 python -c "from ingestion.data_governance import generate_compliance_report; import os; print(generate_compliance_report(os.getenv('AWS_BUCKET_NAME')))"
 ```
