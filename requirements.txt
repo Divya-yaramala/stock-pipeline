@@ -22,3 +22,5 @@ requests
 kafka-python
 strawberry-graphql
 websockets
+streamlit
+plotly
