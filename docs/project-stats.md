@@ -102,6 +102,14 @@
 70. Plotly Interactive Charts (zoom, hover, pan)
 71. Auto-Refresh Loop (60-second configurable interval)
 
+## Dashboard Statistics
+| Page | Description |
+|---|---|
+| Main | Price charts + anomalies + predictions |
+| Portfolio | Holdings tracker with daily returns |
+| Anomaly Monitor | Real-time alerts across all tickers |
+| Price Predictions | 5-day Prophet forecast viewer |
+
 ## API Statistics
 | API | Port | Endpoints | Type |
 |---|---|---|---|
