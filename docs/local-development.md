@@ -548,3 +548,22 @@ python -c "from ingestion.retraining_trigger import check_retraining_schedule; i
 # Run full retraining check across all tickers
 python -c "from ingestion.retraining_trigger import run_retraining_check; import os; print(run_retraining_check(['AAPL','MSFT','GOOGL','AMZN','TSLA'], os.getenv('AWS_BUCKET_NAME')))"
 ```
+
+## Streamlit Dashboard
+
+```bash
+# Run dashboard locally (requires PostgreSQL running)
+streamlit run dashboard/app.py --server.port=8503
+
+# Run via Docker Compose
+docker compose up stock-dashboard
+
+# Run dashboard tests
+pytest tests/test_dashboard.py -v
+
+# Build dashboard Docker image manually
+docker build -f dashboard/Dockerfile -t stock-dashboard .
+
+# Open dashboard
+open http://localhost:8503
+```
