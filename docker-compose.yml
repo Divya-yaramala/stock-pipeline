@@ -114,5 +114,19 @@ services:
       - ./api:/app
     command: uvicorn websocket_server:app --host 0.0.0.0 --port 8002
 
+  stock-dashboard:
+    build:
+      context: .
+      dockerfile: dashboard/Dockerfile
+    ports:
+      - "8503:8503"
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./dashboard:/app/dashboard
+
 volumes:
   postgres_data:

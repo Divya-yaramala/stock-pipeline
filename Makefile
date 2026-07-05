@@ -1,4 +1,4 @@
-.PHONY: setup up down logs ps airflow-ui dbt-run dbt-test backfill clean help
+.PHONY: setup up down logs ps airflow-ui dbt-run dbt-test backfill clean help dashboard
 
 # ── Environment ───────────────────────────────────────────────────────────────
 include .env
@@ -90,3 +90,7 @@ validate: ## Validate all required environment variables
 
 backfill: ## Backfill missing data (usage: make backfill START=2024-01-01 END=2024-01-31)
 	python scripts/backfill.py --start-date $(START) --end-date $(END)
+
+# ── Dashboard ─────────────────────────────────────────────────────────────────
+dashboard: ## Start Streamlit dashboard locally (port 8503)
+	streamlit run dashboard/app.py --server.port=8503
