@@ -258,3 +258,15 @@ Custom rules can be added via S3: monitoring/rules/custom_rules.json
 | Serve | model_server.py |
 | Monitor | drift_detector.py |
 | Retrain | retraining_trigger.py |
+
+## 📊 Dashboard Layer
+The pipeline includes a Streamlit dashboard for visual exploration:
+
+| Page | URL | Description |
+|---|---|---|
+| Main | http://localhost:8503 | Price charts, anomalies, predictions |
+| Portfolio | http://localhost:8503/portfolio | Holdings tracker |
+| Anomalies | http://localhost:8503/anomalies | Real-time anomaly monitor |
+| Predictions | http://localhost:8503/predictions | 5-day Prophet forecasts |
+
+Start: streamlit run dashboard/app.py --server.port 8503
