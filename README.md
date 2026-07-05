@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-385%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-390%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,7 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 53/90 of my 90-day portfolio challenge!** 371 tests · 49 modules · 28 ADRs · 62 production patterns · 3 APIs
+> 🎉 **Day 55/90 of my 90-day portfolio challenge!** 390 tests · 49 modules · 31 ADRs · 71 production patterns · 3 APIs + Dashboard
 ---
 
 ## 📐 Architecture
@@ -33,6 +33,9 @@ APIs:
   ├── REST API (port 8000) — 7 endpoints
   ├── GraphQL API (port 8001) — 4 resolvers
   └── WebSocket API (port 8002) — live streaming
+      ↓
+Dashboard:
+  └── Streamlit Dashboard (port 8503) — real-time UI
 ```
 
 ## ✨ Key Features
@@ -55,7 +58,8 @@ APIs:
 - 📉 Model drift detection with PSI
 - 🔁 Automated retraining triggers
 - 🗺️ Data lineage tracking + impact analysis
-- ✅ 371 automated tests with CI/CD
+- 📊 Streamlit real-time dashboard with Plotly charts
+- ✅ 390 automated tests with CI/CD
 
 ## 🛠️ Tech Stack
 | Layer | Technology |
@@ -70,30 +74,31 @@ APIs:
 | REST API | FastAPI |
 | GraphQL | Strawberry |
 | WebSocket | FastAPI WebSockets |
-| Testing | pytest (371 tests) |
+| Dashboard | Streamlit + Plotly |
+| Testing | pytest (390 tests) |
 | Code Quality | black, isort, flake8, mypy |
 | CI/CD | GitHub Actions |
 
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 385 passing |
+| Total tests | 390 passing |
 | Ingestion modules | 49 |
 | Airflow tasks | 16 |
-| ADRs | 30 |
-| Production patterns | 68 |
+| ADRs | 31 |
+| Production patterns | 71 |
 | S3 prefixes | 15+ |
-| Days built | 53 |
+| Days built | 55 |
 
 ## 🧪 Testing Strategy
 Three-tier testing approach:
 
 | Tier | Location | Count | Purpose |
 |---|---|---|---|
-| Unit tests | tests/ | 371 | Test individual functions |
+| Unit tests | tests/ | 379 | Test individual functions |
 | Integration | tests/integration/ | 5 | Test module interactions |
 | E2E | tests/e2e/ | 6 | Test full API contracts |
-| **Total** | | **385** | |
+| **Total** | | **390** | |
 
 Run all tests:
 ```bash
@@ -245,6 +250,24 @@ Start WebSocket server:
 ```bash
 uvicorn api.websocket_server:app --reload --port 8002
 ```
+
+### Dashboard (port 8503)
+Interactive Streamlit dashboard with real-time data:
+
+```bash
+# Run locally
+streamlit run dashboard/app.py --server.port=8503
+
+# Or via Docker
+docker compose up stock-dashboard
+```
+
+Open http://localhost:8503 to see:
+- KPI metrics: current price, delta, 30-day high/low, volume
+- Interactive Plotly price chart with anomaly markers and forecast overlay
+- Anomaly summary table + 5-day prediction table
+- Volume bar chart + real-time technical indicators (SMA, RSI)
+- Sidebar controls: ticker selector, date range, auto-refresh toggle
 
 ---
 
@@ -763,5 +786,14 @@ stock-pipeline/
 - CI updated to run all three test suites
 - 385 total tests now passing
 
+### ✅ Day 55 — Real-Time Streamlit Dashboard
+- Built full Streamlit dashboard with Plotly interactive charts
+- KPI row: current price + delta, 30-day high/low, volume
+- Price chart with anomaly markers and prediction overlay
+- Volume bar chart + live technical indicators (SMA, RSI)
+- Sidebar controls: ticker selector, date range, auto-refresh toggle
+- Containerized dashboard service in docker-compose on port 8503
+- 5 dashboard unit tests passing green — 390 total
+
 ---
-*Built with ❤️ over 25 days as a portfolio project demonstrating production-grade data engineering.*
+*Built with ❤️ over 55 days as a portfolio project demonstrating production-grade data engineering.*
