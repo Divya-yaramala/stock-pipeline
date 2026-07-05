@@ -40,3 +40,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [028](028-data-lineage-tracking.md) | Data Lineage Tracking | Accepted |
 | [029](029-data-dictionary-as-code.md) | Data Dictionary as Code | Accepted |
 | [030](030-integration-and-e2e-testing.md) | Integration and E2E Testing Strategy | Accepted |
+| [031](031-streamlit-dashboard.md) | Streamlit Real-Time Dashboard | Accepted |

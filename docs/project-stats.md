@@ -4,11 +4,11 @@
 | Metric | Count |
 |---|---|
 | Python files | 49 ingestion modules + 6 scripts |
-| Test files | 16 test files |
-| Total tests | 385 passing |
+| Test files | 17 test files |
+| Total tests | 390 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 30 architecture decisions |
+| ADRs | 31 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -98,6 +98,9 @@
 66. Integration Tests (pipeline flow tests)
 67. E2E API Tests (full API contract validation)
 68. Three-tier test strategy (unit + integration + e2e)
+69. Streamlit Real-Time Dashboard (live price + AI overlay)
+70. Plotly Interactive Charts (zoom, hover, pan)
+71. Auto-Refresh Loop (60-second configurable interval)
 
 ## API Statistics
 | API | Port | Endpoints | Type |
@@ -105,6 +108,7 @@
 | REST | 8000 | 7 endpoints | HTTP/JSON |
 | GraphQL | 8001 | 4 resolvers | GraphQL |
 | WebSocket | 8002 | 2 streams | ws:// |
+| Dashboard | 8503 | 1 app | Streamlit |
 
 ## Development Statistics
 | Metric | Count |
