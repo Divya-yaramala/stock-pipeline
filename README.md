@@ -384,6 +384,29 @@ stock-pipeline/
 
 ---
 
+## 🤖 MLOps Pipeline
+
+End-to-end ML lifecycle from training to monitoring:
+
+| Stage | Module | Description |
+|---|---|---|
+| Feature Engineering | `feature_engineer.py` | Price, volume, momentum, technical features |
+| Feature Store | `feature_store.py` | S3-backed feature matrix per ticker |
+| Training | `model_comparator.py` | RF vs Linear — winner by RMSE |
+| Ensemble | `ensemble_model.py` | RF + GB + Linear weighted average |
+| Experiment Tracking | `experiment_tracker.py` | Params + metrics per run |
+| Registry | `model_registry.py` | staging → production → archived |
+| Serving | `model_server.py` | Production inference from registry |
+| Explainability | `model_explainer.py` | SHAP approximation + human summaries |
+| Monitoring | `model_monitor.py` | MAE, RMSE, MAPE, R2 daily tracking |
+| Drift Detection | `drift_detector.py` | PSI-based feature distribution shift |
+| Retraining | `retraining_trigger.py` | Drift + schedule + performance triggers |
+| A/B Testing | `ab_tester.py` | Hash-based assignment, MAE winner |
+
+See [MLOps Guide](docs/mlops-guide.md) for full documentation.
+
+---
+
 ## 🏛️ Architecture Decisions
 
 | # | Decision | Status |
