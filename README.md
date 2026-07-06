@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-400%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-406%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,7 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 56/90 of my 90-day portfolio challenge!** 400 tests · 51 modules · 32 ADRs · 75 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 57/90 of my 90-day portfolio challenge!** 406 tests · 53 modules · 33 ADRs · 78 production patterns · 3 APIs + Dashboard
 
 > 🎉 **400 tests milestone reached on Day 56!**
 ---
@@ -61,7 +61,8 @@ Dashboard:
 - 🔁 Automated retraining triggers
 - 🗺️ Data lineage tracking + impact analysis
 - 📊 Streamlit real-time dashboard with Plotly charts
-- ✅ 390 automated tests with CI/CD
+- 🔔 Slack alerts for anomalies, failures, and daily summaries
+- ✅ 406 automated tests with CI/CD
 
 ## 🛠️ Tech Stack
 | Layer | Technology |
@@ -84,13 +85,13 @@ Dashboard:
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 400 passing |
-| Ingestion modules | 51 |
+| Total tests | 406 passing |
+| Ingestion modules | 53 |
 | Airflow tasks | 16 |
-| ADRs | 32 |
-| Production patterns | 75 |
+| ADRs | 33 |
+| Production patterns | 78 |
 | S3 prefixes | 15+ |
-| Days built | 56 |
+| Days built | 57 |
 
 ## 🧪 Testing Strategy
 Three-tier testing approach:
@@ -828,5 +829,12 @@ See [MLOps Guide](docs/mlops-guide.md) for full documentation.
 - 🎉 400 total tests milestone reached!
 - 10 unit tests passing green
 
+### ✅ Day 57 — Slack Alerting Integration
+- Built Slack alerter with 6 alert types and color-coded severity
+- Wired into anomaly detector and quality reporter
+- Daily pipeline summary sent to Slack automatically
+- Graceful fallback — never breaks pipeline on Slack failure
+- 6 unit tests passing green
+
 ---
-*Built with ❤️ over 56 days as a portfolio project demonstrating production-grade data engineering.*
+*Built with ❤️ over 57 days as a portfolio project demonstrating production-grade data engineering.*
