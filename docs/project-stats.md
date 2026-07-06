@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 51 ingestion modules + 6 scripts |
-| Test files | 19 test files |
-| Total tests | 400 passing |
+| Python files | 53 ingestion modules + 6 scripts |
+| Test files | 20 test files |
+| Total tests | 406 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 32 architecture decisions |
+| ADRs | 33 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -105,6 +105,9 @@
 73. Performance Degradation Detection (threshold-based)
 74. A/B Testing Framework (hash-based model assignment)
 75. Experiment Conclusion (winner determination)
+76. Slack Anomaly Alerts (color-coded severity)
+77. Pipeline Failure Notifications
+78. Daily Slack Summary (pipeline health digest)
 
 ## MLOps Statistics
 | Capability | Module | Status |
