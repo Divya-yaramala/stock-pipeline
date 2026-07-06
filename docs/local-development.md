@@ -587,3 +587,24 @@ python -c "from ingestion.ab_tester import analyze_ab_results; import os; print(
 # Conclude experiment
 python -c "from ingestion.ab_tester import conclude_experiment; import os; print(conclude_experiment('exp_id_here', os.getenv('AWS_BUCKET_NAME')))"
 ```
+
+## Slack Integration Setup
+1. Go to https://api.slack.com/apps
+2. Create a new app → From scratch
+3. Add Incoming Webhooks feature
+4. Create webhook for your channel
+5. Copy webhook URL to .env:
+   SLACK_WEBHOOK_URL=https://hooks.slack.com/services/YOUR/WEBHOOK/URL
+
+## Test Slack Integration
+
+```bash
+# Send test message
+python -c "from ingestion.slack_alerter import send_slack_message; print(send_slack_message('Test from stock pipeline!', 'good', 'Test Alert'))"
+
+# Send test anomaly alert
+python -c "from ingestion.slack_alerter import alert_anomaly_detected; print(alert_anomaly_detected('AAPL', 'SPIKE', 185.50, -0.45, '2026-07-04'))"
+
+# Send daily summary
+python -c "from ingestion.slack_alerter import send_daily_summary; print(send_daily_summary(5, 2, 5, 92.5))"
+```
