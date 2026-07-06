@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-390%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-400%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,9 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 55/90 of my 90-day portfolio challenge!** 390 tests · 49 modules · 31 ADRs · 71 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 56/90 of my 90-day portfolio challenge!** 400 tests · 51 modules · 32 ADRs · 75 production patterns · 3 APIs + Dashboard
+
+> 🎉 **400 tests milestone reached on Day 56!**
 ---
 
 ## 📐 Architecture
@@ -82,23 +84,23 @@ Dashboard:
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 390 passing |
-| Ingestion modules | 49 |
+| Total tests | 400 passing |
+| Ingestion modules | 51 |
 | Airflow tasks | 16 |
-| ADRs | 31 |
-| Production patterns | 71 |
+| ADRs | 32 |
+| Production patterns | 75 |
 | S3 prefixes | 15+ |
-| Days built | 55 |
+| Days built | 56 |
 
 ## 🧪 Testing Strategy
 Three-tier testing approach:
 
 | Tier | Location | Count | Purpose |
 |---|---|---|---|
-| Unit tests | tests/ | 379 | Test individual functions |
+| Unit tests | tests/ | 389 | Test individual functions |
 | Integration | tests/integration/ | 5 | Test module interactions |
 | E2E | tests/e2e/ | 6 | Test full API contracts |
-| **Total** | | **390** | |
+| **Total** | | **400** | |
 
 Run all tests:
 ```bash
@@ -795,5 +797,13 @@ stock-pipeline/
 - Containerized dashboard service in docker-compose on port 8503
 - 5 dashboard unit tests passing green — 390 total
 
+### ✅ Day 56 — Model Monitoring + A/B Testing
+- Built model monitor tracking MAE, RMSE, MAPE, R2
+- Performance degradation detection with warning/critical severity
+- A/B testing framework with hash-based consistent model assignment
+- Experiment conclusion with winner determination and confidence levels
+- 🎉 400 total tests milestone reached!
+- 10 unit tests passing green
+
 ---
-*Built with ❤️ over 55 days as a portfolio project demonstrating production-grade data engineering.*
+*Built with ❤️ over 56 days as a portfolio project demonstrating production-grade data engineering.*
