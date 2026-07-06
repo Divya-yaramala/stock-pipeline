@@ -8,7 +8,7 @@
 | Total tests | 406 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 33 architecture decisions |
+| ADRs | 34 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -108,6 +108,8 @@
 76. Slack Anomaly Alerts (color-coded severity)
 77. Pipeline Failure Notifications
 78. Daily Slack Summary (pipeline health digest)
+79. Slack Setup Guide (webhook configuration)
+80. Dual Notification System (Slack + email)
 
 ## MLOps Statistics
 | Capability | Module | Status |
