@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 49 ingestion modules + 6 scripts |
-| Test files | 17 test files |
-| Total tests | 390 passing |
+| Python files | 51 ingestion modules + 6 scripts |
+| Test files | 19 test files |
+| Total tests | 400 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 31 architecture decisions |
+| ADRs | 32 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -101,6 +101,10 @@
 69. Streamlit Real-Time Dashboard (live price + AI overlay)
 70. Plotly Interactive Charts (zoom, hover, pan)
 71. Auto-Refresh Loop (60-second configurable interval)
+72. Model Monitoring (MAE, RMSE, MAPE, R2 tracking)
+73. Performance Degradation Detection (threshold-based)
+74. A/B Testing Framework (hash-based model assignment)
+75. Experiment Conclusion (winner determination)
 
 ## Dashboard Statistics
 | Page | Description |
