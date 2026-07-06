@@ -259,6 +259,26 @@ Custom rules can be added via S3: monitoring/rules/custom_rules.json
 | Monitor | drift_detector.py |
 | Retrain | retraining_trigger.py |
 
+## Alerting Architecture
+The pipeline uses a dual notification system:
+
+### Real-Time Alerts (Slack)
+anomaly_detector.py → slack_alerter.alert_anomaly_detected()
+quality_reporter.py → slack_alerter.alert_quality_warning()
+pipeline failures → slack_alerter.alert_pipeline_failure()
+end of day → slack_alerter.send_daily_summary()
+
+### Daily Reports (Email)
+report_generator.py → email_notifier.send_daily_report_email()
+HTML report saved to S3: reports/daily/YYYY/MM/DD/
+
+### Alert Severity Levels
+| Severity | Color | Trigger |
+|---|---|---|
+| CRITICAL | 🔴 Red | Anomaly, pipeline failure |
+| WARNING | 🟡 Yellow | Quality < 80%, SLA breach |
+| INFO | 🟢 Green | Predictions ready, daily summary |
+
 ## 📊 Dashboard Layer
 The pipeline includes a Streamlit dashboard for visual exploration:
 
