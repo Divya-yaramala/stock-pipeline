@@ -128,6 +128,19 @@ def run_anomaly_detection() -> None:
                 continue
             df = detect_anomalies(df, ticker, contamination=contamination)
             total_anomalies += int(df["is_anomaly"].sum())
+            anomaly_rows = df[df["is_anomaly"]]
+            if not anomaly_rows.empty:
+                try:
+                    row = anomaly_rows.iloc[0]
+                    slack_alerter.alert_anomaly_detected(
+                        ticker=ticker,
+                        anomaly_label="ISOLATION_FOREST",
+                        price=float(str(row.get("close", 0.0))),
+                        anomaly_score=float(str(row.get("anomaly_score", 0.0))),
+                        date=date,
+                    )
+                except Exception:
+                    pass
             if save_anomaly_results(df, ticker, bucket, date):
                 processed += 1
                 slack_alerter.alert_pipeline_success("anomaly", ticker, time.time() - start)
@@ -140,7 +153,7 @@ def run_anomaly_detection() -> None:
                 )
         except Exception as e:
             logger.error(f"Anomaly detection error for {ticker}: {e}")
-            slack_alerter.alert_pipeline_failure("anomaly", ticker, str(e))
+            slack_alerter.alert_pipeline_failure("anomaly", str(e), ticker=ticker)
             from ingestion import dead_letter_queue
 
             dead_letter_queue.send_to_dlq(str(e), ticker, "anomaly", {}, bucket)

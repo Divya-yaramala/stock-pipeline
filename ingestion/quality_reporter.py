@@ -153,11 +153,14 @@ def run_quality_reporting() -> None:
     report = generate_quality_report(bucket, date)
     sla_ok = check_quality_sla(report)
     if not sla_ok:
-        slack_alerter.alert_pipeline_failure(
-            "quality_sla",
-            "pipeline",
-            f"Quality score {report['quality_score_pct']:.1f}% is below 80% threshold",
-        )
+        try:
+            slack_alerter.alert_quality_warning(
+                ticker="pipeline",
+                quality_score=float(str(report["quality_score_pct"])),
+                issues=list(report.get("failed_checks", [])),
+            )
+        except Exception:
+            pass
     logger.info("Quality reporting complete — SLA %s", "PASSED" if sla_ok else "FAILED")
 
 
