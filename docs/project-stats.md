@@ -106,6 +106,20 @@
 74. A/B Testing Framework (hash-based model assignment)
 75. Experiment Conclusion (winner determination)
 
+## MLOps Statistics
+| Capability | Module | Status |
+|---|---|---|
+| Feature Engineering | feature_engineer.py | ✅ Implemented |
+| Feature Store | feature_store.py | ✅ Implemented |
+| Experiment Tracking | experiment_tracker.py | ✅ Implemented |
+| Model Registry | model_registry.py | ✅ Implemented |
+| Model Serving | model_server.py | ✅ Implemented |
+| Model Explainability | model_explainer.py | ✅ Implemented |
+| Model Monitoring | model_monitor.py | ✅ Implemented |
+| Drift Detection | drift_detector.py | ✅ Implemented |
+| Retraining Automation | retraining_trigger.py | ✅ Implemented |
+| A/B Testing | ab_tester.py | ✅ Implemented |
+
 ## Dashboard Statistics
 | Page | Description |
 |---|---|
