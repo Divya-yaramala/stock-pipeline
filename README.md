@@ -274,6 +274,21 @@ Open http://localhost:8503 to see:
 
 ---
 
+## 🔔 Slack Alerts
+The pipeline sends real-time Slack notifications:
+
+| Alert Type | Trigger | Color |
+|---|---|---|
+| 🚨 Anomaly Detected | Isolation Forest detects spike/drop | 🔴 Red |
+| 📈 Prediction Ready | Prophet forecast completed | 🟢 Green |
+| ❌ Pipeline Failure | Any pipeline step fails | 🔴 Red |
+| ⚠️ Quality Warning | Quality score drops below 80% | 🟡 Yellow |
+| 📊 Daily Summary | End of daily pipeline run | 🟢 Green |
+
+Setup: See [Slack Setup Guide](docs/slack-setup-guide.md)
+
+---
+
 ## 🔄 Real-Time Streaming (Optional)
 Run the pipeline in real-time mode using Kafka:
 
