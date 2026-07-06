@@ -567,3 +567,23 @@ docker build -f dashboard/Dockerfile -t stock-dashboard .
 # Open dashboard
 open http://localhost:8503
 ```
+
+## Model Monitoring
+
+```bash
+# Run model monitoring for a ticker
+python -c "from ingestion.model_monitor import run_model_monitoring; import os; print(run_model_monitoring('AAPL', os.getenv('AWS_BUCKET_NAME')))"
+```
+
+## A/B Testing
+
+```bash
+# Create a new A/B experiment
+python -c "from ingestion.ab_tester import create_ab_experiment; import os; print(create_ab_experiment('prophet_vs_ensemble', 'prophet', 'ensemble', 0.5, os.getenv('AWS_BUCKET_NAME')))"
+
+# Analyze A/B results
+python -c "from ingestion.ab_tester import analyze_ab_results; import os; print(analyze_ab_results('exp_id_here', os.getenv('AWS_BUCKET_NAME')))"
+
+# Conclude experiment
+python -c "from ingestion.ab_tester import conclude_experiment; import os; print(conclude_experiment('exp_id_here', os.getenv('AWS_BUCKET_NAME')))"
+```
