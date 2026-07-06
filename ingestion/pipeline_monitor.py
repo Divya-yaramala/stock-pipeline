@@ -180,7 +180,12 @@ def run_monitoring_report() -> None:
 
     from ingestion import slack_alerter
 
-    slack_alerter.alert_daily_summary(report)
+    slack_alerter.send_daily_summary(
+        total_tickers=int(str(report.get("total_runs", 0))),
+        anomalies_found=0,
+        predictions_made=int(str(report.get("total_runs", 0))),
+        avg_quality_score=float(str(report.get("success_rate_pct", 0.0))),
+    )
 
 
 if __name__ == "__main__":
