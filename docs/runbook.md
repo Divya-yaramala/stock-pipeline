@@ -30,3 +30,36 @@ This document covers operational procedures for the AI-powered stock price pipel
    - S3 permission: check AWS credentials in .env
    - DB connection: check POSTGRES_HOST in .env
 4. After fix: clear failed task and re-run in Airflow
+
+---
+
+## Weekly Maintenance Schedule
+
+### Every Monday
+- Check GitHub Actions — all green?
+- Review Slack alerts from past week
+- Check S3 storage quota
+
+### Every Sunday (automated via cron)
+- Run S3 optimizer (dry_run=True first!)
+- Run health scorer
+- Generate weekly quality trend report
+
+### Monthly
+- Review ADRs — any decisions to update?
+- Update project-stats.md with current counts
+- Review AWS costs in Cost Explorer
+- Rotate secrets (90-day policy)
+
+### Commands for Weekly Maintenance
+
+```bash
+# Check all systems
+python scripts/health_check.py
+
+# Run S3 optimization (dry run)
+python -c "from ingestion.s3_optimizer import run_s3_optimization; import os; print(run_s3_optimization(os.getenv('AWS_BUCKET_NAME'), dry_run=True))"
+
+# Check resource usage
+python -c "from ingestion.resource_manager import run_resource_check; import os; print(run_resource_check(os.getenv('AWS_BUCKET_NAME')))"
+```
