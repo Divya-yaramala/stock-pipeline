@@ -261,11 +261,61 @@ if not validate_all_configs():
 ## Cost Optimization
 
 ```bash
-# Archive old raw data (keeps last 30 days)
-python -c "from ingestion.s3_optimizer import run_s3_optimization; run_s3_optimization()"
+# Dry-run: preview which objects would be deleted (safe, no changes made)
+python -c "
+import os
+from ingestion.s3_optimizer import run_s3_optimization
+print(run_s3_optimization(os.getenv('AWS_BUCKET_NAME', 'my-bucket'), dry_run=True))
+"
 
-# Check monthly S3 cost estimate
-python -c "from ingestion.s3_optimizer import generate_cost_report; import os; print(generate_cost_report(os.getenv('AWS_BUCKET_NAME')))"
+# Live run: delete expired objects according to retention policies
+python -c "
+import os
+from ingestion.s3_optimizer import run_s3_optimization
+print(run_s3_optimization(os.getenv('AWS_BUCKET_NAME', 'my-bucket'), dry_run=False))
+"
+
+# Check size and estimated cost for a specific prefix
+python -c "
+import os
+from ingestion.s3_optimizer import calculate_prefix_size, calculate_cost_savings
+info = calculate_prefix_size(os.getenv('AWS_BUCKET_NAME', 'my-bucket'), 'raw/stocks')
+savings = calculate_cost_savings(info['total_size_mb'] / 1024, 'delete')
+print(info, savings)
+"
+
+# Move old raw data to Glacier instead of deleting it
+python -c "
+import os
+from ingestion.s3_optimizer import identify_expired_objects, move_to_glacier
+bucket = os.getenv('AWS_BUCKET_NAME', 'my-bucket')
+keys = identify_expired_objects(bucket, 'raw/stocks', retention_days=90)
+print(move_to_glacier(bucket, keys))
+"
+```
+
+## Resource Monitoring
+
+```bash
+# Check current CPU / memory / disk health
+python -c "
+from ingestion.resource_manager import get_system_metrics, check_resource_health
+metrics = get_system_metrics()
+print(check_resource_health(metrics))
+"
+
+# Estimate resources needed for the pipeline
+python -c "
+from ingestion.resource_manager import estimate_pipeline_resources
+print(estimate_pipeline_resources(num_tickers=5, days_of_data=90))
+"
+
+# Run full resource check and save report to S3
+python -c "
+import os
+from ingestion.resource_manager import run_resource_check
+print(run_resource_check(os.getenv('AWS_BUCKET_NAME', 'my-bucket')))
+"
 ```
 
 ## Troubleshooting
