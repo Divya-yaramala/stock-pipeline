@@ -1,15 +1,8 @@
-"""
-S3 Cost Optimizer
------------------
-Manages S3 storage costs by:
-- Archiving raw data older than 30 days to cheaper storage prefix
-- Deleting monitoring data older than 7 days
-- Estimating monthly costs at $0.023/GB (S3 standard pricing)
-"""
-
+import json
 import logging
 import os
 from datetime import datetime, timedelta, timezone
+from typing import Any, Dict, List, Optional
 
 import boto3
 
@@ -17,142 +10,212 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
-S3_PRICE_PER_GB = 0.023
+S3_STANDARD_PRICE = 0.023
+S3_GLACIER_PRICE = 0.004
+
+RETENTION_POLICIES: Dict[str, int] = {
+    "raw/stocks": 90,
+    "processed/anomalies": 180,
+    "processed/predictions": 90,
+    "processed/insights": 90,
+    "processed/sentiment": 30,
+    "processed/technical": 30,
+    "processed/features": 30,
+    "cache": 7,
+    "chaos": 30,
+    "testing": 30,
+}
 
 
-def get_s3_storage_summary(bucket: str) -> dict:
-    """List all objects in bucket, calculate total size, and group by prefix."""
+def calculate_prefix_size(bucket: str, prefix: str) -> Dict[str, Any]:
     s3 = boto3.client("s3", region_name=AWS_REGION)
-    prefixes = ["raw/", "processed/", "errors/", "lineage/", "monitoring/", "reports/"]
-    breakdown: dict = {p: 0.0 for p in prefixes}
     total_bytes = 0
+    object_count = 0
+    oldest_date: Optional[str] = None
 
-    paginator = s3.get_paginator("list_objects_v2")
-    for page in paginator.paginate(Bucket=bucket):
-        for obj in page.get("Contents", []):
-            size = obj["Size"]
-            total_bytes += size
-            matched = False
-            for prefix in prefixes:
-                if obj["Key"].startswith(prefix):
-                    breakdown[prefix] += size
-                    matched = True
-                    break
-            if not matched:
-                breakdown.setdefault("other/", 0.0)
-                breakdown["other/"] += size
+    try:
+        paginator = s3.get_paginator("list_objects_v2")
+        for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
+            for obj in page.get("Contents", []):
+                total_bytes += int(str(obj["Size"]))
+                object_count += 1
+                last_mod = str(obj["LastModified"])
+                if oldest_date is None or last_mod < oldest_date:
+                    oldest_date = last_mod
+    except Exception as e:
+        logger.error("Failed to calculate size for prefix %s: %s", prefix, e)
 
-    total_mb = total_bytes / (1024**2)
-    total_gb = total_bytes / (1024**3)
-
-    summary = {
-        "total_bytes": total_bytes,
-        "total_mb": round(total_mb, 4),
-        "total_gb": round(total_gb, 4),
-        "breakdown_mb": {k: round(v / (1024**2), 4) for k, v in breakdown.items()},
+    total_size_mb = round(total_bytes / (1024**2), 4)
+    result: Dict[str, Any] = {
+        "prefix": prefix,
+        "total_size_mb": total_size_mb,
+        "object_count": object_count,
+        "oldest_file_date": oldest_date,
     }
+    logger.info("Prefix %s: %.2f MB, %d objects", prefix, total_size_mb, object_count)
+    return result
+
+
+def identify_expired_objects(
+    bucket: str,
+    prefix: str,
+    retention_days: int,
+) -> List[str]:
+    s3 = boto3.client("s3", region_name=AWS_REGION)
+    cutoff = datetime.now(timezone.utc) - timedelta(days=retention_days)
+    expired_keys: List[str] = []
+
+    try:
+        paginator = s3.get_paginator("list_objects_v2")
+        for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
+            for obj in page.get("Contents", []):
+                if obj["LastModified"] < cutoff:
+                    expired_keys.append(str(obj["Key"]))
+    except Exception as e:
+        logger.error("Failed to identify expired objects for %s: %s", prefix, e)
 
     logger.info(
-        "S3 storage summary for %s: %.2f MB total (%.4f GB)",
-        bucket,
-        total_mb,
-        total_gb,
+        "Found %d expired objects in %s (retention=%d days)",
+        len(expired_keys),
+        prefix,
+        retention_days,
     )
-    for prefix, size_bytes in breakdown.items():
-        if size_bytes > 0:
-            logger.info("  %s: %.2f MB", prefix, size_bytes / (1024**2))
-
-    return summary
+    return expired_keys
 
 
-def archive_old_raw_data(bucket: str, days_to_keep: int = 30) -> int:
-    """Move raw/stocks/ files older than days_to_keep to archive/raw/stocks/."""
+def delete_expired_objects(
+    bucket: str,
+    keys: List[str],
+    dry_run: bool = True,
+) -> Dict[str, Any]:
+    if dry_run:
+        logger.info("DRY RUN: would delete %d objects from %s", len(keys), bucket)
+        return {"deleted": 0, "failed": 0, "dry_run": True, "would_delete": len(keys)}
+
     s3 = boto3.client("s3", region_name=AWS_REGION)
-    cutoff = datetime.now(timezone.utc) - timedelta(days=days_to_keep)
-    archived = 0
-
-    paginator = s3.get_paginator("list_objects_v2")
-    for page in paginator.paginate(Bucket=bucket, Prefix="raw/stocks/"):
-        for obj in page.get("Contents", []):
-            last_modified = obj["LastModified"]
-            if last_modified < cutoff:
-                src_key = obj["Key"]
-                dst_key = "archive/" + src_key
-                try:
-                    s3.copy_object(
-                        Bucket=bucket,
-                        CopySource={"Bucket": bucket, "Key": src_key},
-                        Key=dst_key,
-                    )
-                    s3.delete_object(Bucket=bucket, Key=src_key)
-                    archived += 1
-                    logger.info("Archived %s → %s", src_key, dst_key)
-                except Exception as e:
-                    logger.error("Failed to archive %s: %s", src_key, e)
-
-    logger.info("Archived %d raw data file(s) older than %d days", archived, days_to_keep)
-    return archived
-
-
-def delete_old_monitoring_data(bucket: str, days_to_keep: int = 7) -> int:
-    """Delete monitoring/ files older than days_to_keep days."""
-    s3 = boto3.client("s3", region_name=AWS_REGION)
-    cutoff = datetime.now(timezone.utc) - timedelta(days=days_to_keep)
     deleted = 0
+    failed = 0
+    batch_size = 1000
 
-    paginator = s3.get_paginator("list_objects_v2")
-    for page in paginator.paginate(Bucket=bucket, Prefix="monitoring/"):
-        for obj in page.get("Contents", []):
-            last_modified = obj["LastModified"]
-            if last_modified < cutoff:
-                try:
-                    s3.delete_object(Bucket=bucket, Key=obj["Key"])
-                    deleted += 1
-                except Exception as e:
-                    logger.error("Failed to delete %s: %s", obj["Key"], e)
+    for i in range(0, len(keys), batch_size):
+        batch = keys[i : i + batch_size]
+        objects = [{"Key": k} for k in batch]
+        try:
+            response = s3.delete_objects(Bucket=bucket, Delete={"Objects": objects})
+            deleted += len(response.get("Deleted", []))
+            failed += len(response.get("Errors", []))
+        except Exception as e:
+            logger.error("Batch deletion failed: %s", e)
+            failed += len(batch)
 
-    logger.info("Deleted %d monitoring file(s) older than %d days", deleted, days_to_keep)
-    return deleted
+    logger.info("Deleted %d objects, %d failed (dry_run=%s)", deleted, failed, dry_run)
+    return {"deleted": deleted, "failed": failed, "dry_run": False}
 
 
-def generate_cost_report(bucket: str) -> dict:
-    """Estimate monthly S3 costs based on current storage usage."""
-    summary = get_s3_storage_summary(bucket)
-    storage_gb = summary["total_gb"]
-    estimated_cost = round(storage_gb * S3_PRICE_PER_GB, 4)
+def move_to_glacier(bucket: str, keys: List[str]) -> Dict[str, Any]:
+    s3 = boto3.client("s3", region_name=AWS_REGION)
+    moved = 0
+    failed = 0
 
-    report = {
-        "bucket": bucket,
-        "generated_at": datetime.now().isoformat(),
-        "storage_gb": storage_gb,
-        "estimated_monthly_cost_usd": estimated_cost,
-        "breakdown_by_prefix": summary["breakdown_mb"],
+    for key in keys:
+        try:
+            s3.copy_object(
+                Bucket=bucket,
+                CopySource={"Bucket": bucket, "Key": key},
+                Key=key,
+                StorageClass="GLACIER",
+                MetadataDirective="COPY",
+            )
+            moved += 1
+        except Exception as e:
+            logger.error("Failed to move %s to Glacier: %s", key, e)
+            failed += 1
+
+    logger.info("Moved %d objects to Glacier, %d failed", moved, failed)
+    return {"moved": moved, "failed": failed}
+
+
+def calculate_cost_savings(size_gb: float, action: str) -> Dict[str, float]:
+    size = float(str(size_gb))
+    if action == "delete":
+        monthly = round(size * S3_STANDARD_PRICE, 4)
+    else:
+        monthly = round(size * (S3_STANDARD_PRICE - S3_GLACIER_PRICE), 4)
+
+    annual = round(monthly * 12, 4)
+    logger.info(
+        "Estimated savings for %s (%.2f GB): $%.4f/month, $%.4f/year",
+        action,
+        size,
+        monthly,
+        annual,
+    )
+    return {"monthly_savings": monthly, "annual_savings": annual}
+
+
+def run_s3_optimization(
+    bucket: str,
+    dry_run: bool = True,
+) -> Dict[str, Any]:
+    date = datetime.utcnow().strftime("%Y/%m/%d")
+    total_expired = 0
+    total_deleted = 0
+    total_size_mb = 0.0
+    prefix_reports: List[Dict[str, Any]] = []
+
+    for prefix, retention_days in RETENTION_POLICIES.items():
+        size_info = calculate_prefix_size(bucket, prefix)
+        total_size_mb += float(str(size_info["total_size_mb"]))
+        expired_keys = identify_expired_objects(bucket, prefix, retention_days)
+        total_expired += len(expired_keys)
+
+        result = delete_expired_objects(bucket, expired_keys, dry_run=dry_run)
+        total_deleted += int(str(result.get("deleted", 0)))
+
+        prefix_reports.append(
+            {
+                "prefix": prefix,
+                "retention_days": retention_days,
+                "expired_keys": len(expired_keys),
+                "deleted": result.get("deleted", 0),
+                "dry_run": dry_run,
+            }
+        )
+
+    size_gb = total_size_mb / 1024
+    savings = calculate_cost_savings(size_gb, "delete")
+
+    report: Dict[str, Any] = {
+        "date": date,
+        "dry_run": dry_run,
+        "total_expired": total_expired,
+        "total_deleted": total_deleted,
+        "total_size_mb": round(total_size_mb, 2),
+        "estimated_savings": savings,
+        "prefixes": prefix_reports,
+        "generated_at": datetime.utcnow().isoformat(),
     }
 
+    s3 = boto3.client("s3", region_name=AWS_REGION)
+    report_key = f"reports/s3_optimization/{date}/report.json"
+    try:
+        s3.put_object(
+            Bucket=bucket,
+            Key=report_key,
+            Body=json.dumps(report),
+            ContentType="application/json",
+        )
+        logger.info("S3 optimization report saved to s3://%s/%s", bucket, report_key)
+    except Exception as e:
+        logger.error("Failed to save optimization report: %s", e)
+
     logger.info(
-        "Cost estimate for %s: %.4f GB → $%.4f/month",
-        bucket,
-        storage_gb,
-        estimated_cost,
+        "S3 Optimization Complete: %d objects processed, %d deleted",
+        total_expired,
+        total_deleted,
     )
     return report
 
 
-def run_s3_optimization() -> None:
-    """Archive old raw data, purge old monitoring files, and report cost estimate."""
-    bucket = os.environ.get("AWS_BUCKET_NAME", "")
-
-    archived = archive_old_raw_data(bucket)
-    deleted = delete_old_monitoring_data(bucket)
-    report = generate_cost_report(bucket)
-
-    logger.info(
-        "S3 optimization complete — archived: %d, deleted: %d, estimated cost: $%.4f/month",
-        archived,
-        deleted,
-        report["estimated_monthly_cost_usd"],
-    )
-
-
 if __name__ == "__main__":
-    run_s3_optimization()
+    pass
