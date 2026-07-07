@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-406%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-416%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,7 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 57/90 of my 90-day portfolio challenge!** 406 tests · 53 modules · 33 ADRs · 78 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 58/90 of my 90-day portfolio challenge!** 416 tests · 55 modules · 35 ADRs · 84 production patterns · 3 APIs + Dashboard
 
 > 🎉 **400 tests milestone reached on Day 56!**
 ---
@@ -62,7 +62,7 @@ Dashboard:
 - 🗺️ Data lineage tracking + impact analysis
 - 📊 Streamlit real-time dashboard with Plotly charts
 - 🔔 Slack alerts for anomalies, failures, and daily summaries
-- ✅ 406 automated tests with CI/CD
+- ✅ 416 automated tests with CI/CD
 
 ## 🛠️ Tech Stack
 | Layer | Technology |
@@ -85,11 +85,11 @@ Dashboard:
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 406 passing |
-| Ingestion modules | 53 |
+| Total tests | 416 passing |
+| Ingestion modules | 55 |
 | Airflow tasks | 16 |
-| ADRs | 33 |
-| Production patterns | 78 |
+| ADRs | 35 |
+| Production patterns | 84 |
 | S3 prefixes | 15+ |
 | Days built | 57 |
 
@@ -851,5 +851,12 @@ See [MLOps Guide](docs/mlops-guide.md) for full documentation.
 - Graceful fallback — never breaks pipeline on Slack failure
 - 6 unit tests passing green
 
+### ✅ Day 58 — S3 Lifecycle Management and Resource Monitoring
+- Built S3 optimizer with per-prefix retention policies (7–180 days)
+- Dry-run mode previews deletions before committing; batch deletes 1 000 objects/request
+- Glacier archival for cold data at $0.004/GB vs $0.023/GB standard
+- Resource manager checks CPU/memory/disk thresholds before pipeline runs
+- 10 unit tests passing green — 416 total
+
 ---
-*Built with ❤️ over 57 days as a portfolio project demonstrating production-grade data engineering.*
+*Built with ❤️ over 58 days as a portfolio project demonstrating production-grade data engineering.*
