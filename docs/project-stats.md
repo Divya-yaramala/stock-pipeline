@@ -8,7 +8,7 @@
 | Total tests | 416 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 35 architecture decisions |
+| ADRs | 36 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -114,6 +114,8 @@
 82. Expired Object Deletion (batch 1000/request with dry-run)
 83. Glacier Archival (cold data at $0.004/GB)
 84. Resource Health Monitoring (CPU/memory/disk thresholds)
+85. Cost Optimization Guide (retention policies documented)
+86. S3 Quota Monitoring (object count + size tracking)
 
 ## MLOps Statistics
 | Capability | Module | Status |
