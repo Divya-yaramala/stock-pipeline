@@ -44,3 +44,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [032](032-ab-testing-for-ml-models.md) | A/B Testing Framework for ML Models | Accepted |
 | [033](033-slack-alerting-integration.md) | Slack Alerting Integration | Accepted |
 | [034](034-email-vs-slack-notifications.md) | Email vs Slack for Notifications | Accepted |
+| [035](035-s3-lifecycle-management.md) | S3 Lifecycle Management | Accepted |

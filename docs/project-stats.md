@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 53 ingestion modules + 6 scripts |
+| Python files | 55 ingestion modules + 6 scripts |
 | Test files | 20 test files |
-| Total tests | 406 passing |
+| Total tests | 416 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 34 architecture decisions |
+| ADRs | 35 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -110,6 +110,10 @@
 78. Daily Slack Summary (pipeline health digest)
 79. Slack Setup Guide (webhook configuration)
 80. Dual Notification System (Slack + email)
+81. S3 Lifecycle Management (per-prefix retention policies)
+82. Expired Object Deletion (batch 1000/request with dry-run)
+83. Glacier Archival (cold data at $0.004/GB)
+84. Resource Health Monitoring (CPU/memory/disk thresholds)
 
 ## MLOps Statistics
 | Capability | Module | Status |
