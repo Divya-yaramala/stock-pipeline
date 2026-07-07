@@ -289,6 +289,21 @@ Setup: See [Slack Setup Guide](docs/slack-setup-guide.md)
 
 ---
 
+## 💰 Cost Optimization
+The pipeline includes automated S3 cost management:
+
+| Feature | Details |
+|---|---|
+| Retention policies | 10 prefixes with different retention periods |
+| Dry-run mode | Preview deletions safely before executing |
+| Glacier archival | 83% cost reduction for rarely-accessed data |
+| Cost calculator | Monthly + annual savings estimates |
+| S3 quota monitor | Track total objects and storage costs |
+
+See [Cost Optimization Guide](docs/cost-optimization-guide.md)
+
+---
+
 ## 🔄 Real-Time Streaming (Optional)
 Run the pipeline in real-time mode using Kafka:
 
