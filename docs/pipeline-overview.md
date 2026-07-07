@@ -164,6 +164,35 @@ replayed without rerunning the full pipeline.
 
 ---
 
+## S3 Cost Management
+The pipeline manages S3 costs through:
+
+### Retention Policies (10 prefixes)
+| Prefix | Retention |
+|---|---|
+| raw/stocks/ | 90 days |
+| processed/anomalies/ | 180 days |
+| processed/predictions/ | 90 days |
+| processed/insights/ | 90 days |
+| processed/sentiment/ | 30 days |
+| processed/technical/ | 30 days |
+| processed/features/ | 30 days |
+| cache/ | 7 days |
+| chaos/ | 30 days |
+| testing/ | 30 days |
+
+### Storage Classes
+- Active data (< 30 days): S3 Standard
+- Older data (30-90 days): S3 Standard-IA
+- Archive (90+ days): S3 Glacier
+
+### Monthly Cost Estimate
+- 100GB active data: ~$2.30/month
+- 500GB Glacier archive: ~$2.00/month
+- Total pipeline storage: ~$5/month
+
+---
+
 ## Security
 - No credentials stored in code — all secrets loaded from environment variables
 - .env file gitignored — never committed to repository
