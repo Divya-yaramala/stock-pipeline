@@ -658,3 +658,44 @@ python -c "from ingestion.slack_alerter import alert_anomaly_detected; print(ale
 # Send daily summary
 python -c "from ingestion.slack_alerter import send_daily_summary; print(send_daily_summary(5, 2, 5, 92.5))"
 ```
+
+## Configuration Management
+```bash
+# Validate all secrets before running pipeline
+python scripts/validate_secrets.py
+
+# Get config summary (no secrets exposed)
+python -c "from ingestion.config_manager import get_config_summary; print(get_config_summary())"
+
+# Check which configs are valid
+python -c "from ingestion.config_manager import validate_all_configs; print(validate_all_configs())"
+```
+
+## Required Environment Variables
+```
+AWS:
+  AWS_ACCESS_KEY_ID=your-key
+  AWS_SECRET_ACCESS_KEY=your-secret
+  AWS_BUCKET_NAME=your-bucket
+  AWS_REGION=us-east-1
+
+PostgreSQL:
+  POSTGRES_HOST=localhost
+  POSTGRES_USER=postgres
+  POSTGRES_PASSWORD=your-password
+  POSTGRES_DB=stock_pipeline
+
+Snowflake:
+  SNOWFLAKE_ACCOUNT=your-account
+  SNOWFLAKE_USER=your-user
+  SNOWFLAKE_PASSWORD=your-password
+```
+
+## Optional Environment Variables
+```
+OPENAI_API_KEY=your-key
+SLACK_WEBHOOK_URL=your-webhook
+NEWS_API_KEY=your-key
+SMTP_HOST=smtp.gmail.com
+KAFKA_BOOTSTRAP_SERVERS=localhost:9092
+```
