@@ -442,6 +442,22 @@ See [MLOps Guide](docs/mlops-guide.md) for full documentation.
 
 ---
 
+## 🛡️ Data Quality Gates
+Five automated quality checks before each pipeline stage:
+
+| Gate | Threshold | Action |
+|---|---|---|
+| Data Freshness | < 25 hours old | 🚫 Block |
+| Completeness | > 80% files present | 🚫 Block |
+| Quality Score | > 75% | ⚠️ Warn |
+| Anomaly Rate | < 30% anomalies | ⚠️ Warn |
+| Prediction Accuracy | > 60% accurate | 🚫 Block |
+
+Auto remediation triggers on any BLOCK action.
+See [Quality Gates Guide](docs/quality-gates-guide.md)
+
+---
+
 ## 🏛️ Architecture Decisions
 
 | # | Decision | Status |
