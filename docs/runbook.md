@@ -63,3 +63,37 @@ python -c "from ingestion.s3_optimizer import run_s3_optimization; import os; pr
 # Check resource usage
 python -c "from ingestion.resource_manager import run_resource_check; import os; print(run_resource_check(os.getenv('AWS_BUCKET_NAME')))"
 ```
+
+---
+
+## Configuration Validation
+
+### Before Every Pipeline Run
+```bash
+python scripts/validate_secrets.py
+```
+
+### Expected Output (all green)
+```
+=== REQUIRED SECRETS ===
+  AWS            ✅ ok
+  PostgreSQL     ✅ ok
+  Snowflake      ✅ ok
+
+=== OPTIONAL SECRETS ===
+  OpenAI         ✅ ok
+  Slack          ✅ ok
+  Email          ⚠️  missing: SMTP_HOST, SMTP_USER (not required)
+```
+
+### If Required Secret Missing
+```
+ERROR: Required secrets are missing — pipeline cannot run
+```
+Fix: Add the missing variable to `.env` and re-run `validate_secrets.py`.
+
+### Config Summary (safe to share — never shows secrets)
+```bash
+python -c "from ingestion.config_manager import get_config_summary; print(get_config_summary())"
+# Output: {"tickers": ["AAPL", ...], "region": "us-east-1", "chaos_enabled": false}
+```
