@@ -38,6 +38,8 @@ class PostgresConfig:
 @dataclass
 class PipelineConfig:
     tickers: List[str] = field(default_factory=lambda: ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"])
+    s3_raw_prefix: str = "raw/stocks"
+    anomaly_contamination: float = 0.1
     airflow_host: str = "localhost"
     airflow_port: int = 8080
     news_api_key: str = ""
