@@ -124,6 +124,9 @@ pytest tests/ tests/integration/ tests/e2e/ -v
 ### Quick Start
 
 ```bash
+# 0. Validate all environment variables first
+python scripts/validate_secrets.py
+
 # 1. Clone the repository
 git clone https://github.com/Divya-yaramala/stock-pipeline.git
 cd stock-pipeline
@@ -412,6 +415,7 @@ stock-pipeline/
 | [Loom Video Script](docs/loom-video-script.md) | 3-minute walkthrough script and recording checklist |
 | [Project Checklist](docs/project-checklist.md) | 90-day completion checklist with code quality, docs, production patterns |
 | [REST API Documentation](docs/api-docs.md) | Endpoint reference, request/response examples, Swagger UI guide |
+| [Configuration Guide](docs/configuration-guide.md) | All env vars, config classes, and security best practices |
 
 ---
 
