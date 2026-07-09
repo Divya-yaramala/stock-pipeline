@@ -1,106 +1,81 @@
-"""
-Validate that all required environment variables are set before running the pipeline.
-Usage: python scripts/validate_secrets.py
-Exits with code 1 if any required service is missing vars; 0 if only optional Slack is missing.
-"""
-
 import logging
 import os
 import sys
+from typing import Any, Dict, List, Optional
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
-REQUIRED_VARS = {
-    "AWS": [
-        "AWS_ACCESS_KEY_ID",
-        "AWS_SECRET_ACCESS_KEY",
-        "AWS_BUCKET_NAME",
-        "AWS_REGION",
-    ],
-    "Postgres": [
-        "POSTGRES_HOST",
-        "POSTGRES_PORT",
-        "POSTGRES_USER",
-        "POSTGRES_PASSWORD",
-        "POSTGRES_DB",
-    ],
-    "Snowflake": [
-        "SNOWFLAKE_ACCOUNT",
-        "SNOWFLAKE_USER",
-        "SNOWFLAKE_PASSWORD",
-        "SNOWFLAKE_WAREHOUSE",
-        "SNOWFLAKE_DATABASE",
-        "SNOWFLAKE_SCHEMA",
-        "SNOWFLAKE_ROLE",
-    ],
+REQUIRED_SECRETS: Dict[str, List[str]] = {
+    "AWS": ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_BUCKET_NAME"],
+    "PostgreSQL": ["POSTGRES_HOST", "POSTGRES_USER", "POSTGRES_PASSWORD", "POSTGRES_DB"],
+    "Snowflake": ["SNOWFLAKE_ACCOUNT", "SNOWFLAKE_USER", "SNOWFLAKE_PASSWORD"],
+}
+
+OPTIONAL_SECRETS: Dict[str, List[str]] = {
     "OpenAI": ["OPENAI_API_KEY"],
-}
-
-OPTIONAL_VARS = {
     "Slack": ["SLACK_WEBHOOK_URL"],
+    "Email": ["SMTP_HOST", "SMTP_USER", "SMTP_PASSWORD"],
+    "News API": ["NEWS_API_KEY"],
+    "Kafka": ["KAFKA_BOOTSTRAP_SERVERS"],
 }
 
 
-def check_required_secrets() -> dict:
-    """Check all required env vars and return a status report grouped by service."""
-    report = {}
-
-    for service, vars_list in REQUIRED_VARS.items():
+def check_secrets() -> Dict[str, Any]:
+    required_status: Dict[str, Any] = {}
+    for service, vars_list in REQUIRED_SECRETS.items():
         missing = [v for v in vars_list if not os.environ.get(v, "")]
-        report[service] = {
+        required_status[str(service)] = {
             "status": "missing" if missing else "ok",
-            "missing_vars": missing,
-            "optional": False,
+            "missing": missing,
         }
 
-    for service, vars_list in OPTIONAL_VARS.items():
+    optional_status: Dict[str, Any] = {}
+    for service, vars_list in OPTIONAL_SECRETS.items():
         missing = [v for v in vars_list if not os.environ.get(v, "")]
-        report[service] = {
+        optional_status[str(service)] = {
             "status": "missing" if missing else "ok",
-            "missing_vars": missing,
-            "optional": True,
+            "missing": missing,
         }
 
-    return report
+    all_required_present = all(v["status"] == "ok" for v in required_status.values())
+
+    return {
+        "required": required_status,
+        "optional": optional_status,
+        "all_required_present": all_required_present,
+    }
 
 
-def print_secrets_report(report: dict) -> None:
-    """Log a formatted table of secret validation results and exit on failure."""
-    col_service = 12
-    col_status = 12
+def print_secrets_report(report: Dict[str, Any]) -> None:
+    col = 14
 
-    logger.info("")
-    logger.info("  %-*s %-*s Missing Vars", col_service, "Service", col_status, "Status")
-    logger.info("  " + "-" * 60)
-
-    required_missing = False
-    optional_missing = False
-
-    for service, data in report.items():
+    print("\n=== REQUIRED SECRETS ===")
+    for service, data in report["required"].items():
         if data["status"] == "ok":
             status_str = "✅ ok"
-        elif data["optional"]:
-            status_str = "⚠️  missing"
-            optional_missing = True
         else:
-            status_str = "❌ missing"
-            required_missing = True
+            missing_list = ", ".join(data["missing"])
+            status_str = f"❌ missing: {missing_list}"
+        print(f"  {service:<{col}} {status_str}")
 
-        missing_str = ", ".join(data["missing_vars"]) if data["missing_vars"] else ""
-        logger.info("  %-*s %-*s %s", col_service, service, col_status, status_str, missing_str)
+    print("\n=== OPTIONAL SECRETS ===")
+    for service, data in report["optional"].items():
+        if data["status"] == "ok":
+            status_str = "✅ ok"
+        else:
+            missing_list = ", ".join(data["missing"])
+            status_str = f"⚠️  missing: {missing_list}"
+        print(f"  {service:<{col}} {status_str}")
 
-    logger.info("")
+    print()
 
-    if required_missing:
+    if not report["all_required_present"]:
         logger.error("Required secrets are missing — pipeline cannot run")
         sys.exit(1)
 
-    if optional_missing:
-        logger.warning("Optional Slack webhook is not set — Slack alerts will be disabled")
-
 
 if __name__ == "__main__":
-    result = check_required_secrets()
+    result = check_secrets()
     print_secrets_report(result)
-    logger.info("Secrets validation passed")
+    sys.exit(0)
