@@ -8,7 +8,7 @@
 | Total tests | 426 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 37 architecture decisions |
+| ADRs | 38 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -119,6 +119,8 @@
 87. Typed Config Manager (dataclass-based)
 88. Secrets Validator CLI (required + optional check)
 89. Config Summary (never exposes secrets)
+90. Configuration Guide (full env var documentation)
+91. 12-Factor Config (environment-based configuration)
 
 ## MLOps Statistics
 | Capability | Module | Status |
