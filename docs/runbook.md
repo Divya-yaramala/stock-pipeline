@@ -97,3 +97,31 @@ Fix: Add the missing variable to `.env` and re-run `validate_secrets.py`.
 python -c "from ingestion.config_manager import get_config_summary; print(get_config_summary())"
 # Output: {"tickers": ["AAPL", ...], "region": "us-east-1", "chaos_enabled": false}
 ```
+
+---
+
+## Quality Gate Procedures
+
+### When a Gate Blocks the Pipeline
+1. Check which gate failed in Slack alert
+2. Run gate check manually:
+```python
+from ingestion.quality_gate import run_quality_gates
+metrics = {'hours_since_update': 30, 'completeness_pct': 95.0,
+           'quality_score': 88.0, 'anomaly_rate_pct': 5.0,
+           'prediction_accuracy_pct': 75.0}
+print(run_quality_gates(metrics, 'AAPL'))
+```
+3. Check auto remediation history:
+```python
+from ingestion.auto_remediation import get_remediation_history
+import os
+print(get_remediation_history('AAPL', os.getenv('AWS_BUCKET_NAME')))
+```
+4. Fix underlying issue (see Alert Response Procedures above)
+5. Re-run blocked pipeline step in Airflow
+
+### Common Gate Failures
+- **G001 freshness_gate**: Yahoo Finance API rate limit hit → wait 1 hour
+- **G002 completeness_gate**: S3 upload failed → check AWS credentials
+- **G005 prediction_accuracy_gate**: Model drift → trigger retraining
