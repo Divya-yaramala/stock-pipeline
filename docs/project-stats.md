@@ -8,7 +8,7 @@
 | Total tests | 436 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 39 architecture decisions |
+| ADRs | 40 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -124,6 +124,8 @@
 92. Quality Gates (5 gates with block/warn actions)
 93. Auto Remediation (5 issue types with actions)
 94. Gate History (7-day trend tracking)
+95. Quality Gates Guide (threshold documentation)
+96. Remediation History (7-day audit trail)
 
 ## MLOps Statistics
 | Capability | Module | Status |
