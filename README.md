@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-416%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-426%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,7 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 58/90 of my 90-day portfolio challenge!** 416 tests · 55 modules · 35 ADRs · 84 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 59/90 of my 90-day portfolio challenge!** 426 tests · 56 modules · 37 ADRs · 89 production patterns · 3 APIs + Dashboard
 
 > 🎉 **400 tests milestone reached on Day 56!**
 ---
@@ -873,5 +873,12 @@ See [MLOps Guide](docs/mlops-guide.md) for full documentation.
 - Resource manager checks CPU/memory/disk thresholds before pipeline runs
 - 10 unit tests passing green — 416 total
 
+### ✅ Day 59 — Config Management + Secrets Validation
+- Built typed config manager using Python dataclasses
+- 4 config classes: AWS, Snowflake, PostgreSQL, Pipeline
+- CLI secrets validator checking required + optional secrets
+- Config summary never exposes passwords or API keys
+- 10 unit tests passing green
+
 ---
-*Built with ❤️ over 58 days as a portfolio project demonstrating production-grade data engineering.*
+*Built with ❤️ over 59 days as a portfolio project demonstrating production-grade data engineering.*
