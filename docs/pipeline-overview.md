@@ -319,3 +319,24 @@ The pipeline includes a Streamlit dashboard for visual exploration:
 | Predictions | http://localhost:8503/predictions | 5-day Prophet forecasts |
 
 Start: streamlit run dashboard/app.py --server.port 8503
+
+## Quality Gate Layer
+Every pipeline run passes through 5 quality gates:
+
+**Stage 1 — After Ingestion:**
+| Gate | Check | Action |
+|---|---|---|
+| G001 freshness_gate | Must be < 25 hours old | BLOCK if fails |
+| G002 completeness_gate | Must be > 80% complete | BLOCK if fails |
+
+**Stage 2 — After ML:**
+| Gate | Check | Action |
+|---|---|---|
+| G003 quality_score_gate | Must be > 75% | WARN if fails |
+| G004 anomaly_rate_gate | Must be < 30% anomalies | WARN if fails |
+| G005 prediction_accuracy_gate | Must be > 60% accurate | BLOCK if fails |
+
+**Gate Results:**
+- ✅ PASS → Pipeline continues to next stage
+- ⚠️ WARN → Pipeline continues + Slack warning sent
+- ❌ BLOCK → Pipeline stops + Auto remediation triggered
