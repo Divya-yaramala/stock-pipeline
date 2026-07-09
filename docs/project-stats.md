@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 56 ingestion modules + 6 scripts |
+| Python files | 58 ingestion modules + 6 scripts |
 | Test files | 20 test files |
-| Total tests | 426 passing |
+| Total tests | 436 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 38 architecture decisions |
+| ADRs | 39 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -121,6 +121,9 @@
 89. Config Summary (never exposes secrets)
 90. Configuration Guide (full env var documentation)
 91. 12-Factor Config (environment-based configuration)
+92. Quality Gates (5 gates with block/warn actions)
+93. Auto Remediation (5 issue types with actions)
+94. Gate History (7-day trend tracking)
 
 ## MLOps Statistics
 | Capability | Module | Status |

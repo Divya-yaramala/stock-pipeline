@@ -48,3 +48,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [036](036-psutil-for-resource-monitoring.md) | psutil for System Resource Monitoring | Accepted |
 | [037](037-typed-config-with-dataclasses.md) | Typed Configuration with Dataclasses | Accepted |
 | [038](038-env-based-configuration.md) | Environment-Based Configuration | Accepted |
+| [039](039-quality-gates-pattern.md) | Quality Gates Pattern | Accepted |
