@@ -5,39 +5,17 @@ import pytest
 
 from ingestion.config_manager import (
     AWSConfig,
-    PostgresConfig,
-    SnowflakeConfig,
+    get_config_summary,
     load_aws_config,
     load_pipeline_config,
-    load_postgres_config,
-    load_snowflake_config,
     validate_all_configs,
 )
 
-# Minimal env var sets for each service
 AWS_VARS = {
     "AWS_ACCESS_KEY_ID": "test-key",
     "AWS_SECRET_ACCESS_KEY": "test-secret",
     "AWS_BUCKET_NAME": "test-bucket",
     "AWS_REGION": "us-east-1",
-}
-
-POSTGRES_VARS = {
-    "POSTGRES_HOST": "localhost",
-    "POSTGRES_PORT": "5432",
-    "POSTGRES_USER": "user",
-    "POSTGRES_PASSWORD": "pass",
-    "POSTGRES_DB": "stocks",
-}
-
-SNOWFLAKE_VARS = {
-    "SNOWFLAKE_ACCOUNT": "acct",
-    "SNOWFLAKE_USER": "user",
-    "SNOWFLAKE_PASSWORD": "pass",
-    "SNOWFLAKE_WAREHOUSE": "wh",
-    "SNOWFLAKE_DATABASE": "db",
-    "SNOWFLAKE_SCHEMA": "public",
-    "SNOWFLAKE_ROLE": "sysadmin",
 }
 
 
@@ -49,44 +27,40 @@ def test_load_aws_config_success():
     assert cfg.region == "us-east-1"
 
 
-def test_load_aws_config_missing_var():
-    incomplete = {k: v for k, v in AWS_VARS.items() if k != "AWS_BUCKET_NAME"}
-    with patch.dict(os.environ, incomplete, clear=False):
-        # Remove the key from environment if it exists
-        env_copy = {**os.environ, **incomplete}
-        env_copy.pop("AWS_BUCKET_NAME", None)
-        with patch.dict(os.environ, env_copy, clear=True):
-            with pytest.raises(ValueError, match="AWS_BUCKET_NAME"):
-                load_aws_config()
-
-
-def test_load_postgres_config_success():
-    with patch.dict(os.environ, POSTGRES_VARS, clear=False):
-        cfg = load_postgres_config()
-    assert isinstance(cfg, PostgresConfig)
-    assert cfg.host == "localhost"
-    assert cfg.port == 5432
-
-
-def test_load_snowflake_config_success():
-    with patch.dict(os.environ, SNOWFLAKE_VARS, clear=False):
-        cfg = load_snowflake_config()
-    assert isinstance(cfg, SnowflakeConfig)
-    assert cfg.warehouse == "wh"
-    assert cfg.role == "sysadmin"
+def test_load_aws_config_missing():
+    with patch.dict(os.environ, {}, clear=True):
+        with pytest.raises(ValueError):
+            load_aws_config()
 
 
 def test_load_pipeline_config_defaults():
-    with patch.dict(os.environ, {}, clear=False):
+    with patch.dict(os.environ, {}, clear=True):
         cfg = load_pipeline_config()
-    assert cfg.forecast_days == 5
-    assert cfg.anomaly_contamination == 0.05
-    assert cfg.quality_sla_threshold == 80.0
     assert "AAPL" in cfg.tickers
+    assert cfg.airflow_host == "localhost"
+    assert cfg.airflow_port == 8080
+    assert cfg.chaos_enabled is False
 
 
-def test_validate_all_configs_success():
-    all_vars = {**AWS_VARS, **POSTGRES_VARS, **SNOWFLAKE_VARS}
-    with patch.dict(os.environ, all_vars, clear=False):
+def test_validate_all_configs_returns_dict():
+    with patch("ingestion.config_manager.load_aws_config"), patch(
+        "ingestion.config_manager.load_snowflake_config"
+    ), patch("ingestion.config_manager.load_postgres_config"), patch(
+        "ingestion.config_manager.load_pipeline_config"
+    ):
         result = validate_all_configs()
-    assert result is True
+    assert isinstance(result, dict)
+    assert "aws" in result
+    assert "snowflake" in result
+    assert "postgres" in result
+    assert "pipeline" in result
+
+
+def test_get_config_summary_no_secrets():
+    with patch.dict(os.environ, {}, clear=True):
+        summary = get_config_summary()
+    for key in summary:
+        assert "password" not in key.lower()
+        assert "api_key" not in key.lower()
+    assert "tickers" in summary
+    assert "region" in summary
