@@ -49,3 +49,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [037](037-typed-config-with-dataclasses.md) | Typed Configuration with Dataclasses | Accepted |
 | [038](038-env-based-configuration.md) | Environment-Based Configuration | Accepted |
 | [039](039-quality-gates-pattern.md) | Quality Gates Pattern | Accepted |
+| [040](040-auto-remediation-pattern.md) | Auto Remediation Pattern | Accepted |
