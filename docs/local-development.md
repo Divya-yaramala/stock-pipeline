@@ -699,3 +699,27 @@ NEWS_API_KEY=your-key
 SMTP_HOST=smtp.gmail.com
 KAFKA_BOOTSTRAP_SERVERS=localhost:9092
 ```
+
+## Quality Gates
+```python
+# Run quality gate check for a ticker
+from ingestion.quality_gate import run_pipeline_gate_check
+import os
+metrics = {
+    'hours_since_update': 10,
+    'completeness_pct': 95.0,
+    'quality_score': 88.0,
+    'anomaly_rate_pct': 5.0,
+    'prediction_accuracy_pct': 75.0
+}
+print(run_pipeline_gate_check('AAPL', metrics, os.getenv('AWS_BUCKET_NAME')))
+```
+
+## Auto Remediation
+```python
+# Run auto remediation check
+from ingestion.auto_remediation import run_auto_remediation
+import os
+metrics = {'hours_since_update': 30, 'completeness_pct': 95.0}
+print(run_auto_remediation('AAPL', metrics, os.getenv('AWS_BUCKET_NAME')))
+```
