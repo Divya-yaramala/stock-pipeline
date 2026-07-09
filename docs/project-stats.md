@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 55 ingestion modules + 6 scripts |
+| Python files | 56 ingestion modules + 6 scripts |
 | Test files | 20 test files |
-| Total tests | 416 passing |
+| Total tests | 426 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 36 architecture decisions |
+| ADRs | 37 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -116,6 +116,9 @@
 84. Resource Health Monitoring (CPU/memory/disk thresholds)
 85. Cost Optimization Guide (retention policies documented)
 86. S3 Quota Monitoring (object count + size tracking)
+87. Typed Config Manager (dataclass-based)
+88. Secrets Validator CLI (required + optional check)
+89. Config Summary (never exposes secrets)
 
 ## MLOps Statistics
 | Capability | Module | Status |

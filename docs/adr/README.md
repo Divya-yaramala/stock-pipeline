@@ -46,3 +46,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [034](034-email-vs-slack-notifications.md) | Email vs Slack for Notifications | Accepted |
 | [035](035-s3-lifecycle-management.md) | S3 Lifecycle Management | Accepted |
 | [036](036-psutil-for-resource-monitoring.md) | psutil for System Resource Monitoring | Accepted |
+| [037](037-typed-config-with-dataclasses.md) | Typed Configuration with Dataclasses | Accepted |
