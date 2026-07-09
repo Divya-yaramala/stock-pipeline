@@ -1,6 +1,5 @@
 import json
 import logging
-import os
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
@@ -29,19 +28,24 @@ def detect_issue(metrics: Dict[str, Any], ticker: str) -> Optional[str]:
         logger.info("Issue detected for %s: stale_data (hours=%.1f)", ticker, hours_since_update)
         return "stale_data"
     if completeness_pct < 50.0:
-        logger.info("Issue detected for %s: missing_files (completeness=%.1f%%)", ticker,
-                    completeness_pct)
+        logger.info(
+            "Issue detected for %s: missing_files (completeness=%.1f%%)", ticker, completeness_pct
+        )
         return "missing_files"
     if quality_score < 60.0:
         logger.info("Issue detected for %s: low_quality (score=%.1f)", ticker, quality_score)
         return "low_quality"
     if anomaly_rate_pct >= 50.0:
-        logger.info("Issue detected for %s: high_anomaly_rate (rate=%.1f%%)", ticker,
-                    anomaly_rate_pct)
+        logger.info(
+            "Issue detected for %s: high_anomaly_rate (rate=%.1f%%)", ticker, anomaly_rate_pct
+        )
         return "high_anomaly_rate"
     if prediction_accuracy_pct < 50.0:
-        logger.info("Issue detected for %s: prediction_failure (accuracy=%.1f%%)", ticker,
-                    prediction_accuracy_pct)
+        logger.info(
+            "Issue detected for %s: prediction_failure (accuracy=%.1f%%)",
+            ticker,
+            prediction_accuracy_pct,
+        )
         return "prediction_failure"
 
     logger.info("No issue detected for %s", ticker)

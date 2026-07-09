@@ -1,8 +1,7 @@
 import json
 import logging
-import os
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 import boto3
 
@@ -83,8 +82,16 @@ def evaluate_gate(gate: Dict[str, Any], metrics: Dict[str, Any]) -> Dict[str, An
         "operator": operator,
     }
     status = "PASS" if passed else "FAIL"
-    logger.info("Gate %s (%s): %s — %s=%.2f %s %.2f", gate_id, action, status, metric_key,
-                metric_value, operator, threshold)
+    logger.info(
+        "Gate %s (%s): %s — %s=%.2f %s %.2f",
+        gate_id,
+        action,
+        status,
+        metric_key,
+        metric_value,
+        operator,
+        threshold,
+    )
     return result
 
 
