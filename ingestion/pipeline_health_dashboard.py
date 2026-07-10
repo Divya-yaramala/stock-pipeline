@@ -1,7 +1,7 @@
 import json
 import logging
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 import boto3
 
@@ -75,9 +75,12 @@ def get_system_health(bucket: str) -> Dict[str, Any]:
         pass
 
     try:
-        from ingestion.sla_monitor import check_sla_compliance
+        from datetime import date as _date
 
-        sla = check_sla_compliance(bucket)
+        from ingestion.sla_monitor import check_all_slas
+
+        today = _date.today().isoformat()
+        sla = check_all_slas(bucket, today)
         if float(str(sla.get("compliance_pct", 100.0))) < 80.0:
             issues.append("sla_violation")
             score -= 20.0
@@ -128,11 +131,11 @@ def generate_health_html(
         row_color = (
             "#d4edda"
             if t_status == "success"
-            else "#fff3cd"
-            if t_status == "warning"
-            else "#f8d7da"
-            if t_status == "failed"
-            else "#f8f9fa"
+            else (
+                "#fff3cd"
+                if t_status == "warning"
+                else "#f8d7da" if t_status == "failed" else "#f8f9fa"
+            )
         )
         ticker_rows += (
             f'<tr style="background:{row_color}">'

@@ -1,7 +1,7 @@
 import json
 import logging
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 import boto3
 
@@ -86,8 +86,12 @@ def profile_dataset(
         "null_counts": null_counts,
         "records_sampled": records_sampled,
     }
-    logger.info("Profiling complete for %s: %d fields, %d records sampled",
-                prefix, len(schema), records_sampled)
+    logger.info(
+        "Profiling complete for %s: %d fields, %d records sampled",
+        prefix,
+        len(schema),
+        records_sampled,
+    )
     return profile
 
 
