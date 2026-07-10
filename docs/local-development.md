@@ -723,3 +723,25 @@ import os
 metrics = {'hours_since_update': 30, 'completeness_pct': 95.0}
 print(run_auto_remediation('AAPL', metrics, os.getenv('AWS_BUCKET_NAME')))
 ```
+
+## Pipeline Health Dashboard
+```bash
+# Generate health dashboard
+python -c "from ingestion.pipeline_health_dashboard import run_health_dashboard_update; import os; print(run_health_dashboard_update(os.getenv('AWS_BUCKET_NAME')))"
+
+# View dashboard URL
+# Open the returned S3 URL in your browser
+# Or download: aws s3 cp s3://bucket/reports/health_dashboard/YYYY/MM/DD/dashboard.html ./dashboard.html
+```
+
+## Data Discovery
+```bash
+# Discover all S3 datasets
+python -c "from ingestion.data_discovery import run_data_discovery; import os; print(run_data_discovery(os.getenv('AWS_BUCKET_NAME')))"
+
+# Search for specific datasets
+python -c "from ingestion.data_discovery import search_datasets; import os; print(search_datasets(os.getenv('AWS_BUCKET_NAME'), 'anomalies'))"
+
+# Profile a specific dataset
+python -c "from ingestion.data_discovery import profile_dataset; import os; print(profile_dataset(os.getenv('AWS_BUCKET_NAME'), 'raw/stocks/'))"
+```
