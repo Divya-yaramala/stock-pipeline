@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-436%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-446%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,7 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 60/90 of my 90-day portfolio challenge!** 436 tests · 58 modules · 39 ADRs · 94 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 61/90 of my 90-day portfolio challenge!** 446 tests · 60 modules · 41 ADRs · 99 production patterns · 3 APIs + Dashboard
 
 > 🎉 **400 tests milestone reached on Day 56!**
 ---
@@ -907,5 +907,12 @@ See [Quality Gates Guide](docs/quality-gates-guide.md)
 - Pipeline blocked when critical quality gates fail
 - 10 unit tests passing green
 
+### ✅ Day 61 — Health Dashboard + Data Discovery
+- Built HTML pipeline health dashboard with KPIs and ticker status
+- Data discovery module profiling all S3 datasets
+- Dataset search with prefix-based filtering
+- Health dashboard saved to S3 as static HTML
+- 10 unit tests passing green
+
 ---
-*Built with ❤️ over 60 days as a portfolio project demonstrating production-grade data engineering.*
+*Built with ❤️ over 61 days as a portfolio project demonstrating production-grade data engineering.*
