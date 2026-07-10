@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 58 ingestion modules + 6 scripts |
+| Python files | 60 ingestion modules + 6 scripts |
 | Test files | 20 test files |
-| Total tests | 436 passing |
+| Total tests | 446 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 40 architecture decisions |
+| ADRs | 41 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -126,6 +126,9 @@
 94. Gate History (7-day trend tracking)
 95. Quality Gates Guide (threshold documentation)
 96. Remediation History (7-day audit trail)
+97. Pipeline Health Dashboard (HTML KPI report)
+98. Data Discovery (S3 dataset profiling)
+99. Dataset Search (prefix-based filtering)
 
 ## MLOps Statistics
 | Capability | Module | Status |
