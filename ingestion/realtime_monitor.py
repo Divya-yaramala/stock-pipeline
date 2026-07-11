@@ -1,10 +1,11 @@
 import json
 import logging
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 import boto3
+import yfinance as yf
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
@@ -23,8 +24,6 @@ MONITOR_CHECKS: List[Dict[str, Any]] = [
 def check_api_availability(ticker: str) -> Dict[str, Any]:
     start = time.monotonic()
     try:
-        import yfinance as yf
-
         info = yf.Ticker(str(ticker)).fast_info
         _ = float(str(info.last_price))
         latency_ms = round((time.monotonic() - start) * 1000, 1)

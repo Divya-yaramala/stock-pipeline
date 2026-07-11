@@ -1,7 +1,7 @@
 import json
 import logging
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 import boto3
 
@@ -76,8 +76,13 @@ def record_sla_completion(
         s3 = boto3.client("s3")
         s3.put_object(Bucket=bucket, Key=key, Body=json.dumps(record))
         status = "MET" if met else "MISSED"
-        logger.info("SLA %s %s: completed at hour %d, target hour %d", sla_id, status,
-                    completed_hour, target_hour)
+        logger.info(
+            "SLA %s %s: completed at hour %d, target hour %d",
+            sla_id,
+            status,
+            completed_hour,
+            target_hour,
+        )
         return True
     except Exception as e:
         logger.error("Failed to record SLA completion %s: %s", sla_id, e)
@@ -131,8 +136,7 @@ def generate_sla_report(bucket: str, date: str) -> Dict[str, Any]:
     except Exception as e:
         logger.error("Failed to save SLA report: %s", e)
 
-    logger.info("SLA compliance for %s: %.1f%% (%d/%d met)", date, compliance_pct, met_count,
-                total)
+    logger.info("SLA compliance for %s: %.1f%% (%d/%d met)", date, compliance_pct, met_count, total)
     return report
 
 
@@ -148,17 +152,17 @@ def get_sla_trend(bucket: str, days: int = 30) -> Dict[str, Any]:
         try:
             obj = s3.get_object(Bucket=bucket, Key=key)
             record = json.loads(obj["Body"].read().decode("utf-8"))
-            daily.append({
-                "date": date_str,
-                "compliance_pct": float(str(record.get("compliance_pct", 0.0))),
-            })
+            daily.append(
+                {
+                    "date": date_str,
+                    "compliance_pct": float(str(record.get("compliance_pct", 0.0))),
+                }
+            )
         except Exception:
             pass
 
     avg_compliance = (
-        round(sum(float(str(d["compliance_pct"])) for d in daily) / len(daily), 1)
-        if daily
-        else 0.0
+        round(sum(float(str(d["compliance_pct"])) for d in daily) / len(daily), 1) if daily else 0.0
     )
 
     trend = "stable"
