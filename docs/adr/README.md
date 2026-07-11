@@ -51,3 +51,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [039](039-quality-gates-pattern.md) | Quality Gates Pattern | Accepted |
 | [040](040-auto-remediation-pattern.md) | Auto Remediation Pattern | Accepted |
 | [041](041-html-health-dashboard.md) | HTML Health Dashboard | Accepted |
+| [042](042-realtime-monitoring-pattern.md) | Real-Time Monitoring Pattern | Accepted |
