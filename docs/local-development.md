@@ -745,3 +745,24 @@ python -c "from ingestion.data_discovery import search_datasets; import os; prin
 # Profile a specific dataset
 python -c "from ingestion.data_discovery import profile_dataset; import os; print(profile_dataset(os.getenv('AWS_BUCKET_NAME'), 'raw/stocks/'))"
 ```
+
+## Real-Time Monitoring
+```bash
+# Run one monitor cycle
+python -c "from ingestion.realtime_monitor import run_monitor_cycle; import os; print(run_monitor_cycle(os.getenv('AWS_BUCKET_NAME')))"
+
+# Check API availability for a ticker
+python -c "from ingestion.realtime_monitor import check_api_availability; print(check_api_availability('AAPL'))"
+
+# Check pipeline lag
+python -c "from ingestion.realtime_monitor import check_pipeline_lag; import os; print(check_pipeline_lag(os.getenv('AWS_BUCKET_NAME'), 'AAPL'))"
+```
+
+## SLA Reporting
+```bash
+# Generate SLA report for today
+python -c "from ingestion.sla_reporter import run_sla_reporting; import os; print(run_sla_reporting(os.getenv('AWS_BUCKET_NAME')))"
+
+# Get 30-day SLA trend
+python -c "from ingestion.sla_reporter import get_sla_trend; import os; print(get_sla_trend(os.getenv('AWS_BUCKET_NAME')))"
+```
