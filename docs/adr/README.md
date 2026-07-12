@@ -54,3 +54,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [042](042-realtime-monitoring-pattern.md) | Real-Time Monitoring Pattern | Accepted |
 | [043](043-sla-definitions.md) | SLA Definitions for Stock Pipeline | Accepted |
 | [044](044-feature-flags-pattern.md) | Feature Flags Pattern | Accepted |
+| [045](045-experiment-management.md) | Experiment Management Framework | Accepted |
