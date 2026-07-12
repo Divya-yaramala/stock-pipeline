@@ -164,3 +164,44 @@ print(trend['avg_compliance_pct'], trend['trend'])
 2. If `trend == "declining"` → investigate systemic bottlenecks
 3. Share compliance % with stakeholders each Monday
 
+---
+
+## Experiment Management Procedures
+
+### Creating a New Experiment
+```python
+from ingestion.experiment_manager import create_experiment
+import os
+exp_id = create_experiment(
+    name='prophet_vs_ensemble',
+    description='Compare Prophet vs Ensemble model accuracy',
+    variants=['prophet', 'ensemble'],
+    bucket=os.getenv('AWS_BUCKET_NAME')
+)
+print('Experiment ID:', exp_id)
+```
+
+### Checking Which Variant a Ticker Gets
+```python
+from ingestion.experiment_manager import get_variant
+import os
+variant = get_variant('EXP_ID_HERE', 'AAPL', os.getenv('AWS_BUCKET_NAME'))
+print('AAPL gets variant:', variant)
+```
+
+### Analyzing Experiment Results
+```python
+from ingestion.experiment_manager import analyze_experiment
+import os
+results = analyze_experiment('EXP_ID_HERE', os.getenv('AWS_BUCKET_NAME'))
+print('Winner:', results['winner'])
+```
+
+### Concluding an Experiment
+```python
+from ingestion.experiment_manager import conclude_experiment
+import os
+conclusion = conclude_experiment('EXP_ID_HERE', os.getenv('AWS_BUCKET_NAME'))
+print('Conclusion:', conclusion)
+```
+
