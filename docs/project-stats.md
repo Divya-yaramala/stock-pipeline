@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 62 ingestion modules + 6 scripts |
-| Test files | 20 test files |
-| Total tests | 456 passing |
+| Python files | 64 ingestion modules + 6 scripts |
+| Test files | 22 test files |
+| Total tests | 466 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 43 architecture decisions |
+| ADRs | 44 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -134,6 +134,9 @@
 102. SLA Trend Analysis (30-day compliance trending)
 103. Monitoring Guide (3-layer monitoring documented)
 104. SLA Definitions (6 measurable SLAs)
+105. Feature Flag Manager (10 default flags)
+106. Experiment Manager (hash-based variant assignment)
+107. Flag Audit (enabled vs disabled tracking)
 
 ## MLOps Statistics
 | Capability | Module | Status |
