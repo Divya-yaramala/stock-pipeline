@@ -460,6 +460,20 @@ See [Quality Gates Guide](docs/quality-gates-guide.md)
 
 ---
 
+## 📡 Monitoring Architecture
+Three-layer monitoring for complete pipeline visibility:
+
+| Layer | Tool | Frequency |
+|---|---|---|
+| Real-Time | realtime_monitor.py | Every 5-15 min |
+| SLA Tracking | sla_reporter.py | Daily |
+| Observability | data_observatory.py | Daily |
+
+**100+ production patterns** and counting!
+See [Monitoring Guide](docs/monitoring-guide.md)
+
+---
+
 ## 🏛️ Architecture Decisions
 
 | # | Decision | Status |
