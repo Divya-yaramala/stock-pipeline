@@ -368,3 +368,25 @@ Issue detected → Slack alert → Auto remediation triggered
                              → Quality gate blocks downstream
                              → Health dashboard updated
 ```
+
+## Feature Flag Layer
+10 feature flags control pipeline behavior:
+
+### Always-On Features (default True)
+- enable_gpt_insights — GPT market summaries per ticker
+- enable_ensemble_models — RF + GB + Linear ensemble
+- enable_news_sentiment — Keyword-based sentiment analysis
+- enable_slack_alerts — Real-time Slack notifications
+- enable_email_reports — Daily HTML email reports
+- enable_snowflake_sync — Snowflake warehouse sync
+- enable_auto_remediation — Automatic issue remediation
+
+### Opt-In Features (default False)
+- enable_kafka_streaming — Real-time Kafka producer/consumer
+- enable_chaos_engineering — Chaos failure injection
+- enable_ab_testing — ML model A/B experiments
+
+### Toggling Flags
+```bash
+python -c "from ingestion.feature_flag_manager import enable_flag; import os; enable_flag('enable_kafka_streaming', os.getenv('AWS_BUCKET_NAME'))"
+```
