@@ -766,3 +766,31 @@ python -c "from ingestion.sla_reporter import run_sla_reporting; import os; prin
 # Get 30-day SLA trend
 python -c "from ingestion.sla_reporter import get_sla_trend; import os; print(get_sla_trend(os.getenv('AWS_BUCKET_NAME')))"
 ```
+
+## Feature Flags
+```bash
+# Check if a feature is enabled
+python -c "from ingestion.feature_flag_manager import is_enabled; import os; print(is_enabled('enable_gpt_insights', os.getenv('AWS_BUCKET_NAME')))"
+
+# Enable a feature
+python -c "from ingestion.feature_flag_manager import enable_flag; import os; enable_flag('enable_kafka_streaming', os.getenv('AWS_BUCKET_NAME'))"
+
+# Disable a feature
+python -c "from ingestion.feature_flag_manager import disable_flag; import os; disable_flag('enable_chaos_engineering', os.getenv('AWS_BUCKET_NAME'))"
+
+# Run flag audit
+python -c "from ingestion.feature_flag_manager import run_flag_audit; import os; print(run_flag_audit(os.getenv('AWS_BUCKET_NAME')))"
+```
+
+## Default Feature Flags
+| Flag | Default | Description |
+|---|---|---|
+| enable_gpt_insights | True | GPT market summaries |
+| enable_kafka_streaming | False | Real-time Kafka layer |
+| enable_chaos_engineering | False | Chaos scenarios |
+| enable_ensemble_models | True | RF+GB+Linear ensemble |
+| enable_news_sentiment | True | News sentiment analysis |
+| enable_slack_alerts | True | Slack notifications |
+| enable_snowflake_sync | True | Snowflake warehouse sync |
+| enable_auto_remediation | True | Auto fix pipeline issues |
+| enable_ab_testing | False | A/B model testing |
