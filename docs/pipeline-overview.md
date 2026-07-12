@@ -340,3 +340,31 @@ Every pipeline run passes through 5 quality gates:
 - ✅ PASS → Pipeline continues to next stage
 - ⚠️ WARN → Pipeline continues + Slack warning sent
 - ❌ BLOCK → Pipeline stops + Auto remediation triggered
+
+## Monitoring Architecture
+
+### Layer 1: Real-Time Monitoring (every 5-15 minutes)
+`realtime_monitor.py` runs continuously checking:
+- Yahoo Finance API availability
+- S3 data freshness per ticker
+- Pipeline processing lag
+- DLQ error rate
+- System resource usage
+
+### Layer 2: SLA Monitoring (daily)
+`sla_reporter.py` tracks 6 daily SLA targets:
+- All stages must complete by specific hours
+- 30-day compliance trend reported weekly
+
+### Layer 3: Observability (daily)
+`data_observatory.py` checks per ticker:
+- Data freshness (< 25 hours)
+- Data completeness (> 80%)
+- Price anomaly rate (< 5%)
+
+### Alerting Flow
+```
+Issue detected → Slack alert → Auto remediation triggered
+                             → Quality gate blocks downstream
+                             → Health dashboard updated
+```
