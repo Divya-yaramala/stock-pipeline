@@ -8,7 +8,7 @@
 | Total tests | 456 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 42 architecture decisions |
+| ADRs | 43 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -132,6 +132,8 @@
 100. Real-Time Monitor (5 checks, configurable intervals)
 101. SLA Reporter (6 SLAs with compliance tracking)
 102. SLA Trend Analysis (30-day compliance trending)
+103. Monitoring Guide (3-layer monitoring documented)
+104. SLA Definitions (6 measurable SLAs)
 
 ## MLOps Statistics
 | Capability | Module | Status |
