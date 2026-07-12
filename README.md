@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-456%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-466%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,7 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 62/90 of my 90-day portfolio challenge!** 456 tests · 62 modules · 42 ADRs · 102 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 63/90 of my 90-day portfolio challenge!** 466 tests · 64 modules · 44 ADRs · 107 production patterns · 3 APIs + Dashboard
 
 > 🎉 **400 tests milestone reached on Day 56!**
 
@@ -937,5 +937,12 @@ See [Monitoring Guide](docs/monitoring-guide.md)
 - 🎉 100 production patterns milestone reached!
 - 10 unit tests passing green
 
+### ✅ Day 63 — Feature Flags + Experiment Management
+- Built feature flag manager with 10 default flags
+- Experiment manager with hash-based consistent variant assignment
+- Flags stored in S3 — toggle without redeployment
+- Chaos engineering and Kafka streaming gated behind flags
+- 10 unit tests passing green
+
 ---
-*Built with ❤️ over 62 days as a portfolio project demonstrating production-grade data engineering.*
+*Built with ❤️ over 63 days as a portfolio project demonstrating production-grade data engineering.*
