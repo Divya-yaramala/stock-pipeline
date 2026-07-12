@@ -8,7 +8,7 @@
 | Total tests | 466 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 44 architecture decisions |
+| ADRs | 45 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -137,6 +137,8 @@
 105. Feature Flag Manager (10 default flags)
 106. Experiment Manager (hash-based variant assignment)
 107. Flag Audit (enabled vs disabled tracking)
+108. Feature Flags Guide (scenario-based documentation)
+109. Multi-Variant Experiments (A/B/C testing support)
 
 ## MLOps Statistics
 | Capability | Module | Status |
