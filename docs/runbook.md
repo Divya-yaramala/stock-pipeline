@@ -125,3 +125,42 @@ print(get_remediation_history('AAPL', os.getenv('AWS_BUCKET_NAME')))
 - **G001 freshness_gate**: Yahoo Finance API rate limit hit → wait 1 hour
 - **G002 completeness_gate**: S3 upload failed → check AWS credentials
 - **G005 prediction_accuracy_gate**: Model drift → trigger retraining
+
+---
+
+## SLA Monitoring Procedures
+
+### Daily SLA Check
+Run after each pipeline execution to confirm all stages completed on time:
+```python
+from ingestion.sla_reporter import run_sla_reporting
+import os
+report = run_sla_reporting(os.getenv('AWS_BUCKET_NAME'))
+print(report)
+```
+
+### SLA Status Thresholds
+| Compliance | Status | Action |
+|---|---|---|
+| ≥ 90% | 🟢 Green | No action needed |
+| 70–89% | 🟡 Yellow | Investigate slow stages |
+| < 70% | 🔴 Red | Escalate to on-call engineer |
+
+### When an SLA Is Missed
+1. Identify which SLA failed in the daily report (`met: false`)
+2. Check Airflow logs for the corresponding task
+3. Run the stage manually if safe to do so
+4. Record the miss and root cause in the incident log
+5. If missed 3+ days in a row, review pipeline capacity
+
+### Weekly SLA Review
+1. Pull 30-day compliance trend:
+```python
+from ingestion.sla_reporter import get_sla_trend
+import os
+trend = get_sla_trend(os.getenv('AWS_BUCKET_NAME'), days=30)
+print(trend['avg_compliance_pct'], trend['trend'])
+```
+2. If `trend == "declining"` → investigate systemic bottlenecks
+3. Share compliance % with stakeholders each Monday
+
