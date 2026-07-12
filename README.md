@@ -474,6 +474,23 @@ See [Monitoring Guide](docs/monitoring-guide.md)
 
 ---
 
+## 🚩 Feature Flags
+10 flags control pipeline behavior without redeployment:
+
+| Category | Flags |
+|---|---|
+| Always-On | GPT insights, ensemble models, sentiment, Slack, email, Snowflake |
+| Opt-In | Kafka streaming, chaos engineering, A/B testing |
+
+Toggle any flag:
+```bash
+python -c "from ingestion.feature_flag_manager import enable_flag; import os; enable_flag('enable_kafka_streaming', os.getenv('AWS_BUCKET_NAME'))"
+```
+
+See [Feature Flags Guide](docs/feature-flags-guide.md)
+
+---
+
 ## 🏛️ Architecture Decisions
 
 | # | Decision | Status |
