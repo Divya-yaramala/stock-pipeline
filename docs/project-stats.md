@@ -8,7 +8,7 @@
 | Total tests | 476 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 46 architecture decisions |
+| ADRs | 47 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -142,6 +142,9 @@
 110. Data Mesh (5 products across 4 domains)
 111. Event Bus (10 event types, S3-based)
 112. Data Product Health Scoring
+113. Data Mesh Guide (domain-driven documentation)
+114. Event-Driven Architecture (10 event types)
+115. S3 Event Store (durable event persistence)
 
 ## MLOps Statistics
 | Capability | Module | Status |
