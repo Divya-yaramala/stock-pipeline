@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 64 ingestion modules + 6 scripts |
+| Python files | 66 ingestion modules + 6 scripts |
 | Test files | 22 test files |
-| Total tests | 466 passing |
+| Total tests | 476 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 45 architecture decisions |
+| ADRs | 46 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -139,6 +139,9 @@
 107. Flag Audit (enabled vs disabled tracking)
 108. Feature Flags Guide (scenario-based documentation)
 109. Multi-Variant Experiments (A/B/C testing support)
+110. Data Mesh (5 products across 4 domains)
+111. Event Bus (10 event types, S3-based)
+112. Data Product Health Scoring
 
 ## MLOps Statistics
 | Capability | Module | Status |
