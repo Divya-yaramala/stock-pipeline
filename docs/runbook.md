@@ -205,3 +205,47 @@ conclusion = conclude_experiment('EXP_ID_HERE', os.getenv('AWS_BUCKET_NAME'))
 print('Conclusion:', conclusion)
 ```
 
+---
+
+## Event Bus Procedures
+
+### Viewing Today's Events
+```python
+from ingestion.event_bus import get_event_summary
+import os, datetime
+summary = get_event_summary(
+    os.getenv('AWS_BUCKET_NAME'),
+    datetime.datetime.now().strftime('%Y/%m/%d')
+)
+print('Total events:', summary['total'])
+print('By type:', summary['by_type'])
+```
+
+### Expected Daily Events
+- data_ingested: 5 (one per ticker)
+- anomaly_detected: 0-5 (varies)
+- prediction_generated: 5 (one per ticker)
+- quality_gate_passed: 5+ (multiple gates per ticker)
+- sla_met: 6 (all SLAs met on good days)
+- pipeline_completed: 5 (one per ticker)
+
+### If Events are Missing
+1. Check Airflow for failed tasks: http://localhost:8080
+2. Check S3 events prefix:
+   aws s3 ls s3://bucket/events/YYYY/MM/DD/
+3. Check pipeline logs for event publish errors
+4. Re-run failed pipeline steps to regenerate events
+
+### Publishing Manual Event
+```python
+from ingestion.event_bus import publish_event
+import os
+event_id = publish_event(
+    'pipeline_completed',
+    {'ticker': 'AAPL', 'duration_minutes': 45.0},
+    'manual',
+    os.getenv('AWS_BUCKET_NAME')
+)
+print('Published event:', event_id)
+```
+
