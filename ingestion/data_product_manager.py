@@ -1,10 +1,9 @@
-import boto3
-import json
-import os
-import logging
 import datetime
-import hashlib
-from typing import Optional, Dict, List, Any
+import json
+import logging
+from typing import Any, Dict, List, Optional
+
+import boto3
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

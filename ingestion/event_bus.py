@@ -1,10 +1,10 @@
-import boto3
-import json
-import os
-import logging
 import datetime
-from typing import Optional, Dict, List, Any, Callable
+import json
+import logging
 import uuid
+from typing import Any, Dict, List
+
+import boto3
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -85,9 +85,7 @@ def publish_pipeline_completed(ticker: str, duration_minutes: float, bucket: str
     return publish_event("pipeline_completed", payload, "pipeline", bucket)
 
 
-def publish_anomaly_detected(
-    ticker: str, anomaly_label: str, price: float, bucket: str
-) -> str:
+def publish_anomaly_detected(ticker: str, anomaly_label: str, price: float, bucket: str) -> str:
     payload: Dict[str, Any] = {
         "ticker": ticker,
         "anomaly_label": anomaly_label,
