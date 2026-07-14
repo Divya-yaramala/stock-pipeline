@@ -491,6 +491,21 @@ See [Feature Flags Guide](docs/feature-flags-guide.md)
 
 ---
 
+## 🕸️ Data Mesh
+5 data products across 4 domains with clear ownership:
+
+| Domain | Products | Owner |
+|---|---|---|
+| market_data | stock_prices | data_engineering |
+| ml_insights | anomaly_signals, price_forecasts | ml_team |
+| nlp_insights | market_sentiment | data_engineering |
+| analytics | portfolio_analytics | analytics_team |
+
+10 event types published to S3 event bus on every pipeline run.
+See [Data Mesh Guide](docs/data-mesh-guide.md)
+
+---
+
 ## 🏛️ Architecture Decisions
 
 | # | Decision | Status |
