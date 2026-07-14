@@ -390,3 +390,34 @@ Issue detected → Slack alert → Auto remediation triggered
 ```bash
 python -c "from ingestion.feature_flag_manager import enable_flag; import os; enable_flag('enable_kafka_streaming', os.getenv('AWS_BUCKET_NAME'))"
 ```
+
+## Data Mesh Architecture
+
+### Domain: market_data
+Owner: data_engineering
+Products: stock_prices (DP001)
+S3 paths: raw/stocks/, processed/
+
+### Domain: ml_insights
+Owner: ml_team
+Products: anomaly_signals (DP002), price_forecasts (DP003)
+S3 paths: processed/anomalies/, processed/predictions/
+
+### Domain: nlp_insights
+Owner: data_engineering
+Products: market_sentiment (DP004)
+S3 paths: processed/sentiment/, processed/insights/
+
+### Domain: analytics
+Owner: analytics_team
+Products: portfolio_analytics (DP005)
+S3 paths: portfolio/, reports/bi/
+
+### Event Flow
+```
+data_ingested → anomaly_detected → prediction_generated
+      ↓               ↓                    ↓
+quality_gate   sla_met/missed      model_retrain_triggered
+      ↓
+pipeline_completed / pipeline_failed
+```
