@@ -794,3 +794,26 @@ python -c "from ingestion.feature_flag_manager import run_flag_audit; import os;
 | enable_snowflake_sync | True | Snowflake warehouse sync |
 | enable_auto_remediation | True | Auto fix pipeline issues |
 | enable_ab_testing | False | A/B model testing |
+
+## Data Mesh
+
+```bash
+# Register all data products
+python -c "from ingestion.data_product_manager import run_data_mesh_registration; import os; run_data_mesh_registration(os.getenv('AWS_BUCKET_NAME'))"
+
+# List all data products
+python -c "from ingestion.data_product_manager import list_data_products; import os; print(list_data_products(os.getenv('AWS_BUCKET_NAME')))"
+
+# Get domain summary
+python -c "from ingestion.data_product_manager import get_domain_summary; import os; print(get_domain_summary(os.getenv('AWS_BUCKET_NAME')))"
+```
+
+## Event Bus
+
+```bash
+# Publish a pipeline completed event
+python -c "from ingestion.event_bus import publish_pipeline_completed; import os; print(publish_pipeline_completed('AAPL', 45.5, os.getenv('AWS_BUCKET_NAME')))"
+
+# Get event summary for today
+python -c "from ingestion.event_bus import get_event_summary; import os, datetime; print(get_event_summary(os.getenv('AWS_BUCKET_NAME'), datetime.datetime.now().strftime('%Y/%m/%d')))"
+```
