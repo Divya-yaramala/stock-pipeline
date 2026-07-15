@@ -817,3 +817,31 @@ python -c "from ingestion.event_bus import publish_pipeline_completed; import os
 # Get event summary for today
 python -c "from ingestion.event_bus import get_event_summary; import os, datetime; print(get_event_summary(os.getenv('AWS_BUCKET_NAME'), datetime.datetime.now().strftime('%Y/%m/%d')))"
 ```
+
+## Data Contracts
+
+```bash
+# Register all contracts
+python -c "from ingestion.data_contract_manager import run_contract_registration; import os; run_contract_registration(os.getenv('AWS_BUCKET_NAME'))"
+
+# Validate data against contract
+python -c "
+from ingestion.data_contract_manager import validate_against_contract, STOCK_PRICE_CONTRACT
+data = {'ticker': 'AAPL', 'trade_date': '2026-07-14', 'open_price': 185.0,
+        'high_price': 190.0, 'low_price': 183.0, 'close_price': 188.0, 'volume': 1000000}
+print(validate_against_contract(data, STOCK_PRICE_CONTRACT))
+"
+```
+
+## Schema Registry
+
+```bash
+# Set up schema registry
+python -c "from ingestion.schema_registry import run_schema_registry_setup; import os; run_schema_registry_setup(os.getenv('AWS_BUCKET_NAME'))"
+
+# Get latest schema
+python -c "from ingestion.schema_registry import get_latest_schema; import os; print(get_latest_schema('stock_prices_raw', os.getenv('AWS_BUCKET_NAME')))"
+
+# List all schemas
+python -c "from ingestion.schema_registry import list_schemas; import os; print(list_schemas(os.getenv('AWS_BUCKET_NAME')))"
+```
