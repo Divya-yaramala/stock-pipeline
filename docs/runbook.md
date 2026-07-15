@@ -287,3 +287,37 @@ print(register_schema('stock_prices_raw', schema_def, '1.1.0', os.getenv('AWS_BU
 - Create new schema name instead: stock_prices_raw_v2
 - Maintain old schema until consumers migrate
 
+---
+
+## Data Privacy Incident Procedures
+
+### If PII Found in Pipeline Data
+1. Immediately run PII scan to confirm:
+```bash
+python -c "from ingestion.pii_detector import run_pii_scan; import os; print(run_pii_scan(os.getenv('AWS_BUCKET_NAME'), 'raw/stocks/'))"
+```
+
+2. Identify affected files from scan report
+3. Mask PII in affected files:
+```python
+from ingestion.pii_detector import mask_pii
+import os, boto3, json
+s3 = boto3.client('s3')
+obj = s3.get_object(Bucket=os.getenv('AWS_BUCKET_NAME'), Key='affected/file.json')
+data = json.loads(obj['Body'].read())
+masked = mask_pii(data)
+s3.put_object(Bucket=os.getenv('AWS_BUCKET_NAME'), Key='affected/file.json', Body=json.dumps(masked))
+```
+4. Document incident in audit log
+5. Check if downstream consumers received unmasked data
+6. Escalate to security team if SSN or CC data found
+
+### Privacy Policy Violation Response
+1. Run policy compliance check:
+```bash
+python -c "from ingestion.data_privacy_manager import generate_privacy_report; import os; print(generate_privacy_report(os.getenv('AWS_BUCKET_NAME')))"
+```
+2. Identify violating datasets
+3. Fix classification or retention settings
+4. Re-run compliance check to confirm fix
+
