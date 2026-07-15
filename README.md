@@ -506,6 +506,21 @@ See [Data Mesh Guide](docs/data-mesh-guide.md)
 
 ---
 
+## 📋 Data Contracts
+Formal schema agreements between data producers and consumers:
+
+| Contract | Version | Owner | Consumers |
+|---|---|---|---|
+| stock_price_event | 1.0.0 | data_engineering | ml_team, analytics |
+
+Schema registry tracks 4 versioned schemas:
+stock_prices_raw · stock_anomalies · stock_predictions · stock_sentiment
+
+Breaking change detection prevents accidental schema evolution.
+See [Data Contracts Guide](docs/data-contracts-guide.md)
+
+---
+
 ## 🏛️ Architecture Decisions
 
 | # | Decision | Status |
