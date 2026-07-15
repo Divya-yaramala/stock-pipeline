@@ -32,9 +32,7 @@ def register_schema(
     return schema_id
 
 
-def get_schema(
-    schema_name: str, version: str, bucket: str
-) -> Optional[Dict[str, Any]]:
+def get_schema(schema_name: str, version: str, bucket: str) -> Optional[Dict[str, Any]]:
     s3 = boto3.client("s3")
     key = f"schema_registry/{schema_name}/{version}.json"
     try:
@@ -47,9 +45,7 @@ def get_schema(
         return None
 
 
-def get_latest_schema(
-    schema_name: str, bucket: str
-) -> Optional[Dict[str, Any]]:
+def get_latest_schema(schema_name: str, bucket: str) -> Optional[Dict[str, Any]]:
     s3 = boto3.client("s3")
     prefix = f"schema_registry/{schema_name}/"
     response = s3.list_objects_v2(Bucket=bucket, Prefix=prefix)
@@ -93,8 +89,12 @@ def validate_schema_evolution(
         changes.append(f"Added field: {field}")
 
     for field in old_fields & new_fields:
-        old_type = str(old_schema[field].get("type", "")) if isinstance(old_schema[field], dict) else ""
-        new_type = str(new_schema[field].get("type", "")) if isinstance(new_schema[field], dict) else ""
+        old_type = (
+            str(old_schema[field].get("type", "")) if isinstance(old_schema[field], dict) else ""
+        )
+        new_type = (
+            str(new_schema[field].get("type", "")) if isinstance(new_schema[field], dict) else ""
+        )
         if old_type and new_type and old_type != new_type:
             breaking.append(f"Type changed for {field}: {old_type} -> {new_type}")
             changes.append(f"BREAKING — type changed for {field}: {old_type} -> {new_type}")
@@ -105,10 +105,26 @@ def validate_schema_evolution(
 
 def run_schema_registry_setup(bucket: str) -> None:
     schemas = [
-        ("stock_prices_raw", {"ticker": {"type": "string"}, "close_price": {"type": "float"}}, "1.0.0"),
-        ("stock_anomalies", {"ticker": {"type": "string"}, "is_anomaly": {"type": "boolean"}}, "1.0.0"),
-        ("stock_predictions", {"ticker": {"type": "string"}, "forecast_price": {"type": "float"}}, "1.0.0"),
-        ("stock_sentiment", {"ticker": {"type": "string"}, "sentiment": {"type": "string"}}, "1.0.0"),
+        (
+            "stock_prices_raw",
+            {"ticker": {"type": "string"}, "close_price": {"type": "float"}},
+            "1.0.0",
+        ),
+        (
+            "stock_anomalies",
+            {"ticker": {"type": "string"}, "is_anomaly": {"type": "boolean"}},
+            "1.0.0",
+        ),
+        (
+            "stock_predictions",
+            {"ticker": {"type": "string"}, "forecast_price": {"type": "float"}},
+            "1.0.0",
+        ),
+        (
+            "stock_sentiment",
+            {"ticker": {"type": "string"}, "sentiment": {"type": "string"}},
+            "1.0.0",
+        ),
     ]
     for name, schema_def, version in schemas:
         register_schema(name, schema_def, version, bucket)

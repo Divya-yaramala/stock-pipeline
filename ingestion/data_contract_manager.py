@@ -1,5 +1,3 @@
-import datetime
-import hashlib
 import json
 import logging
 from typing import Any, Dict, List, Optional
@@ -37,9 +35,7 @@ def register_contract(contract: Dict[str, Any], bucket: str) -> bool:
     return True
 
 
-def get_contract(
-    contract_id: str, version: str, bucket: str
-) -> Optional[Dict[str, Any]]:
+def get_contract(contract_id: str, version: str, bucket: str) -> Optional[Dict[str, Any]]:
     s3 = boto3.client("s3")
     key = f"data_contracts/{contract_id}/{version}.json"
     try:
@@ -52,9 +48,7 @@ def get_contract(
         return None
 
 
-def validate_against_contract(
-    data: Dict[str, Any], contract: Dict[str, Any]
-) -> Dict[str, Any]:
+def validate_against_contract(data: Dict[str, Any], contract: Dict[str, Any]) -> Dict[str, Any]:
     schema = contract.get("schema", {})
     contract_id = str(contract.get("contract_id", ""))
     violations: List[str] = []
