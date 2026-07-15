@@ -523,6 +523,21 @@ See [Data Contracts Guide](docs/data-contracts-guide.md)
 
 ---
 
+## 🔒 Data Privacy
+PII detection and privacy policy enforcement:
+
+| Feature | Details |
+|---|---|
+| PII Detection | 5 pattern types (email, phone, SSN, CC, IP) |
+| PII Masking | Shape-preserving masking |
+| Privacy Policies | 4 policies (PUBLIC/INTERNAL/CONFIDENTIAL) |
+| Anonymization | SHA256 irreversible hashing |
+| PII Scanning | Automatic scan on audit/ and raw/ prefixes |
+
+See [Data Privacy Guide](docs/data-privacy-guide.md)
+
+---
+
 ## 🏛️ Architecture Decisions
 
 | # | Decision | Status |
