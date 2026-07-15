@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-486%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-496%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,9 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 65/90 of my 90-day portfolio challenge!** 486 tests · 68 modules · 48 ADRs · 119 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 66/90 of my 90-day portfolio challenge!** 496 tests · 70 modules · 50 ADRs · 125 production patterns · 3 APIs + Dashboard
+
+> 🎉 **50 ADRs milestone reached on Day 66!**
 
 > 🎉 **400 tests milestone reached on Day 56!**
 
@@ -87,13 +89,13 @@ Dashboard:
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 486 passing |
-| Ingestion modules | 68 |
+| Total tests | 496 passing |
+| Ingestion modules | 70 |
 | Airflow tasks | 16 |
-| ADRs | 48 |
-| Production patterns | 119 |
+| ADRs | 50 |
+| Production patterns | 125 |
 | S3 prefixes | 15+ |
-| Days built | 65 |
+| Days built | 66 |
 
 ## 🧪 Testing Strategy
 Three-tier testing approach:
@@ -1005,5 +1007,13 @@ See [Data Contracts Guide](docs/data-contracts-guide.md)
 - Contract violations logged for producer accountability
 - 10 unit tests passing green
 
+### ✅ Day 66 — Data Privacy + PII Management
+- Built PII detector with 5 pattern types (email, phone, SSN, CC, IP)
+- PII masking preserving data shape while hiding sensitive values
+- Data privacy manager with 4 privacy policies
+- Dataset anonymization using SHA256 hashing
+- 🎉 50 ADRs milestone reached!
+- 10 unit tests passing green
+
 ---
-*Built with ❤️ over 65 days as a portfolio project demonstrating production-grade data engineering.*
+*Built with ❤️ over 66 days as a portfolio project demonstrating production-grade data engineering.*
