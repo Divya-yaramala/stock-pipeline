@@ -8,7 +8,7 @@
 | Total tests | 486 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 48 architecture decisions |
+| ADRs | 49 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -149,6 +149,8 @@
 117. Schema Registry (versioned schema storage)
 118. Schema Evolution Validation (safe vs breaking changes)
 119. Contract Compatibility Checking
+120. Data Contracts Guide (schema + SLA documented)
+121. Schema Evolution Rules (safe vs breaking changes)
 
 ## MLOps Statistics
 | Capability | Module | Status |
