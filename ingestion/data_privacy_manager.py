@@ -54,9 +54,7 @@ def get_privacy_policy(policy_name: str) -> Optional[Dict[str, Any]]:
     return None
 
 
-def check_policy_compliance(
-    dataset_name: str, metadata: Dict[str, Any]
-) -> Dict[str, Any]:
+def check_policy_compliance(dataset_name: str, metadata: Dict[str, Any]) -> Dict[str, Any]:
     policy = get_privacy_policy(dataset_name)
     if policy is None:
         return {
@@ -77,9 +75,9 @@ def check_policy_compliance(
 
     if "retention_days" in metadata:
         if int(str(metadata["retention_days"])) > int(str(policy["retention_days"])):
-            violations.append(
-                f"Retention exceeds policy: {metadata['retention_days']} > {policy['retention_days']}"
-            )
+            meta_ret = metadata["retention_days"]
+            pol_ret = policy["retention_days"]
+            violations.append(f"Retention exceeds policy: {meta_ret} > {pol_ret}")
 
     if not bool(policy["pii_allowed"]) and bool(metadata.get("has_pii", False)):
         violations.append(f"PII not allowed by policy {policy_id}")
@@ -92,7 +90,10 @@ def check_policy_compliance(
 def generate_privacy_report(bucket: str) -> Dict[str, Any]:
     s3 = boto3.client("s3")
     datasets = [
-        ("financial_data", {"classification": "CONFIDENTIAL", "retention_days": 365, "has_pii": False}),
+        (
+            "financial_data",
+            {"classification": "CONFIDENTIAL", "retention_days": 365, "has_pii": False},
+        ),
         ("ml_features", {"classification": "INTERNAL", "retention_days": 90, "has_pii": False}),
         ("audit_logs", {"classification": "CONFIDENTIAL", "retention_days": 730, "has_pii": False}),
         ("cache_data", {"classification": "PUBLIC", "retention_days": 7, "has_pii": False}),
