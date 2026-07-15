@@ -845,3 +845,35 @@ python -c "from ingestion.schema_registry import get_latest_schema; import os; p
 # List all schemas
 python -c "from ingestion.schema_registry import list_schemas; import os; print(list_schemas(os.getenv('AWS_BUCKET_NAME')))"
 ```
+
+## Data Privacy and PII Management
+
+```bash
+# Scan a prefix for PII
+python -c "from ingestion.pii_detector import run_pii_scan; import os; print(run_pii_scan(os.getenv('AWS_BUCKET_NAME'), 'raw/stocks/'))"
+
+# Check if stock data has PII
+python -c "
+from ingestion.pii_detector import scan_for_pii
+data = {'ticker': 'AAPL', 'close_price': 185.0, 'volume': 1000000}
+print(scan_for_pii(data))
+"
+
+# Run full privacy check
+python -c "from ingestion.data_privacy_manager import run_privacy_check; import os; print(run_privacy_check(os.getenv('AWS_BUCKET_NAME')))"
+
+# Check policy compliance for a dataset
+python -c "
+from ingestion.data_privacy_manager import check_policy_compliance
+metadata = {'classification': 'CONFIDENTIAL', 'retention_days': 365, 'has_pii': False}
+print(check_policy_compliance('financial_data', metadata))
+"
+```
+
+## Privacy Policies
+| Policy | Classification | Retention | PII Allowed |
+|---|---|---|---|
+| financial_data | CONFIDENTIAL | 365 days | ❌ No |
+| ml_features | INTERNAL | 90 days | ❌ No |
+| audit_logs | CONFIDENTIAL | 730 days | ❌ No |
+| cache_data | PUBLIC | 7 days | ❌ No |
