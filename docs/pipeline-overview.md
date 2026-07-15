@@ -421,3 +421,29 @@ quality_gate   sla_met/missed      model_retrain_triggered
       ↓
 pipeline_completed / pipeline_failed
 ```
+
+## Data Contracts and Schema Registry
+
+### Data Contract Flow
+```
+Producer (fetch_stocks.py) → validate_against_contract()
+      ↓
+Contract C001: stock_price_event v1.0.0
+      ↓
+Violations logged → Slack alert if violations > 0
+      ↓
+Consumer (anomaly_detector.py, model_comparator.py)
+```
+
+### Schema Registry
+4 schemas registered at pipeline startup:
+- stock_prices_raw v1.0.0
+- stock_anomalies v1.0.0
+- stock_predictions v1.0.0
+- stock_sentiment v1.0.0
+
+Schema evolution validated before any schema change:
+```
+Old schema → check_contract_compatibility() → New schema
+If breaking: ValueError raised, migration required
+```
