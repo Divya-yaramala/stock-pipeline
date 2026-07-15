@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-476%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-486%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,7 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 64/90 of my 90-day portfolio challenge!** 476 tests · 66 modules · 46 ADRs · 112 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 65/90 of my 90-day portfolio challenge!** 486 tests · 68 modules · 48 ADRs · 119 production patterns · 3 APIs + Dashboard
 
 > 🎉 **400 tests milestone reached on Day 56!**
 
@@ -87,13 +87,13 @@ Dashboard:
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 476 passing |
-| Ingestion modules | 66 |
+| Total tests | 486 passing |
+| Ingestion modules | 68 |
 | Airflow tasks | 16 |
-| ADRs | 46 |
-| Production patterns | 112 |
+| ADRs | 48 |
+| Production patterns | 119 |
 | S3 prefixes | 15+ |
-| Days built | 64 |
+| Days built | 65 |
 
 ## 🧪 Testing Strategy
 Three-tier testing approach:
@@ -983,5 +983,12 @@ See [Data Mesh Guide](docs/data-mesh-guide.md)
 - Events saved to S3 for full audit trail
 - 10 unit tests passing green
 
+### ✅ Day 65 — Data Contracts + Schema Registry
+- Built data contract manager with schema validation
+- Schema registry with versioned schema storage
+- Backward compatibility checking for safe evolution
+- Contract violations logged for producer accountability
+- 10 unit tests passing green
+
 ---
-*Built with ❤️ over 64 days as a portfolio project demonstrating production-grade data engineering.*
+*Built with ❤️ over 65 days as a portfolio project demonstrating production-grade data engineering.*
