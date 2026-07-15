@@ -8,7 +8,7 @@
 | Total tests | 496 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 50 architecture decisions 🎉 |
+| ADRs | 51 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -155,6 +155,8 @@
 123. PII Masking (email, phone, SSN, CC)
 124. Data Privacy Policies (4 policies)
 125. Dataset Anonymization (SHA256 hashing)
+126. Data Privacy Guide (classification + retention documented)
+127. PII Masking Strategy (shape-preserving masking)
 
 ## MLOps Statistics
 | Capability | Module | Status |
