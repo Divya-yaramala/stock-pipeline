@@ -60,3 +60,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [048](048-data-contracts-pattern.md) | Data Contracts Pattern | Accepted |
 | [049](049-schema-registry-pattern.md) | Schema Registry Pattern | Accepted |
 | [050](050-data-privacy-pattern.md) | Data Privacy and PII Management | Accepted |
+| [051](051-pii-masking-strategy.md) | PII Masking Strategy | Accepted |
