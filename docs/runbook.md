@@ -249,3 +249,41 @@ event_id = publish_event(
 print('Published event:', event_id)
 ```
 
+---
+
+## Schema Registry Procedures
+
+### Setting Up Schema Registry
+Run once at pipeline initialization:
+```bash
+python -c "from ingestion.schema_registry import run_schema_registry_setup; import os; run_schema_registry_setup(os.getenv('AWS_BUCKET_NAME'))"
+```
+
+### Adding a New Schema Version
+1. Get current schema:
+```bash
+python -c "from ingestion.schema_registry import get_latest_schema; import os; import json; print(json.dumps(get_latest_schema('stock_prices_raw', os.getenv('AWS_BUCKET_NAME')), indent=2))"
+```
+
+2. Check if changes are safe:
+```python
+from ingestion.schema_registry import validate_schema_evolution
+old = {'ticker': {'type': 'string'}, 'close_price': {'type': 'float'}}
+new = {'ticker': {'type': 'string'}, 'close_price': {'type': 'float'}, 'adj_close': {'type': 'float', 'required': False}}
+print(validate_schema_evolution(old, new))
+```
+
+3. If safe: register new version
+```python
+from ingestion.schema_registry import register_schema
+import os
+schema_def = {'ticker': {'type': 'string'}, 'close_price': {'type': 'float'}, 'adj_close': {'type': 'float'}}
+print(register_schema('stock_prices_raw', schema_def, '1.1.0', os.getenv('AWS_BUCKET_NAME')))
+```
+
+### If Breaking Change Detected
+- Do NOT proceed with schema change
+- Coordinate with all consumer teams first
+- Create new schema name instead: stock_prices_raw_v2
+- Maintain old schema until consumers migrate
+
