@@ -58,3 +58,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [046](046-data-mesh-pattern.md) | Data Mesh Pattern | Accepted |
 | [047](047-event-driven-pipeline.md) | Event-Driven Pipeline Architecture | Accepted |
 | [048](048-data-contracts-pattern.md) | Data Contracts Pattern | Accepted |
+| [049](049-schema-registry-pattern.md) | Schema Registry Pattern | Accepted |
