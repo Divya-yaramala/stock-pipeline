@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 68 ingestion modules + 6 scripts |
+| Python files | 70 ingestion modules + 6 scripts |
 | Test files | 22 test files |
-| Total tests | 486 passing |
+| Total tests | 496 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 49 architecture decisions |
+| ADRs | 50 architecture decisions 🎉 |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -151,6 +151,10 @@
 119. Contract Compatibility Checking
 120. Data Contracts Guide (schema + SLA documented)
 121. Schema Evolution Rules (safe vs breaking changes)
+122. PII Detection (5 pattern types)
+123. PII Masking (email, phone, SSN, CC)
+124. Data Privacy Policies (4 policies)
+125. Dataset Anonymization (SHA256 hashing)
 
 ## MLOps Statistics
 | Capability | Module | Status |
