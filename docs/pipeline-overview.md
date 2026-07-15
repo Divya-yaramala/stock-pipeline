@@ -447,3 +447,30 @@ Schema evolution validated before any schema change:
 Old schema → check_contract_compatibility() → New schema
 If breaking: ValueError raised, migration required
 ```
+
+## Data Privacy Layer
+
+### PII Detection Flow
+Every file written to S3 can be scanned:
+```
+raw/stocks/ → pii_detector.scan_s3_file_for_pii()
+audit/ → pii_detector.run_pii_scan()
+
+PII found → mask_pii() → save masked version
+          → Slack alert → security/pii_scan/ report
+```
+
+### Privacy Policy Enforcement
+| S3 Prefix | Policy | Classification |
+|---|---|---|
+| raw/stocks/ | financial_data | CONFIDENTIAL |
+| processed/ | ml_features | INTERNAL |
+| audit/ | audit_logs | CONFIDENTIAL |
+| cache/ | cache_data | PUBLIC |
+
+### Data Classification Flow
+```
+New dataset → check_policy_compliance()
+            → PASS: proceed normally
+            → FAIL: log violation + Slack alert
+```
