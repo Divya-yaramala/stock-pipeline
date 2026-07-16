@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 70 ingestion modules + 6 scripts |
-| Test files | 22 test files |
-| Total tests | 496 passing |
+| Python files | 72 ingestion modules + 6 scripts |
+| Test files | 24 test files |
+| Total tests | 449 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 51 architecture decisions |
+| ADRs | 52 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -157,6 +157,8 @@
 125. Dataset Anonymization (SHA256 hashing)
 126. Data Privacy Guide (classification + retention documented)
 127. PII Masking Strategy (shape-preserving masking)
+128. Data Archival Pipeline (Glacier archival with 6 policies)
+129. Storage Tier Manager (HOT/WARM/COLD/FROZEN cost optimization)
 
 ## MLOps Statistics
 | Capability | Module | Status |
