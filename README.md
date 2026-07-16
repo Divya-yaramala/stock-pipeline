@@ -536,6 +536,22 @@ See [Data Privacy Guide](docs/data-privacy-guide.md)
 
 ---
 
+## 🗄️ Storage Management
+4-tier S3 storage strategy for cost optimization:
+
+| Tier | Age | Cost/GB/Month |
+|---|---|---|
+| HOT (Standard) | < 30 days | $0.023 |
+| WARM (Standard-IA) | 30-90 days | $0.0125 |
+| COLD (Glacier) | 90-365 days | $0.004 |
+| FROZEN (Deep Archive) | 1+ years | $0.00099 |
+
+6 archival policies automatically move data between tiers.
+Always use `dry_run=True` before executing archival!
+See [Storage Guide](docs/storage-guide.md)
+
+---
+
 ## 🏛️ Architecture Decisions
 
 | # | Decision | Status |
