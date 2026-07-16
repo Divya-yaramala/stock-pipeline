@@ -8,7 +8,7 @@
 | Total tests | 449 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 52 architecture decisions |
+| ADRs | 53 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 7 |
 
@@ -159,6 +159,9 @@
 127. PII Masking Strategy (shape-preserving masking)
 128. Data Archival Pipeline (Glacier archival with 6 policies)
 129. Storage Tier Manager (HOT/WARM/COLD/FROZEN cost optimization)
+130. Storage Guide (4-tier cost documentation)
+131. Automated Archival Pipeline (6 policies, weekly schedule)
+132. Glacier Retrieval Procedures
 
 ## MLOps Statistics
 | Capability | Module | Status |
