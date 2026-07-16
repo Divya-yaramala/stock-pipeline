@@ -3,7 +3,7 @@
 import json
 import logging
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 import boto3
 
@@ -114,9 +114,7 @@ def delete_expired_data(
             deleted.extend(str(o["key"]) for o in batch)
             continue
         try:
-            response = s3.delete_objects(
-                Bucket=bucket, Delete={"Objects": keys, "Quiet": True}
-            )
+            response = s3.delete_objects(Bucket=bucket, Delete={"Objects": keys, "Quiet": True})
             deleted.extend(k["Key"] for k in keys)
             for err in response.get("Errors", []):
                 errors.append(f"{err['Key']}: {err['Message']}")

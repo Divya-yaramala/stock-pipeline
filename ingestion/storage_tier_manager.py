@@ -2,7 +2,7 @@
 
 import json
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 import boto3
@@ -63,9 +63,7 @@ def get_object_tier(bucket: str, key: str) -> Dict[str, Any]:
     }
 
 
-def move_to_tier(
-    bucket: str, key: str, target_tier: str, dry_run: bool = True
-) -> Dict[str, Any]:
+def move_to_tier(bucket: str, key: str, target_tier: str, dry_run: bool = True) -> Dict[str, Any]:
     """Move an S3 object to the target tier. Skips actual copy when dry_run=True."""
     if target_tier not in STORAGE_TIERS:
         return {"success": False, "error": f"Unknown tier: {target_tier}"}
@@ -103,14 +101,14 @@ def move_to_tier(
 
 
 def calculate_tier_costs(objects: List[Dict[str, Any]]) -> Dict[str, Any]:
-    """Calculate monthly costs per tier for a list of objects (each must have size_bytes and tier)."""
+    """Calculate monthly costs per tier for a list of objects."""
     tier_totals: Dict[str, float] = {t: 0.0 for t in STORAGE_TIERS}
     tier_counts: Dict[str, int] = {t: 0 for t in STORAGE_TIERS}
 
     for obj in objects:
         tier: str = str(obj.get("tier", "HOT"))
         size_bytes: int = int(obj.get("size_bytes", 0))
-        size_gb = size_bytes / (1024 ** 3)
+        size_gb = size_bytes / (1024**3)
         if tier in STORAGE_TIERS:
             tier_totals[tier] += size_gb * float(STORAGE_TIERS[tier]["cost_per_gb"])
             tier_counts[tier] += 1
@@ -123,9 +121,7 @@ def calculate_tier_costs(objects: List[Dict[str, Any]]) -> Dict[str, Any]:
     }
 
 
-def recommend_tier_changes(
-    bucket: str, prefix: str
-) -> List[Dict[str, Any]]:
+def recommend_tier_changes(bucket: str, prefix: str) -> List[Dict[str, Any]]:
     """List objects in prefix and suggest tier downgrades based on age."""
     s3 = boto3.client("s3")
     recommendations: List[Dict[str, Any]] = []
@@ -156,7 +152,7 @@ def recommend_tier_changes(
                         "age_days": age_days,
                         "size_bytes": obj["Size"],
                         "potential_saving_usd": round(
-                            (obj["Size"] / (1024 ** 3))
+                            (obj["Size"] / (1024**3))
                             * (
                                 float(STORAGE_TIERS[current_tier]["cost_per_gb"])
                                 - float(STORAGE_TIERS[recommended]["cost_per_gb"])
@@ -169,16 +165,16 @@ def recommend_tier_changes(
     return recommendations
 
 
-def run_tier_optimization(
-    bucket: str, prefix: str, dry_run: bool = True
-) -> Dict[str, Any]:
+def run_tier_optimization(bucket: str, prefix: str, dry_run: bool = True) -> Dict[str, Any]:
     """Apply all recommended tier changes for a prefix."""
     recommendations = recommend_tier_changes(bucket, prefix)
     results: List[Dict[str, Any]] = []
     total_savings = 0.0
 
     for rec in recommendations:
-        result = move_to_tier(bucket, str(rec["key"]), str(rec["recommended_tier"]), dry_run=dry_run)
+        result = move_to_tier(
+            bucket, str(rec["key"]), str(rec["recommended_tier"]), dry_run=dry_run
+        )
         result["potential_saving_usd"] = rec["potential_saving_usd"]
         total_savings += float(rec["potential_saving_usd"])
         results.append(result)
