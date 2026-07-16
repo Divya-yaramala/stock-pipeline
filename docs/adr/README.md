@@ -62,3 +62,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [050](050-data-privacy-pattern.md) | Data Privacy and PII Management | Accepted |
 | [051](051-pii-masking-strategy.md) | PII Masking Strategy | Accepted |
 | [052](052-storage-tiering-strategy.md) | Storage Tiering Strategy | Accepted |
+| [053](053-automated-archival-pipeline.md) | Automated Archival Pipeline | Accepted |
