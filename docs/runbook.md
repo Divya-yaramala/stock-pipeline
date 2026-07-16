@@ -289,6 +289,54 @@ print(register_schema('stock_prices_raw', schema_def, '1.1.0', os.getenv('AWS_BU
 
 ---
 
+## Weekly Archival Schedule
+
+### Every Sunday at 2 AM (recommended)
+
+Step 1: Run dry run
+```bash
+python -c "from ingestion.data_archiver import run_archival_pipeline; import os; print(run_archival_pipeline(os.getenv('AWS_BUCKET_NAME'), dry_run=True))"
+```
+
+Step 2: Review report
+```bash
+aws s3 cp s3://your-bucket/reports/archival/YYYY/MM/DD/report.json ./archival_report.json
+cat archival_report.json
+```
+
+Step 3: If report looks correct, execute
+```bash
+python -c "from ingestion.data_archiver import run_archival_pipeline; import os; print(run_archival_pipeline(os.getenv('AWS_BUCKET_NAME'), dry_run=False))"
+```
+
+Step 4: Check tier costs after archival
+```python
+from ingestion.storage_tier_manager import calculate_tier_costs
+import os
+print(calculate_tier_costs(os.getenv('AWS_BUCKET_NAME')))
+```
+
+### Monthly Storage Review
+Check total S3 costs in AWS Cost Explorer:
+- Navigate to AWS Console → Cost Explorer
+- Filter by S3 service
+- Compare month-over-month storage costs
+- If costs rising: check archival ran last Sunday
+
+### If Archived Data Needed Urgently
+1. Identify the S3 key needed
+2. Request Glacier retrieval (3-5 min expedited):
+```bash
+aws s3api restore-object \
+  --bucket your-bucket \
+  --key your/archived/file.json \
+  --restore-request Days=7,GlacierJobParameters={Tier=Expedited}
+```
+3. Wait 3-5 minutes then download
+4. Remember to re-archive after use!
+
+---
+
 ## Data Privacy Incident Procedures
 
 ### If PII Found in Pipeline Data
