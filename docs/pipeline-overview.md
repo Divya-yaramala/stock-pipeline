@@ -474,3 +474,36 @@ New dataset → check_policy_compliance()
             → PASS: proceed normally
             → FAIL: log violation + Slack alert
 ```
+
+---
+
+## Storage Architecture
+
+### Active Data (HOT — S3 Standard)
+Data written by pipeline daily:
+```
+raw/stocks/YYYY/MM/DD/    → STANDARD for 90 days
+processed/*               → STANDARD for 30-90 days
+```
+
+### Archived Data (COLD — S3 Glacier)
+Automatically moved after retention period:
+```
+raw/stocks/               → GLACIER after 90 days
+processed/anomalies/      → GLACIER after 180 days
+```
+
+### Permanent Data (never archived)
+```
+audit/            → indefinite retention
+lineage/          → indefinite retention
+models/registry/  → indefinite retention
+```
+
+### Storage Cost Flow
+```
+Day 1-30:   All data in HOT  ($0.023/GB)
+Day 30-90:  Old data moves to WARM ($0.0125/GB)
+Day 90-365: Old data moves to COLD ($0.004/GB)
+Day 365+:   Data deleted (saves 100%)
+```
