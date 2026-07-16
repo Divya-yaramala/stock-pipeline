@@ -877,3 +877,57 @@ print(check_policy_compliance('financial_data', metadata))
 | ml_features | INTERNAL | 90 days | ❌ No |
 | audit_logs | CONFIDENTIAL | 730 days | ❌ No |
 | cache_data | PUBLIC | 7 days | ❌ No |
+
+## Data Archival and Cold Storage
+
+```bash
+# Preview archival candidates (dry-run, no changes made)
+python -c "from ingestion.data_archiver import run_archival_pipeline; import os; print(run_archival_pipeline(os.getenv('AWS_BUCKET_NAME'), dry_run=True))"
+
+# Check archive candidates for a specific prefix
+python -c "
+from ingestion.data_archiver import identify_archive_candidates
+import os
+candidates = identify_archive_candidates(os.getenv('AWS_BUCKET_NAME'), 'raw/stocks', 90)
+print(f'Objects to archive: {len(candidates)}')
+"
+
+# Preview deletion candidates
+python -c "
+from ingestion.data_archiver import identify_deletion_candidates
+import os
+expired = identify_deletion_candidates(os.getenv('AWS_BUCKET_NAME'), 'raw/stocks', 365)
+print(f'Objects to delete: {len(expired)}')
+"
+```
+
+## Storage Tier Management
+
+```bash
+# Get recommended tier changes for a prefix
+python -c "
+from ingestion.storage_tier_manager import recommend_tier_changes
+import os
+recs = recommend_tier_changes(os.getenv('AWS_BUCKET_NAME'), 'raw/stocks')
+print(f'Tier changes recommended: {len(recs)}')
+"
+
+# Check current tier of an object
+python -c "
+from ingestion.storage_tier_manager import get_object_tier
+import os
+info = get_object_tier(os.getenv('AWS_BUCKET_NAME'), 'raw/stocks/2024/01/01/AAPL/prices.json')
+print(f\"Tier: {info['tier']} | Age: {info['age_days']} days\")
+"
+
+# Run tier optimization (dry-run)
+python -c "from ingestion.storage_tier_manager import run_tier_optimization; import os; print(run_tier_optimization(os.getenv('AWS_BUCKET_NAME'), 'raw/stocks', dry_run=True))"
+```
+
+## Storage Tiers Reference
+| Tier   | S3 Class     | Cost/GB    | Min Age  |
+|--------|--------------|------------|----------|
+| HOT    | STANDARD     | $0.023     | 0 days   |
+| WARM   | STANDARD_IA  | $0.0125    | 30 days  |
+| COLD   | GLACIER      | $0.004     | 90 days  |
+| FROZEN | DEEP_ARCHIVE | $0.00099   | 180 days |
