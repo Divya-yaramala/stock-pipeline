@@ -931,3 +931,69 @@ python -c "from ingestion.storage_tier_manager import run_tier_optimization; imp
 | WARM   | STANDARD_IA  | $0.0125    | 30 days  |
 | COLD   | GLACIER      | $0.004     | 90 days  |
 | FROZEN | DEEP_ARCHIVE | $0.00099   | 180 days |
+
+## API Testing Commands
+
+### Start All APIs
+```bash
+# Terminal 1: REST API
+uvicorn api.main:app --reload --port 8000
+
+# Terminal 2: GraphQL API
+uvicorn api.graphql_api:app --reload --port 8001
+
+# Terminal 3: WebSocket API
+uvicorn api.websocket_server:app --reload --port 8002
+```
+
+### Test REST Endpoints with curl
+```bash
+# Health check
+curl http://localhost:8000/health
+
+# Get prices
+curl "http://localhost:8000/prices/AAPL?days=7"
+
+# Get anomalies
+curl http://localhost:8000/anomalies/AAPL
+
+# Get pipeline health
+curl http://localhost:8000/pipeline-health
+
+# Get feature flags
+curl http://localhost:8000/feature-flags
+
+# Get data products
+curl http://localhost:8000/data-products
+
+# Get event summary
+curl http://localhost:8000/events/summary
+
+# Scan for PII
+curl "http://localhost:8000/privacy-scan/raw/stocks"
+
+# API documentation
+curl http://localhost:8000/api-docs/summary
+curl http://localhost:8000/api-docs/endpoints/ml
+```
+
+### Test GraphQL
+```bash
+curl -X POST http://localhost:8001/graphql \
+  -H "Content-Type: application/json" \
+  -d '{"query": "{ tickers }"}'
+```
+
+### Test WebSocket (Python)
+```python
+import asyncio
+import websockets
+import json
+
+async def test():
+    async with websockets.connect('ws://localhost:8002/ws/prices') as ws:
+        msg = await ws.recv()
+        print(json.loads(msg))
+
+asyncio.run(test())
+```
