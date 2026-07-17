@@ -8,6 +8,7 @@ import uvicorn
 from fastapi import Depends, FastAPI
 from pydantic import BaseModel
 
+from api.api_docs import router as api_docs_router
 from ingestion.data_product_manager import list_data_products
 from ingestion.event_bus import get_event_summary
 from ingestion.feature_flag_manager import get_all_flags
@@ -20,6 +21,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Stock Pipeline API", version="2.0.0")
+app.include_router(api_docs_router)
 
 
 class StockPrice(BaseModel):
