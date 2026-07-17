@@ -507,3 +507,35 @@ Day 30-90:  Old data moves to WARM ($0.0125/GB)
 Day 90-365: Old data moves to COLD ($0.004/GB)
 Day 365+:   Data deleted (saves 100%)
 ```
+
+---
+
+## API Layer (v2.0.0)
+
+### REST API (Port 8000) — 13 endpoints
+Categories:
+- system: health check, feature flags
+- market_data: prices, summary
+- ml: anomalies, predictions
+- ai: GPT insights
+- nlp: news sentiment
+- quality: quality gates
+- governance: data products
+- observability: events, pipeline health
+- security: PII scan
+
+Start: `uvicorn api.main:app --reload --port 8000`
+Docs: http://localhost:8000/docs
+
+### GraphQL API (Port 8001) — 4 resolvers
+Resolvers: tickers, stockPrices, anomalies, portfolioSummary
+Playground: http://localhost:8001/graphql
+
+### WebSocket API (Port 8002) — 2 streams
+Streams: /ws/prices (30s), /ws/alerts (60s)
+Status: http://localhost:8002/ws/status
+
+### API Selection Guide
+- REST: One-time queries, simple integrations
+- GraphQL: Complex queries, flexible field selection
+- WebSocket: Real-time streaming, live dashboards
