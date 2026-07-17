@@ -186,7 +186,7 @@ python scripts/rollback_pipeline.py --ticker AAPL --step fetch --version-id abc1
 
 ---
 
-## 🌐 APIs
+## 🌐 APIs (v2.0.0)
 
 ### REST API (port 8000) — 13 endpoints
 | Endpoint | Category | Description |
@@ -427,6 +427,7 @@ stock-pipeline/
 | [Loom Video Script](docs/loom-video-script.md) | 3-minute walkthrough script and recording checklist |
 | [Project Checklist](docs/project-checklist.md) | 90-day completion checklist with code quality, docs, production patterns |
 | [REST API Documentation](docs/api-docs.md) | Endpoint reference, request/response examples, Swagger UI guide |
+| [API Versioning Guide](docs/api-versioning-guide.md) | Version history, endpoint categories, client examples |
 | [Configuration Guide](docs/configuration-guide.md) | All env vars, config classes, and security best practices |
 
 ---
