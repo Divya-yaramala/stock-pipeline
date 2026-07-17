@@ -64,3 +64,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [052](052-storage-tiering-strategy.md) | Storage Tiering Strategy | Accepted |
 | [053](053-automated-archival-pipeline.md) | Automated Archival Pipeline | Accepted |
 | [054](054-api-versioning-strategy.md) | API Versioning Strategy | Accepted |
+| [055](055-api-category-organization.md) | API Endpoint Category Organization | Accepted |
