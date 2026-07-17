@@ -3,14 +3,14 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 72 ingestion modules + 6 scripts |
-| Test files | 24 test files |
-| Total tests | 449 passing |
+| Python files | 73 ingestion modules + 6 scripts |
+| Test files | 25 test files |
+| Total tests | 455 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 53 architecture decisions |
+| ADRs | 54 architecture decisions |
 | Lines of Python code | ~2500+ |
-| REST API endpoints | 7 |
+| REST API endpoints | 13 |
 
 ## Pipeline Statistics
 | Component | Details |
@@ -162,6 +162,9 @@
 130. Storage Guide (4-tier cost documentation)
 131. Automated Archival Pipeline (6 policies, weekly schedule)
 132. Glacier Retrieval Procedures
+133. REST API v2 (13 endpoints across 6 categories)
+134. Self-Documenting API (api-docs endpoints)
+135. API Category Organization (ml, ai, nlp, quality, governance, security)
 
 ## MLOps Statistics
 | Capability | Module | Status |
