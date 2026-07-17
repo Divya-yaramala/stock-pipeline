@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-449%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-455%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,7 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 67/90 of my 90-day portfolio challenge!** 449 tests · 72 modules · 52 ADRs · 129 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 68/90 of my 90-day portfolio challenge!** 455 tests · 73 modules · 54 ADRs · 135 production patterns · 3 APIs + Dashboard
 
 > 🎉 **400 tests milestone reached on Day 56!**
 
@@ -87,8 +87,8 @@ Dashboard:
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 449 passing |
-| Ingestion modules | 72 |
+| Total tests | 455 passing |
+| Ingestion modules | 73 |
 | Airflow tasks | 16 |
 | ADRs | 50 |
 | Production patterns | 125 |
@@ -188,14 +188,24 @@ python scripts/rollback_pipeline.py --ticker AAPL --step fetch --version-id abc1
 
 ## 🌐 APIs
 
-### REST API (port 8000)
-| Endpoint | Description |
-|---|---|
-| GET /health | Health check |
-| GET /prices/{ticker} | Stock prices |
-| GET /anomalies/{ticker} | Anomaly results |
-| GET /predictions/{ticker} | Price predictions |
-| GET /summary/{ticker} | Combined summary |
+### REST API (port 8000) — 13 endpoints
+| Endpoint | Category | Description |
+|---|---|---|
+| GET /health | system | Health check |
+| GET /prices/{ticker} | market_data | Stock prices |
+| GET /anomalies/{ticker} | ml | Anomaly results |
+| GET /predictions/{ticker} | ml | Price forecasts |
+| GET /insights/{ticker} | ai | GPT insights |
+| GET /sentiment/{ticker} | nlp | News sentiment |
+| GET /summary/{ticker} | market_data | Combined summary |
+| GET /quality-gates/{ticker} | quality | Gate check |
+| GET /feature-flags | system | Feature flags |
+| GET /data-products | governance | Data mesh products |
+| GET /events/summary | observability | Event bus stats |
+| GET /pipeline-health | observability | Health score |
+| GET /privacy-scan/{prefix} | security | PII scan |
+
+Swagger UI: http://localhost:8000/docs
 
 Start REST API:
 ```bash
@@ -1052,5 +1062,12 @@ See [Storage Guide](docs/storage-guide.md)
 - Cost calculator and tier downgrade recommendations
 - 10 unit tests passing green
 
+### ✅ Day 68 — REST API v2 + API Documentation
+- Added 6 new REST endpoints (quality gates, feature flags, data products, events, health, privacy)
+- Built API documentation module with self-documenting endpoints
+- 13 total REST endpoints organized across 6 categories
+- API version 2.0.0 with Swagger UI at /docs
+- 6 unit tests passing green
+
 ---
-*Built with ❤️ over 67 days as a portfolio project demonstrating production-grade data engineering.*
+*Built with ❤️ over 68 days as a portfolio project demonstrating production-grade data engineering.*
