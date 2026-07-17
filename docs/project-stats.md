@@ -8,7 +8,7 @@
 | Total tests | 455 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 54 architecture decisions |
+| ADRs | 55 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -165,6 +165,9 @@
 133. REST API v2 (13 endpoints across 6 categories)
 134. Self-Documenting API (api-docs endpoints)
 135. API Category Organization (ml, ai, nlp, quality, governance, security)
+136. API Versioning Guide (version history + client examples)
+137. Self-Documenting API (9 categories)
+138. Python + JavaScript Client Examples
 
 ## MLOps Statistics
 | Capability | Module | Status |
