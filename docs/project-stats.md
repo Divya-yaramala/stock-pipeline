@@ -8,7 +8,7 @@
 | Total tests | 465 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 56 architecture decisions |
+| ADRs | 57 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -171,6 +171,9 @@
 139. Test Coverage Reporter (80% threshold, 7-day trend)
 140. Performance Benchmarker (S3, data processing benchmarks)
 141. Benchmark Regression Detection (20% threshold)
+142. Testing Guide (four-tier strategy documented)
+143. Test Templates (unit, mock S3, integration patterns)
+144. p95 Latency Tracking (worst-case performance)
 
 ## MLOps Statistics
 | Capability | Module | Status |
