@@ -539,3 +539,37 @@ Status: http://localhost:8002/ws/status
 - REST: One-time queries, simple integrations
 - GraphQL: Complex queries, flexible field selection
 - WebSocket: Real-time streaming, live dashboards
+
+---
+
+## Testing Architecture
+
+### Unit Tests (tests/)
+465 tests covering all 75 ingestion modules
+```bash
+pytest tests/ -v
+```
+
+### Integration Tests (tests/integration/)
+5 tests covering pipeline flows:
+- fetch → validate flow
+- validate → anomaly flow
+- sentiment → S3 flow
+- cache integration
+- portfolio → snapshot flow
+
+### E2E Tests (tests/e2e/)
+6 tests covering all 3 APIs:
+- REST API: /health, /prices, /anomalies, /summary
+- GraphQL API: /health
+- WebSocket API: /ws/status
+
+### Performance Benchmarks
+- S3 operations: put, get, list
+- Data processing: validation, feature engineering
+- Regression threshold: 20% slower than baseline
+
+### Coverage Targets
+- Overall: > 85%
+- Core ingestion modules: > 90%
+- API layer: > 85%
