@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 73 ingestion modules + 6 scripts |
-| Test files | 25 test files |
-| Total tests | 455 passing |
+| Python files | 75 ingestion modules + 6 scripts |
+| Test files | 27 test files |
+| Total tests | 465 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 55 architecture decisions |
+| ADRs | 56 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -168,6 +168,9 @@
 136. API Versioning Guide (version history + client examples)
 137. Self-Documenting API (9 categories)
 138. Python + JavaScript Client Examples
+139. Test Coverage Reporter (80% threshold, 7-day trend)
+140. Performance Benchmarker (S3, data processing benchmarks)
+141. Benchmark Regression Detection (20% threshold)
 
 ## MLOps Statistics
 | Capability | Module | Status |
