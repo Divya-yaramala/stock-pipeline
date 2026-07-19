@@ -997,3 +997,45 @@ async def test():
 
 asyncio.run(test())
 ```
+
+## Test Coverage
+
+```bash
+# Run tests with coverage report
+pytest tests/ --cov=ingestion --cov-report=html --cov-report=term-missing
+
+# View HTML coverage report
+start htmlcov/index.html  # Windows
+```
+
+```python
+# Run coverage check module
+from ingestion.test_coverage_reporter import run_coverage_check
+import os
+print(run_coverage_check(os.getenv('AWS_BUCKET_NAME')))
+```
+
+```python
+# Find low coverage files
+from ingestion.test_coverage_reporter import get_low_coverage_files
+coverage_data = {'total_coverage_pct': 85.0, 'files': {
+    'ingestion/fetch_stocks.py': {'coverage_pct': 75.0, 'missing_lines': 5},
+    'ingestion/anomaly_detector.py': {'coverage_pct': 90.0, 'missing_lines': 2}
+}}
+print(get_low_coverage_files(coverage_data, threshold_pct=80.0))
+```
+
+## Performance Benchmarks
+
+```bash
+# Run full benchmark suite
+python -c "from ingestion.performance_benchmarker import run_benchmark_suite; import os; print(run_benchmark_suite(os.getenv('AWS_BUCKET_NAME')))"
+```
+
+```python
+# Benchmark a specific operation
+from ingestion.performance_benchmarker import benchmark_function
+import time
+result = benchmark_function(lambda: time.sleep(0.01), runs=10)
+print('Avg ms:', result['avg_ms'])
+```
