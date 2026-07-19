@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-465%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-532%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,7 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 69/90 of my 90-day portfolio challenge!** 465 tests · 75 modules · 56 ADRs · 141 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 70/90 of my 90-day portfolio challenge!** 532 tests · 77 modules · 58 ADRs · 148 production patterns · 3 APIs + Dashboard
 
 > 🎉 **400 tests milestone reached on Day 56!**
 
@@ -87,13 +87,13 @@ Dashboard:
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 465 passing |
-| Ingestion modules | 75 |
+| Total tests | 532 passing |
+| Ingestion modules | 77 |
 | Airflow tasks | 16 |
-| ADRs | 50 |
-| Production patterns | 125 |
+| ADRs | 58 |
+| Production patterns | 148 |
 | S3 prefixes | 15+ |
-| Days built | 66 |
+| Days built | 70 |
 
 ## 🧪 Testing Strategy
 Four-tier testing approach:
@@ -452,6 +452,8 @@ End-to-end ML lifecycle from training to monitoring:
 | Drift Detection | `drift_detector.py` | PSI-based feature distribution shift |
 | Retraining | `retraining_trigger.py` | Drift + schedule + performance triggers |
 | A/B Testing | `ab_tester.py` | Hash-based assignment, MAE winner |
+| AutoML | `automl_pipeline.py` | 5-model competition |
+| Tuning | `hyperparameter_tuner.py` | GridSearchCV optimization |
 
 See [MLOps Guide](docs/mlops-guide.md) for full documentation.
 
@@ -1079,5 +1081,12 @@ See [Storage Guide](docs/storage-guide.md)
 - Coverage trend analysis over 7 days
 - 10 unit tests passing green
 
+### ✅ Day 70 — AutoML + Hyperparameter Tuning
+- Built AutoML pipeline comparing 5 candidate models
+- Winner selected by lowest RMSE automatically
+- GridSearchCV hyperparameter tuning for Random Forest
+- 5-fold cross-validation prevents overfitting
+- 10 unit tests passing green
+
 ---
-*Built with ❤️ over 69 days as a portfolio project demonstrating production-grade data engineering.*
+*Built with ❤️ over 70 days as a portfolio project demonstrating production-grade data engineering.*
