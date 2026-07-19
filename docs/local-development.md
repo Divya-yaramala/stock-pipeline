@@ -1039,3 +1039,31 @@ import time
 result = benchmark_function(lambda: time.sleep(0.01), runs=10)
 print('Avg ms:', result['avg_ms'])
 ```
+
+## AutoML Pipeline
+```bash
+# Run AutoML for a ticker
+python -c "from ingestion.automl_pipeline import run_automl_pipeline; import os; print(run_automl_pipeline('AAPL', os.getenv('AWS_BUCKET_NAME')))"
+```
+
+## Hyperparameter Tuning
+```bash
+# Tune Random Forest for a ticker
+python -c "from ingestion.hyperparameter_tuner import run_hyperparameter_tuning; import os; print(run_hyperparameter_tuning('AAPL', os.getenv('AWS_BUCKET_NAME')))"
+```
+
+## AutoML Candidate Models
+| Model | Type | Key Params |
+|---|---|---|
+| random_forest | Tree ensemble | n_estimators=100, max_depth=10 |
+| gradient_boosting | Boosting | n_estimators=100, lr=0.1 |
+| linear_regression | Linear | no params |
+| ridge | Regularized linear | alpha=1.0 |
+| lasso | Sparse linear | alpha=1.0 |
+
+## Hyperparameter Grid
+Random Forest:
+- n_estimators: [50, 100, 200]
+- max_depth: [5, 10, None]
+- min_samples_split: [2, 5, 10]
+Total combinations: 27
