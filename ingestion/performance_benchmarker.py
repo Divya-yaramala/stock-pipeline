@@ -2,10 +2,9 @@
 
 import json
 import logging
-import os
 import time
 from datetime import datetime
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List
 
 import boto3
 
@@ -40,7 +39,10 @@ def benchmark_function(
         "p95_ms": round(p95_ms, 3),
     }
     logger.info(
-        "Benchmark %s: avg=%.1f ms, p95=%.1f ms", func.__name__ if hasattr(func, '__name__') else "fn", avg_ms, p95_ms
+        "Benchmark %s: avg=%.1f ms, p95=%.1f ms",
+        func.__name__ if hasattr(func, "__name__") else "fn",
+        avg_ms,
+        p95_ms,
     )
     return result
 
@@ -89,9 +91,7 @@ def benchmark_s3_operations(bucket: str) -> Dict[str, Any]:
         "list_avg_ms": list_avg,
         "runs": runs,
     }
-    logger.info(
-        "S3 benchmark: put=%.1f ms, get=%.1f ms, list=%.1f ms", put_avg, get_avg, list_avg
-    )
+    logger.info("S3 benchmark: put=%.1f ms, get=%.1f ms, list=%.1f ms", put_avg, get_avg, list_avg)
     return result
 
 
@@ -113,9 +113,7 @@ def benchmark_data_processing(num_records: int = 1000) -> Dict[str, Any]:
     start = time.perf_counter()
 
     validated = [
-        r
-        for r in records
-        if float(str(r["close_price"])) > 0 and int(str(r["volume"])) > 0
+        r for r in records if float(str(r["close_price"])) > 0 and int(str(r["volume"])) > 0
     ]
 
     features = [
@@ -140,9 +138,7 @@ def benchmark_data_processing(num_records: int = 1000) -> Dict[str, Any]:
         "total_seconds": round(elapsed, 4),
         "num_records": num_records,
     }
-    logger.info(
-        "Data processing: %d records in %.4f s (%.0f rec/s)", num_records, elapsed, rps
-    )
+    logger.info("Data processing: %d records in %.4f s (%.0f rec/s)", num_records, elapsed, rps)
     return result
 
 
@@ -163,7 +159,12 @@ def compare_benchmarks(
         if base_val == 0:
             continue
         pct_change = round((curr_val - base_val) / base_val * 100.0, 1)
-        entry: Dict[str, Any] = {"metric": key, "baseline": base_val, "current": curr_val, "pct_change": pct_change}
+        entry: Dict[str, Any] = {
+            "metric": key,
+            "baseline": base_val,
+            "current": curr_val,
+            "pct_change": pct_change,
+        }
         if pct_change > 20.0:
             regressions.append(entry)
         elif pct_change < -10.0:
