@@ -55,6 +55,7 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [043](043-sla-definitions.md) | SLA Definitions for Stock Pipeline | Accepted |
 | [044](044-feature-flags-pattern.md) | Feature Flags Pattern | Accepted |
 | [045](045-experiment-management.md) | Experiment Management Framework | Accepted |
+| [058](058-automl-pipeline.md) | AutoML Pipeline Pattern | Accepted |
 | [046](046-data-mesh-pattern.md) | Data Mesh Pattern | Accepted |
 | [047](047-event-driven-pipeline.md) | Event-Driven Pipeline Architecture | Accepted |
 | [048](048-data-contracts-pattern.md) | Data Contracts Pattern | Accepted |

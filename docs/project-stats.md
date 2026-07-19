@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 75 ingestion modules + 6 scripts |
+| Python files | 77 ingestion modules + 6 scripts |
 | Test files | 27 test files |
-| Total tests | 465 passing |
+| Total tests | 532 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 57 architecture decisions |
+| ADRs | 58 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -174,6 +174,9 @@
 142. Testing Guide (four-tier strategy documented)
 143. Test Templates (unit, mock S3, integration patterns)
 144. p95 Latency Tracking (worst-case performance)
+146. AutoML Pipeline (5 candidate models)
+147. Hyperparameter Tuning (GridSearchCV)
+148. Cross-Validation (5-fold CV)
 
 ## MLOps Statistics
 | Capability | Module | Status |
