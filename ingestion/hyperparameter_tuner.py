@@ -1,8 +1,7 @@
 import json
 import logging
-import os
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict
 
 import boto3
 import numpy as np
@@ -55,8 +54,7 @@ def tune_random_forest(
     best_score = float(grid_search.best_score_)
 
     cv_results: Dict[str, Any] = {
-        k: v.tolist() if hasattr(v, "tolist") else v
-        for k, v in grid_search.cv_results_.items()
+        k: v.tolist() if hasattr(v, "tolist") else v for k, v in grid_search.cv_results_.items()
     }
 
     logger.info("Best RF params: %s  score=%.4f", best_params, best_score)

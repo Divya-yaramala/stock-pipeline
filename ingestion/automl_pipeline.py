@@ -1,9 +1,8 @@
 import json
 import logging
-import os
 import time
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 import boto3
 import numpy as np
