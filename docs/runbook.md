@@ -369,3 +369,47 @@ python -c "from ingestion.data_privacy_manager import generate_privacy_report; i
 3. Fix classification or retention settings
 4. Re-run compliance check to confirm fix
 
+---
+
+## Performance Testing Procedures
+
+### Weekly Benchmark Run
+Run every Monday to detect regressions:
+```bash
+python -c "from ingestion.performance_benchmarker import run_benchmark_suite; import os; print(run_benchmark_suite(os.getenv('AWS_BUCKET_NAME')))"
+```
+
+### Interpreting Benchmark Results
+Expected baseline performance:
+- S3 put: < 200ms average
+- S3 get: < 150ms average
+- S3 list: < 100ms average
+- Data validation: > 1000 records/second
+- Feature engineering: > 500 records/second
+
+### If Regression Detected (>20% slower)
+1. Check AWS CloudWatch for S3 latency spikes
+2. Check system resources:
+```bash
+python -c "from ingestion.resource_manager import run_resource_check; import os; print(run_resource_check(os.getenv('AWS_BUCKET_NAME')))"
+```
+3. Check if new code introduced O(n²) operation
+4. Profile the slow function:
+```python
+import cProfile
+from ingestion.your_slow_module import slow_function
+cProfile.run('slow_function()')
+```
+5. Fix regression before merging to main
+
+### Coverage Check Procedure
+Run weekly to ensure coverage not declining:
+```bash
+pytest tests/ --cov=ingestion --cov-report=term-missing 2>&1 | tail -20
+```
+
+If total coverage < 80%:
+1. Find uncovered files: look for lines with "Miss" in report
+2. Add tests for uncovered functions
+3. Re-run coverage to verify improvement
+
