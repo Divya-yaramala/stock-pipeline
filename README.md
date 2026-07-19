@@ -429,6 +429,7 @@ stock-pipeline/
 | [Project Checklist](docs/project-checklist.md) | 90-day completion checklist with code quality, docs, production patterns |
 | [REST API Documentation](docs/api-docs.md) | Endpoint reference, request/response examples, Swagger UI guide |
 | [API Versioning Guide](docs/api-versioning-guide.md) | Version history, endpoint categories, client examples |
+| [Testing Guide](docs/testing-guide.md) | Four-tier testing strategy, templates, coverage thresholds |
 | [Configuration Guide](docs/configuration-guide.md) | All env vars, config classes, and security best practices |
 
 ---
