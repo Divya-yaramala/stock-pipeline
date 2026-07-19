@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-455%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-465%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,7 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 68/90 of my 90-day portfolio challenge!** 455 tests · 73 modules · 54 ADRs · 135 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 69/90 of my 90-day portfolio challenge!** 465 tests · 75 modules · 56 ADRs · 141 production patterns · 3 APIs + Dashboard
 
 > 🎉 **400 tests milestone reached on Day 56!**
 
@@ -87,8 +87,8 @@ Dashboard:
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 455 passing |
-| Ingestion modules | 73 |
+| Total tests | 465 passing |
+| Ingestion modules | 75 |
 | Airflow tasks | 16 |
 | ADRs | 50 |
 | Production patterns | 125 |
@@ -96,18 +96,19 @@ Dashboard:
 | Days built | 66 |
 
 ## 🧪 Testing Strategy
-Three-tier testing approach:
+Four-tier testing approach:
 
 | Tier | Location | Count | Purpose |
 |---|---|---|---|
-| Unit tests | tests/ | 389 | Test individual functions |
-| Integration | tests/integration/ | 5 | Test module interactions |
-| E2E | tests/e2e/ | 6 | Test full API contracts |
-| **Total** | | **400** | |
+| Unit | tests/ | 500+ | Individual function testing |
+| Integration | tests/integration/ | 5 | Module interaction testing |
+| E2E | tests/e2e/ | 6 | Full API contract testing |
+| Performance | benchmarker | - | Latency + throughput |
+| **Total** | | **465** | |
 
-Run all tests:
+Run with coverage:
 ```bash
-pytest tests/ tests/integration/ tests/e2e/ -v
+pytest tests/ --cov=ingestion --cov-report=html
 ```
 
 ---
@@ -1070,5 +1071,12 @@ See [Storage Guide](docs/storage-guide.md)
 - API version 2.0.0 with Swagger UI at /docs
 - 6 unit tests passing green
 
+### ✅ Day 69 — Test Coverage + Performance Benchmarking
+- Built test coverage reporter with 80% threshold
+- Performance benchmarker for S3 and data processing
+- Benchmark regression detection (>20% slower = regression)
+- Coverage trend analysis over 7 days
+- 10 unit tests passing green
+
 ---
-*Built with ❤️ over 68 days as a portfolio project demonstrating production-grade data engineering.*
+*Built with ❤️ over 69 days as a portfolio project demonstrating production-grade data engineering.*
