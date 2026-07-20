@@ -8,7 +8,7 @@
 | Total tests | 542 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 59 architecture decisions |
+| ADRs | 60 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -180,6 +180,9 @@
 149. Streaming Analytics (sliding window, Z-score anomaly)
 150. Real-Time Aggregator (OHLCV bars, VWAP, momentum)
 151. Volume Profile (POC detection)
+152. Streaming Analytics Guide (sliding window documentation)
+153. VWAP Calculation (institutional price standard)
+154. Point of Control Detection (volume profile)
 
 ## MLOps Statistics
 | Capability | Module | Status |
