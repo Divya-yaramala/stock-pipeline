@@ -2,7 +2,6 @@ import json
 import logging
 import os
 from collections import deque
-from datetime import datetime
 from typing import Any, Deque, Dict, List, Optional
 
 import boto3
@@ -29,7 +28,7 @@ def calculate_window_stats(window: Deque) -> Dict[str, float]:
     n = len(values)
     mean = sum(values) / n
     variance = sum((v - mean) ** 2 for v in values) / n
-    std = variance ** 0.5
+    std = variance**0.5
     latest = values[-1]
     oldest = values[0]
     change_pct = (latest - oldest) / oldest * 100 if oldest != 0 else 0.0
@@ -53,7 +52,7 @@ def detect_streaming_anomaly(
     n = len(values)
     mean = sum(values) / n
     variance = sum((v - mean) ** 2 for v in values) / n
-    std = variance ** 0.5
+    std = variance**0.5
 
     latest = values[-1]
     z_score = (latest - mean) / std if std > 0 else 0.0
@@ -71,7 +70,9 @@ def detect_streaming_anomaly(
         "z_score": round(z_score, 4),
         "direction": direction,
     }
-    logger.info(f"Anomaly detection: is_anomaly={is_anomaly}, z_score={z_score:.4f}, direction={direction}")
+    logger.info(
+        f"Anomaly detection: is_anomaly={is_anomaly}, z_score={z_score:.4f}, direction={direction}"
+    )
     return result
 
 
@@ -84,7 +85,7 @@ def calculate_streaming_rsi(
         logger.info(f"Insufficient data for RSI: need {period + 1} points, have {len(values)}")
         return None
 
-    recent = values[-(period + 1):]
+    recent = values[-(period + 1) :]
     gains = []
     losses = []
     for i in range(1, len(recent)):
@@ -135,7 +136,8 @@ def process_price_stream(
         "final_stats": final_stats,
     }
     logger.info(
-        f"Stream processing complete for {ticker}: processed={len(prices)}, anomalies={anomaly_count}"
+        f"Stream processing complete for {ticker}: "
+        f"processed={len(prices)}, anomalies={anomaly_count}"
     )
     return summary
 

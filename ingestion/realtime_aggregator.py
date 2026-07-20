@@ -106,7 +106,9 @@ def calculate_volume_profile(
         for price, vol in zip(price_list, volume_list):
             if low <= price < high or (i == num_buckets - 1 and price == max_price):
                 bucket_volume += vol
-        buckets.append({"price_low": round(low, 4), "price_high": round(high, 4), "volume": bucket_volume})
+        buckets.append(
+            {"price_low": round(low, 4), "price_high": round(high, 4), "volume": bucket_volume}
+        )
 
     poc_bucket = max(buckets, key=lambda b: float(str(b["volume"])))
     poc = (float(str(poc_bucket["price_low"])) + float(str(poc_bucket["price_high"]))) / 2.0
