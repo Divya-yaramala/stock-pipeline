@@ -1067,3 +1067,50 @@ Random Forest:
 - max_depth: [5, 10, None]
 - min_samples_split: [2, 5, 10]
 Total combinations: 27
+
+## Streaming Analytics
+```bash
+# Process a price stream with sliding windows
+python -c "
+from ingestion.streaming_analytics import process_price_stream
+import os
+prices = [185.0, 186.2, 184.8, 187.5, 185.1, 188.0, 184.5, 189.2, 186.8, 190.0]
+result = process_price_stream('AAPL', prices, window_size=5)
+print('Processed:', result['processed'])
+print('Anomalies:', result['anomalies'])
+"
+```
+
+## Real-Time Aggregation
+```bash
+# Aggregate prices into OHLCV bars
+python -c "
+from ingestion.realtime_aggregator import aggregate_ohlcv
+import datetime
+prices = [
+    {'price': 185.0, 'volume': 1000, 'timestamp': '2026-07-18T09:30:00'},
+    {'price': 186.0, 'volume': 1500, 'timestamp': '2026-07-18T09:32:00'},
+    {'price': 184.5, 'volume': 800, 'timestamp': '2026-07-18T09:35:00'},
+]
+bars = aggregate_ohlcv(prices, window_minutes=5)
+print('OHLCV bars:', len(bars))
+"
+
+# Calculate VWAP
+python -c "
+from ingestion.realtime_aggregator import calculate_vwap
+prices = [
+    {'price': 185.0, 'volume': 1000},
+    {'price': 186.0, 'volume': 2000},
+    {'price': 184.0, 'volume': 500},
+]
+print('VWAP:', calculate_vwap(prices))
+"
+
+# Detect momentum
+python -c "
+from ingestion.realtime_aggregator import detect_momentum
+prices = [180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200]
+print(detect_momentum(prices, short_period=5, long_period=20))
+"
+```
