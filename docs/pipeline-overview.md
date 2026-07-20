@@ -573,3 +573,32 @@ pytest tests/ -v
 - Overall: > 85%
 - Core ingestion modules: > 90%
 - API layer: > 85%
+
+## Streaming Analytics Layer
+
+### Real-Time Processing (streaming_analytics.py)
+Sliding window (size=20) processes each new price:
+```
+price → update_window() → calculate_window_stats()
+                        → detect_streaming_anomaly()
+                        → calculate_streaming_rsi()
+```
+
+Z-score > 2.5 → SPIKE alert
+Z-score < -2.5 → DROP alert
+
+### Real-Time Aggregation (realtime_aggregator.py)
+OHLCV bars (5-minute windows):
+```
+prices → aggregate_ohlcv() → OHLCV bars
+       → calculate_vwap() → fair value
+       → calculate_volume_profile() → POC
+       → detect_momentum() → bullish/bearish/neutral
+```
+
+### Integration with Kafka Layer
+```
+Kafka consumer → streaming_analytics.process_price_stream()
+              → realtime_aggregator.run_realtime_aggregation()
+              → S3 streaming/analytics/
+```
