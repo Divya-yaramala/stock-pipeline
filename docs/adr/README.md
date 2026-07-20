@@ -68,3 +68,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [055](055-api-category-organization.md) | API Endpoint Category Organization | Accepted |
 | [056](056-test-coverage-strategy.md) | Test Coverage Strategy | Accepted |
 | [057](057-performance-benchmarking.md) | Performance Benchmarking Strategy | Accepted |
+| [059](059-streaming-analytics-pattern.md) | Streaming Analytics with Sliding Windows | Accepted |

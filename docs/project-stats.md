@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 77 ingestion modules + 6 scripts |
+| Python files | 79 ingestion modules + 6 scripts |
 | Test files | 27 test files |
-| Total tests | 532 passing |
+| Total tests | 542 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 58 architecture decisions |
+| ADRs | 59 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -177,6 +177,9 @@
 146. AutoML Pipeline (5 candidate models)
 147. Hyperparameter Tuning (GridSearchCV)
 148. Cross-Validation (5-fold CV)
+149. Streaming Analytics (sliding window, Z-score anomaly)
+150. Real-Time Aggregator (OHLCV bars, VWAP, momentum)
+151. Volume Profile (POC detection)
 
 ## MLOps Statistics
 | Capability | Module | Status |
