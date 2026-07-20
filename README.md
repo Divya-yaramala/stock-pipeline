@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-532%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-542%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,9 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 70/90 of my 90-day portfolio challenge!** 532 tests · 77 modules · 58 ADRs · 148 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 71/90 of my 90-day portfolio challenge!** 542 tests · 79 modules · 59 ADRs · 151 production patterns · 3 APIs + Dashboard
+
+> 🎉 **150 production patterns milestone!**
 
 > 🎉 **400 tests milestone reached on Day 56!**
 
@@ -87,13 +89,13 @@ Dashboard:
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 532 passing |
-| Ingestion modules | 77 |
+| Total tests | 542 passing |
+| Ingestion modules | 79 |
 | Airflow tasks | 16 |
-| ADRs | 58 |
-| Production patterns | 148 |
+| ADRs | 59 |
+| Production patterns | 151 |
 | S3 prefixes | 15+ |
-| Days built | 70 |
+| Days built | 71 |
 
 ## 🧪 Testing Strategy
 Four-tier testing approach:
@@ -1088,5 +1090,14 @@ See [Storage Guide](docs/storage-guide.md)
 - 5-fold cross-validation prevents overfitting
 - 10 unit tests passing green
 
+### ✅ Day 71 — Streaming Analytics + Real-Time Aggregation
+- Built sliding window analytics with Z-score anomaly detection
+- Real-time OHLCV bar aggregation with configurable windows
+- VWAP (Volume Weighted Average Price) calculation
+- Volume profile with Point of Control detection
+- Momentum detection (bullish/bearish/neutral)
+- 🎉 150 production patterns milestone!
+- 10 unit tests passing green
+
 ---
-*Built with ❤️ over 70 days as a portfolio project demonstrating production-grade data engineering.*
+*Built with ❤️ over 71 days as a portfolio project demonstrating production-grade data engineering.*
