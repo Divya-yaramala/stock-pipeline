@@ -461,6 +461,22 @@ See [MLOps Guide](docs/mlops-guide.md) for full documentation.
 
 ---
 
+## 📊 Streaming Analytics
+Real-time analytics for continuous price monitoring:
+
+| Feature | Algorithm | Description |
+|---|---|---|
+| Sliding Window | deque(maxlen=20) | Auto-drops oldest values |
+| Anomaly Detection | Z-score > 2.5 | Spike/drop detection |
+| OHLCV Bars | 5-minute windows | Standard price bars |
+| VWAP | Volume-weighted | Institutional fair value |
+| Volume Profile | Price buckets | Point of Control |
+| Momentum | Short vs Long MA | Bullish/bearish signal |
+
+See [Streaming Analytics Guide](docs/streaming-analytics-guide.md)
+
+---
+
 ## 🛡️ Data Quality Gates
 Five automated quality checks before each pipeline stage:
 
