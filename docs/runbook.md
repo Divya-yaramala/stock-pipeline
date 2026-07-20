@@ -413,3 +413,36 @@ If total coverage < 80%:
 2. Add tests for uncovered functions
 3. Re-run coverage to verify improvement
 
+## Streaming Analytics Monitoring
+
+### Daily Stream Processing Check
+After pipeline runs verify streaming results saved:
+```bash
+aws s3 ls s3://your-bucket/streaming/analytics/YYYY/MM/DD/
+```
+Expected: 5 files (one per ticker)
+
+### If Streaming Results Missing
+1. Check if Kafka streaming is enabled:
+```bash
+python -c "from ingestion.feature_flag_manager import is_enabled; import os; print(is_enabled('enable_kafka_streaming', os.getenv('AWS_BUCKET_NAME')))"
+```
+
+2. If disabled, run batch streaming analytics:
+```bash
+python -c "
+from ingestion.streaming_analytics import process_price_stream, save_stream_results
+import os, datetime
+prices = [185.0 + i * 0.1 for i in range(30)]
+results = process_price_stream('AAPL', prices, window_size=20)
+save_stream_results('AAPL', results, os.getenv('AWS_BUCKET_NAME'), datetime.datetime.now().strftime('%Y/%m/%d'))
+print('Saved streaming results for AAPL')
+"
+```
+
+### VWAP Monitoring
+If VWAP significantly different from close price:
+- Price much above VWAP → overbought intraday
+- Price much below VWAP → oversold intraday
+- Large divergence → investigate unusual volume
+
