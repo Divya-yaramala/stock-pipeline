@@ -1114,3 +1114,41 @@ prices = [180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 
 print(detect_momentum(prices, short_period=5, long_period=20))
 "
 ```
+
+## Distributed Processing
+```bash
+# Run parallel ticker processing
+python -c "
+from ingestion.distributed_task_manager import run_parallel_ticker_processing
+import os
+
+def process_ticker(ticker, bucket=''):
+    return {'ticker': ticker, 'processed': True}
+
+result = run_parallel_ticker_processing(
+    ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA'],
+    process_ticker,
+    max_workers=5
+)
+print('Success:', result['success_count'])
+print('Total time:', result['total_seconds'], 'seconds')
+"
+```
+
+## Pipeline Optimization
+```bash
+# Run pipeline profiling
+python -c "from ingestion.pipeline_optimizer import run_pipeline_profiling; import os; print(run_pipeline_profiling(os.getenv('AWS_BUCKET_NAME')))"
+
+# Check for bottlenecks
+python -c "
+from ingestion.pipeline_optimizer import identify_bottlenecks
+profiles = [
+    {'step': 'fetch_stocks', 'duration_seconds': 15.2},
+    {'step': 'validate', 'duration_seconds': 2.1},
+    {'step': 'anomaly_detect', 'duration_seconds': 8.5},
+]
+bottlenecks = identify_bottlenecks(profiles, threshold_seconds=10.0)
+print('Bottlenecks:', [b['step'] for b in bottlenecks])
+"
+```
