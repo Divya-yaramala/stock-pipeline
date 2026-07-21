@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 79 ingestion modules + 6 scripts |
+| Python files | 81 ingestion modules + 6 scripts |
 | Test files | 27 test files |
-| Total tests | 542 passing |
+| Total tests | 552 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 60 architecture decisions |
+| ADRs | 61 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -183,6 +183,10 @@
 152. Streaming Analytics Guide (sliding window documentation)
 153. VWAP Calculation (institutional price standard)
 154. Point of Control Detection (volume profile)
+155. Distributed Task Manager (parallel ticker processing)
+156. Pipeline Optimizer (bottleneck detection)
+157. Batch S3 Uploads (parallel upload with 10 workers)
+158. Pipeline Efficiency Score
 
 ## MLOps Statistics
 | Capability | Module | Status |

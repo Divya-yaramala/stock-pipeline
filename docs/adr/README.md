@@ -70,3 +70,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [057](057-performance-benchmarking.md) | Performance Benchmarking Strategy | Accepted |
 | [059](059-streaming-analytics-pattern.md) | Streaming Analytics with Sliding Windows | Accepted |
 | [060](060-vwap-for-intraday-analysis.md) | VWAP for Intraday Price Analysis | Accepted |
+| [061](061-distributed-processing-pattern.md) | Distributed Processing with ThreadPoolExecutor | Accepted |
