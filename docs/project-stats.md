@@ -8,7 +8,7 @@
 | Total tests | 552 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 61 architecture decisions |
+| ADRs | 62 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -187,6 +187,8 @@
 156. Pipeline Optimizer (bottleneck detection)
 157. Batch S3 Uploads (parallel upload with 10 workers)
 158. Pipeline Efficiency Score
+159. Distributed Computing Guide (5x speedup documented)
+160. Pipeline Profiling (bottleneck detection + recommendations)
 
 ## MLOps Statistics
 | Capability | Module | Status |
