@@ -446,3 +446,45 @@ If VWAP significantly different from close price:
 - Price much below VWAP → oversold intraday
 - Large divergence → investigate unusual volume
 
+## Pipeline Optimization Procedures
+
+### Weekly Performance Review
+Run pipeline profiling every Monday:
+```bash
+python -c "from ingestion.pipeline_optimizer import run_pipeline_profiling; import os; print(run_pipeline_profiling(os.getenv('AWS_BUCKET_NAME')))"
+```
+
+### If Bottleneck Detected
+1. Check which step is slow from profiling report
+2. Get optimization recommendations:
+```bash
+python -c "
+from ingestion.pipeline_optimizer import generate_optimization_recommendations
+bottlenecks = [{'step': 'price_predict', 'duration_seconds': 18.5}]
+recs = generate_optimization_recommendations(bottlenecks)
+for rec in recs:
+    print(rec)
+"
+```
+
+3. Common optimizations:
+   - Slow fetch: enable caching (feature flag: enable_cache)
+   - Slow predict: reduce Prophet changepoint_prior_scale
+   - Slow Snowflake: upgrade warehouse size in Snowflake UI
+   - Slow S3: increase max_workers in batch uploads
+
+### Checking Pipeline Efficiency Score
+```bash
+python -c "
+from ingestion.pipeline_optimizer import calculate_pipeline_efficiency
+profiles = [
+    {'step': 'fetch', 'duration_seconds': 5.0},
+    {'step': 'validate', 'duration_seconds': 0.5},
+    {'step': 'anomaly', 'duration_seconds': 3.0},
+]
+print(calculate_pipeline_efficiency(profiles))
+"
+```
+Healthy efficiency score: > 50%
+Low efficiency score (<30%): one step dominates — needs optimization
+
