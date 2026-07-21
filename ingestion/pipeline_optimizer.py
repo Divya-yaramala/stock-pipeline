@@ -43,7 +43,9 @@ def identify_bottlenecks(
     bottlenecks = [
         p for p in step_profiles if float(str(p["duration_seconds"])) > threshold_seconds
     ]
-    logger.info(f"Bottleneck detection: {len(bottlenecks)} steps exceed {threshold_seconds}s threshold")
+    logger.info(
+        f"Bottleneck detection: {len(bottlenecks)} steps exceed {threshold_seconds}s threshold"
+    )
     return bottlenecks
 
 
@@ -51,7 +53,12 @@ def calculate_pipeline_efficiency(
     step_profiles: List[Dict[str, Any]],
 ) -> Dict[str, Any]:
     if not step_profiles:
-        return {"total_seconds": 0.0, "slowest_step": "", "fastest_step": "", "efficiency_score": 0.0}
+        return {
+            "total_seconds": 0.0,
+            "slowest_step": "",
+            "fastest_step": "",
+            "efficiency_score": 0.0,
+        }
 
     durations = [float(str(p["duration_seconds"])) for p in step_profiles]
     total_seconds = sum(durations)
@@ -65,9 +72,7 @@ def calculate_pipeline_efficiency(
         "fastest_step": str(fastest["step"]),
         "efficiency_score": round(efficiency_score, 2),
     }
-    logger.info(
-        f"Pipeline efficiency: total={total_seconds:.2f}s, score={efficiency_score:.2f}%"
-    )
+    logger.info(f"Pipeline efficiency: total={total_seconds:.2f}s, score={efficiency_score:.2f}%")
     return result
 
 
@@ -78,9 +83,7 @@ def generate_optimization_recommendations(
     for b in bottlenecks:
         step = str(b["step"])
         duration = float(str(b["duration_seconds"]))
-        recommendations.append(
-            f"Consider parallelizing {step} — takes {duration:.1f}s"
-        )
+        recommendations.append(f"Consider parallelizing {step} — takes {duration:.1f}s")
     logger.info(f"Generated {len(recommendations)} optimization recommendations")
     return recommendations
 
