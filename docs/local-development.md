@@ -1152,3 +1152,42 @@ bottlenecks = identify_bottlenecks(profiles, threshold_seconds=10.0)
 print('Bottlenecks:', [b['step'] for b in bottlenecks])
 "
 ```
+
+## NLP Processing
+```bash
+# Analyze financial text
+python -c "
+from ingestion.nlp_processor import calculate_text_sentiment
+text = 'Apple delivered a strong earnings beat with bullish guidance and upgraded price targets.'
+result = calculate_text_sentiment(text)
+print('Sentiment:', result['label'])
+print('Score:', result['score'])
+"
+
+# Extract financial entities
+python -c "
+from ingestion.nlp_processor import extract_financial_entities
+text = 'AAPL surged 5.2% to \$188.50 after beating earnings estimates.'
+entities = extract_financial_entities(text)
+print('Tickers:', entities['tickers'])
+print('Amounts:', entities['amounts'])
+print('Percentages:', entities['percentages'])
+"
+```
+
+## Text Analytics
+```bash
+# Classify news category
+python -c "
+from ingestion.text_analytics import classify_news_category
+text = 'Apple reported Q3 earnings with revenue beating Wall Street estimates.'
+print('Category:', classify_news_category(text))
+"
+
+# Extract price targets
+python -c "
+from ingestion.text_analytics import extract_price_targets
+text = 'Goldman Sachs raised its price target to \$200 for Apple stock.'
+print('Targets:', extract_price_targets(text))
+"
+```
