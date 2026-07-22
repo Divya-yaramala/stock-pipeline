@@ -633,3 +633,33 @@ After each run:
 run_pipeline_profiling() → step timings → bottleneck detection
                         → recommendations → S3 report
 ```
+
+## NLP and Text Analytics Layer
+
+### NLP Pipeline (nlp_processor.py)
+Input: News headlines and articles per ticker
+Processing:
+1. tokenize_text() — remove stopwords, lowercase
+2. extract_financial_entities() — tickers, amounts, percentages
+3. calculate_text_sentiment() — 15 financial domain terms
+4. summarize_text() — top 3 sentences by term density
+5. analyze_earnings_report() — full report analysis
+
+Output: S3 processed/nlp/YYYY/MM/DD/ticker.json
+
+### Text Analytics (text_analytics.py)
+Input: News corpus (list of articles)
+Processing:
+1. calculate_tfidf() — keyword importance across corpus
+2. find_key_phrases() — noun phrase extraction
+3. classify_news_category() — 6 category classification
+4. extract_price_targets() — analyst price target extraction
+
+Output: S3 processed/text_analytics/YYYY/MM/DD/ticker.json
+
+### Integration with Sentiment Module
+nlp_processor.py → richer analysis than news_sentiment.py
+news_sentiment.py → simpler keyword counting (faster)
+Use news_sentiment.py for daily pipeline
+Use nlp_processor.py for deep analysis
+
