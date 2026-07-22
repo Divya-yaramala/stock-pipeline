@@ -488,3 +488,46 @@ print(calculate_pipeline_efficiency(profiles))
 Healthy efficiency score: > 50%
 Low efficiency score (<30%): one step dominates — needs optimization
 
+
+## NLP Monitoring Procedures
+
+### Daily NLP Check
+After pipeline runs verify NLP results saved:
+```
+aws s3 ls s3://your-bucket/processed/nlp/YYYY/MM/DD/
+```
+Expected: 5 files (one per ticker AAPL MSFT GOOGL AMZN TSLA)
+
+### If NLP Results Missing
+Run NLP analysis manually:
+```python
+python -c "
+from ingestion.nlp_processor import run_nlp_analysis
+import os
+texts = [
+    'Apple reported strong Q3 earnings beating estimates.',
+    'AAPL stock surged after bullish analyst upgrades.'
+]
+result = run_nlp_analysis('AAPL', texts, os.getenv('AWS_BUCKET_NAME'))
+print('Sentiment:', result.get('sentiment', 'unknown'))
+"
+```
+
+### Reviewing Sentiment Accuracy
+Weekly spot check — compare NLP sentiment vs price movement:
+```python
+python -c "
+from ingestion.nlp_processor import calculate_text_sentiment
+headlines = [
+    'Apple beats earnings with record iPhone sales',
+    'AAPL stock upgraded by Goldman Sachs to Buy',
+]
+for h in headlines:
+    result = calculate_text_sentiment(h)
+    print(f'{h[:50]}... -> {result[\"label\"]}')
+"
+```
+
+If sentiment frequently wrong:
+- Add new financial terms to FINANCIAL_TERMS dict
+- Consider upgrading to FinBERT model
