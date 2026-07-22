@@ -8,7 +8,7 @@
 | Total tests | 562 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 63 architecture decisions |
+| ADRs | 64 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -193,6 +193,9 @@
 162. Text Analytics (TF-IDF, classification, price targets)
 163. News Category Classification (6 categories)
 164. Financial Term Sentiment (15 domain terms)
+165. NLP Guide (15 financial terms documented)
+166. TF-IDF from Scratch (no scikit-learn dependency)
+167. News Category Detection (6 categories)
 
 ## MLOps Statistics
 | Capability | Module | Status |
