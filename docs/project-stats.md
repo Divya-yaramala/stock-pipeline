@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 81 ingestion modules + 6 scripts |
+| Python files | 83 ingestion modules + 6 scripts |
 | Test files | 27 test files |
-| Total tests | 552 passing |
+| Total tests | 562 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 62 architecture decisions |
+| ADRs | 63 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -189,6 +189,10 @@
 158. Pipeline Efficiency Score
 159. Distributed Computing Guide (5x speedup documented)
 160. Pipeline Profiling (bottleneck detection + recommendations)
+161. NLP Processor (financial entity extraction)
+162. Text Analytics (TF-IDF, classification, price targets)
+163. News Category Classification (6 categories)
+164. Financial Term Sentiment (15 domain terms)
 
 ## MLOps Statistics
 | Capability | Module | Status |
