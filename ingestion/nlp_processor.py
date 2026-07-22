@@ -1,12 +1,13 @@
-import re
-import json
-import os
-import logging
+import collections  # noqa: F401
 import datetime
+import json
+import logging
+import os  # noqa: F401
+import re
+from collections import Counter  # noqa: F401
+from typing import Any, Dict, List, Optional  # noqa: F401
+
 import boto3
-import collections
-from typing import Optional, Dict, List, Any
-from collections import Counter
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -129,9 +130,7 @@ def analyze_earnings_report(report_text: str, ticker: str) -> Dict[str, Any]:
     return result
 
 
-def run_nlp_analysis(
-    ticker: str, texts: List[str], bucket: str
-) -> Dict[str, Any]:
+def run_nlp_analysis(ticker: str, texts: List[str], bucket: str) -> Dict[str, Any]:
     combined_entities: Dict[str, List[str]] = {
         "tickers": [],
         "amounts": [],

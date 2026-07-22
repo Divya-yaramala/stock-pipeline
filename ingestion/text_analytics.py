@@ -1,11 +1,12 @@
-import re
-import json
-import os
-import logging
 import datetime
-import boto3
+import json
+import logging
 import math
-from typing import Optional, Dict, List, Any
+import os  # noqa: F401
+import re
+from typing import Any, Dict, List, Optional  # noqa: F401
+
+import boto3
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -99,9 +100,7 @@ def extract_price_targets(text: str) -> List[Dict[str, Any]]:
     return targets
 
 
-def run_text_analytics(
-    ticker: str, news_texts: List[str], bucket: str
-) -> Dict[str, Any]:
+def run_text_analytics(ticker: str, news_texts: List[str], bucket: str) -> Dict[str, Any]:
     tfidf = calculate_tfidf(news_texts)
     categories: List[str] = [classify_news_category(t) for t in news_texts]
     all_targets: List[Dict[str, Any]] = []
