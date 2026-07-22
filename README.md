@@ -477,6 +477,22 @@ See [Streaming Analytics Guide](docs/streaming-analytics-guide.md)
 
 ---
 
+## 🔤 NLP and Text Analytics
+Custom NLP capabilities without external dependencies:
+
+| Feature | Module | Description |
+|---|---|---|
+| Entity Extraction | nlp_processor.py | Tickers, amounts, percentages |
+| Sentiment Analysis | nlp_processor.py | 15 financial domain terms |
+| TF-IDF | text_analytics.py | Keyword importance scoring |
+| News Classification | text_analytics.py | 6 categories |
+| Price Target Extraction | text_analytics.py | Analyst targets |
+| Earnings Summarization | nlp_processor.py | Top 3 sentences |
+
+See [NLP Guide](docs/nlp-guide.md)
+
+---
+
 ## ⚡ Distributed Processing
 Parallel execution for 5x pipeline speedup:
 
