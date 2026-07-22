@@ -73,3 +73,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [061](061-distributed-processing-pattern.md) | Distributed Processing with ThreadPoolExecutor | Accepted |
 | [062](062-pipeline-profiling-pattern.md) | Pipeline Profiling and Bottleneck Detection | Accepted |
 | [063](063-nlp-without-external-libraries.md) | NLP Without External Libraries | Accepted |
+| [064](064-tfidf-from-scratch.md) | TF-IDF Implemented from Scratch | Accepted |
