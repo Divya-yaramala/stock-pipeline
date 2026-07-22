@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-552%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-562%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,7 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 72/90 of my 90-day portfolio challenge!** 552 tests · 81 modules · 61 ADRs · 158 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 73/90 of my 90-day portfolio challenge!** 562 tests · 83 modules · 63 ADRs · 164 production patterns · 3 APIs + Dashboard
 
 > 🎉 **150 production patterns milestone!**
 
@@ -53,7 +53,7 @@ Dashboard:
 - 🧠 Ensemble ML (Random Forest + Gradient Boosting + Linear)
 - 🔍 Model explainability with SHAP approximation
 - 📊 Technical indicators (SMA, RSI, Bollinger Bands, MACD)
-- 📰 News sentiment analysis (BULLISH/BEARISH/NEUTRAL)
+- 📰 Advanced NLP: entity extraction, TF-IDF, news classification
 - 🔗 Market correlation matrix + Beta calculation
 - 💼 Portfolio tracking with daily returns
 - 🌐 REST + GraphQL + WebSocket APIs
@@ -89,13 +89,13 @@ Dashboard:
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 552 passing |
-| Ingestion modules | 81 |
+| Total tests | 562 passing |
+| Ingestion modules | 83 |
 | Airflow tasks | 16 |
-| ADRs | 61 |
-| Production patterns | 158 |
+| ADRs | 63 |
+| Production patterns | 164 |
 | S3 prefixes | 15+ |
-| Days built | 72 |
+| Days built | 73 |
 
 ## 🧪 Testing Strategy
 Four-tier testing approach:
@@ -1137,5 +1137,13 @@ See [Storage Guide](docs/storage-guide.md)
 - Pipeline efficiency score and optimization recommendations
 - 10 unit tests passing green
 
+### ✅ Day 73 — NLP Processing + Text Analytics
+- Built NLP processor with 15 financial domain terms
+- Financial entity extraction (tickers, amounts, percentages)
+- TF-IDF implementation from scratch
+- News category classification (earnings, merger, product, regulatory, analyst, macro)
+- Analyst price target extraction
+- 10 unit tests passing green
+
 ---
-*Built with ❤️ over 72 days as a portfolio project demonstrating production-grade data engineering.*
+*Built with ❤️ over 73 days as a portfolio project demonstrating production-grade data engineering.*
