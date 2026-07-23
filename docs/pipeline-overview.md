@@ -663,3 +663,34 @@ news_sentiment.py → simpler keyword counting (faster)
 Use news_sentiment.py for daily pipeline
 Use nlp_processor.py for deep analysis
 
+
+## Enhanced Forecasting Architecture
+
+### Model 1: Prophet (60% weight)
+Input: 90 days of daily close prices
+Output: 5-day forecast with 80% confidence intervals
+Strengths: trend + seasonality + holiday effects
+
+### Model 2: Ensemble (40% weight)
+Input: Feature matrix (SMA, RSI, BB, MACD, volume, momentum)
+Models: RF + Gradient Boosting + Linear Regression
+Output: 5-day point predictions
+
+### Blending Layer
+blended = Prophet × 0.6 + Ensemble × 0.4
+Reduces individual model variance
+
+### Scenario Layer
+bull = blended + 2 × 20-day volatility
+base = blended
+bear = blended - 2 × 20-day volatility
+
+### Confidence Intervals
+Lower = prediction - (volatility × z_score)
+Upper = prediction + (volatility × z_score)
+z_score = 1.96 for 95% confidence
+
+### Time Series Analysis (pre-forecast)
+detect_trend() → uptrend/downtrend/sideways
+detect_seasonality() → seasonal=True/False
+calculate_volatility_regime() → low/medium/high
