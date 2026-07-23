@@ -1,19 +1,18 @@
-import numpy as np
-import pandas as pd
-import json
-import os
-import logging
 import datetime
+import json
+import logging
+import os  # noqa: F401
+from typing import Any, Dict, List, Optional  # noqa: F401
+
 import boto3
-from typing import Optional, Dict, List, Any
+import numpy as np
+import pandas as pd  # noqa: F401
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def calculate_autocorrelation(
-    values: List[float], max_lag: int = 10
-) -> Dict[int, float]:
+def calculate_autocorrelation(values: List[float], max_lag: int = 10) -> Dict[int, float]:
     n = len(values)
     mean = float(np.mean(values))
     variance = float(np.var(values))
@@ -25,8 +24,7 @@ def calculate_autocorrelation(
             result[lag] = 0.0
             continue
         cov = sum(
-            (float(values[i]) - mean) * (float(values[i - lag]) - mean)
-            for i in range(lag, n)
+            (float(values[i]) - mean) * (float(values[i - lag]) - mean) for i in range(lag, n)
         ) / float(n)
         result[lag] = cov / variance
     significant = [lag for lag, corr in result.items() if abs(corr) > 0.3]
@@ -34,9 +32,7 @@ def calculate_autocorrelation(
     return result
 
 
-def detect_seasonality(
-    values: List[float], period: int = 5
-) -> Dict[str, Any]:
+def detect_seasonality(values: List[float], period: int = 5) -> Dict[str, Any]:
     n = len(values)
     if n < period * 2:
         result: Dict[str, Any] = {"seasonal": False, "strength": 0.0, "period": period}
@@ -48,7 +44,6 @@ def detect_seasonality(
         positions = [float(values[i]) for i in range(p, n, period)]
         seasonal_means.append(float(np.mean(positions)))
 
-    overall_mean = float(np.mean(values))
     seasonal_variance = float(np.var(seasonal_means))
     total_variance = float(np.var(values))
 
@@ -60,9 +55,7 @@ def detect_seasonality(
     return result
 
 
-def calculate_volatility_regime(
-    values: List[float], window: int = 20
-) -> Dict[str, Any]:
+def calculate_volatility_regime(values: List[float], window: int = 20) -> Dict[str, Any]:
     if len(values) < 2:
         return {"regime": "low", "current_vol": 0.0, "avg_vol": 0.0}
 
@@ -156,9 +149,7 @@ def calculate_drawdown_series(values: List[float]) -> Dict[str, Any]:
     return result
 
 
-def run_timeseries_analysis(
-    ticker: str, prices: List[float], bucket: str
-) -> Dict[str, Any]:
+def run_timeseries_analysis(ticker: str, prices: List[float], bucket: str) -> Dict[str, Any]:
     autocorr = calculate_autocorrelation(prices)
     seasonality = detect_seasonality(prices)
     volatility = calculate_volatility_regime(prices)

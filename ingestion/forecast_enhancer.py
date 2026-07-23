@@ -1,11 +1,12 @@
-import numpy as np
-import pandas as pd
-import json
-import os
-import logging
 import datetime
+import json
+import logging
+import os  # noqa: F401
+from typing import Any, Dict, List, Optional
+
 import boto3
-from typing import Optional, Dict, List, Any
+import numpy as np
+import pandas as pd  # noqa: F401
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -20,7 +21,7 @@ def add_confidence_intervals(
     result: List[Dict[str, float]] = []
     for i, pred in enumerate(predictions):
         horizon = float(i + 1)
-        margin = z * historical_volatility * (horizon ** 0.5)
+        margin = z * historical_volatility * (horizon**0.5)
         result.append(
             {
                 "prediction": round(float(pred), 4),
@@ -74,11 +75,7 @@ def calculate_forecast_accuracy(
     mae = float(np.mean([abs(float(p) - float(a)) for p, a in pairs]))
     rmse = float(np.sqrt(np.mean([(float(p) - float(a)) ** 2 for p, a in pairs])))
 
-    mape_vals = [
-        abs(float(p) - float(a)) / abs(float(a))
-        for p, a in pairs
-        if float(a) != 0
-    ]
+    mape_vals = [abs(float(p) - float(a)) / abs(float(a)) for p, a in pairs if float(a) != 0]
     mape = float(np.mean(mape_vals)) * 100.0 if mape_vals else 0.0
 
     correct_dir = 0
