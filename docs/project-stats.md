@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 83 ingestion modules + 6 scripts |
+| Python files | 85 ingestion modules + 6 scripts |
 | Test files | 27 test files |
-| Total tests | 562 passing |
+| Total tests | 572 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 64 architecture decisions |
+| ADRs | 65 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -196,6 +196,10 @@
 165. NLP Guide (15 financial terms documented)
 166. TF-IDF from Scratch (no scikit-learn dependency)
 167. News Category Detection (6 categories)
+168. Time Series Analysis (autocorrelation, seasonality, trend)
+169. Volatility Regime Detection (low/medium/high)
+170. Forecast Blending (Prophet 60% + Ensemble 40%)
+171. Scenario Forecasting (bull/base/bear)
 
 ## MLOps Statistics
 | Capability | Module | Status |
