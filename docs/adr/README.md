@@ -75,3 +75,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [063](063-nlp-without-external-libraries.md) | NLP Without External Libraries | Accepted |
 | [064](064-tfidf-from-scratch.md) | TF-IDF Implemented from Scratch | Accepted |
 | [065](065-forecast-blending-strategy.md) | Forecast Blending Strategy | Accepted |
+| [066](066-volatility-regime-detection.md) | Volatility Regime Detection | Accepted |
