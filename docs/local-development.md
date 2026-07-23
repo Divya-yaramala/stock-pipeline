@@ -1191,3 +1191,55 @@ text = 'Goldman Sachs raised its price target to \$200 for Apple stock.'
 print('Targets:', extract_price_targets(text))
 "
 ```
+
+## Time Series Analysis
+```bash
+# Run full time series analysis for a ticker
+python -c "
+from ingestion.timeseries_analyzer import run_timeseries_analysis
+import os
+prices = [180+i*0.5 + (i%5)*0.3 for i in range(60)]
+result = run_timeseries_analysis('AAPL', prices, os.getenv('AWS_BUCKET_NAME'))
+print('Trend:', result.get('trend', {}).get('trend'))
+print('Volatility regime:', result.get('volatility', {}).get('regime'))
+"
+
+# Detect trend
+python -c "
+from ingestion.timeseries_analyzer import detect_trend
+prices = [180+i*0.5 for i in range(30)]
+print(detect_trend(prices))
+"
+```
+
+## Forecast Enhancement
+```bash
+# Generate scenario forecasts
+python -c "
+from ingestion.forecast_enhancer import generate_scenario_forecasts
+scenarios = generate_scenario_forecasts(base_prediction=185.0, volatility=3.5)
+print('Bull:', scenarios['bull'])
+print('Base:', scenarios['base'])
+print('Bear:', scenarios['bear'])
+"
+
+# Blend Prophet and Ensemble predictions
+python -c "
+from ingestion.forecast_enhancer import blend_forecasts
+prophet = [185.0, 186.0, 187.0, 188.0, 189.0]
+ensemble = [183.0, 184.0, 185.0, 186.0, 187.0]
+blended = blend_forecasts(prophet, ensemble, prophet_weight=0.6)
+print('Blended predictions:', blended)
+"
+
+# Calculate forecast accuracy
+python -c "
+from ingestion.forecast_enhancer import calculate_forecast_accuracy
+predictions = [185.0, 186.0, 184.0, 187.0, 185.5]
+actuals = [186.0, 185.5, 184.5, 188.0, 185.0]
+accuracy = calculate_forecast_accuracy(predictions, actuals)
+print('MAE:', accuracy['MAE'])
+print('RMSE:', accuracy['RMSE'])
+print('Directional accuracy:', accuracy['directional_accuracy'])
+"
+```
