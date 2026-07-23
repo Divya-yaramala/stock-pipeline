@@ -531,3 +531,44 @@ for h in headlines:
 If sentiment frequently wrong:
 - Add new financial terms to FINANCIAL_TERMS dict
 - Consider upgrading to FinBERT model
+
+## Forecasting Procedures
+
+### Daily Forecast Check
+After pipeline runs verify forecasts saved:
+```
+aws s3 ls s3://your-bucket/processed/forecasts_enhanced/YYYY/MM/DD/
+```
+Expected: 5 files (one per ticker)
+
+### Reviewing Forecast Accuracy
+Weekly accuracy review:
+```python
+python -c "
+from ingestion.forecast_enhancer import calculate_forecast_accuracy
+# Load predictions from last week and compare to actuals
+predictions = [185.0, 186.0, 184.0, 187.0, 185.5]
+actuals = [186.0, 185.5, 184.5, 188.0, 185.0]
+accuracy = calculate_forecast_accuracy(predictions, actuals)
+print('MAE:', accuracy['MAE'])
+print('RMSE:', accuracy['RMSE'])
+print('Directional accuracy:', accuracy['directional_accuracy'])
+"
+```
+
+### Acceptable Accuracy Thresholds
+- MAE < $5.00 → Good
+- RMSE < $7.00 → Good
+- Directional accuracy > 55% → Better than random
+- If all three met: forecasts are useful
+
+### If Accuracy Degraded
+1. Check if model drift detected:
+```python
+python -c "from ingestion.drift_detector import run_drift_detection; import os; print(run_drift_detection('AAPL', os.getenv('AWS_BUCKET_NAME')))"
+```
+2. If drift detected: trigger retraining
+3. Check if blend weights need adjustment:
+   - If Prophet better recently: increase prophet_weight to 0.7
+   - If Ensemble better recently: decrease to 0.5
+4. Check volatility regime — high vol needs wider intervals
