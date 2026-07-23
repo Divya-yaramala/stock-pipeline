@@ -493,6 +493,24 @@ See [NLP Guide](docs/nlp-guide.md)
 
 ---
 
+## 📈 Enhanced Forecasting
+Multi-model approach with scenario analysis:
+
+| Model | Weight | Strength |
+|---|---|---|
+| Prophet | 60% | Trend + seasonality |
+| Ensemble | 40% | Non-linear features |
+| **Blended** | **100%** | **Reduced variance** |
+
+Scenario forecasts for every ticker:
+- 🐂 Bull: base + 2×volatility
+- 📊 Base: blended prediction
+- 🐻 Bear: base - 2×volatility
+
+See [Forecasting Guide](docs/forecasting-guide.md)
+
+---
+
 ## ⚡ Distributed Processing
 Parallel execution for 5x pipeline speedup:
 
