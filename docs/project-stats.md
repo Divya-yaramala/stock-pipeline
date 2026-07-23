@@ -8,7 +8,7 @@
 | Total tests | 572 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 65 architecture decisions |
+| ADRs | 66 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -200,6 +200,9 @@
 169. Volatility Regime Detection (low/medium/high)
 170. Forecast Blending (Prophet 60% + Ensemble 40%)
 171. Scenario Forecasting (bull/base/bear)
+172. Forecasting Guide (multi-model approach documented)
+173. Volatility Regime Detection (3 regimes with thresholds)
+174. Directional Accuracy Tracking (up/down prediction %)
 
 ## MLOps Statistics
 | Capability | Module | Status |
