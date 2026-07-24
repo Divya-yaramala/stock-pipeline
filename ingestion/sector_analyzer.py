@@ -1,9 +1,10 @@
-import json
-import os  # noqa: F401
-import logging
 import datetime
+import json
+import logging
+import os  # noqa: F401
+from typing import Any, Dict, List, Optional  # noqa: F401
+
 import boto3
-from typing import Optional, Dict, List, Any  # noqa: F401
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -83,9 +84,7 @@ def calculate_sector_rotation(
         "losing": sorted(losing),
         "stable": sorted(stable),
     }
-    logger.info(
-        "Sector rotation — gaining: %s, losing: %s", gaining, losing
-    )
+    logger.info("Sector rotation — gaining: %s, losing: %s", gaining, losing)
     return result
 
 

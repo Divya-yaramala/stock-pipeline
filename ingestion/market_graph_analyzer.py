@@ -1,10 +1,11 @@
-import json
-import os  # noqa: F401
-import logging
 import datetime
-import boto3
+import json
+import logging
 import math
-from typing import Optional, Dict, List, Any, Tuple  # noqa: F401
+import os  # noqa: F401
+from typing import Any, Dict, List, Optional, Tuple  # noqa: F401
+
+import boto3
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -170,9 +171,7 @@ def run_market_graph_analysis(
                 p1 = ticker_prices[t1]
                 p2 = ticker_prices[t2]
                 min_len = min(len(p1), len(p2))
-                corr_matrix[t1][t2] = round(
-                    _pearson_correlation(p1[:min_len], p2[:min_len]), 4
-                )
+                corr_matrix[t1][t2] = round(_pearson_correlation(p1[:min_len], p2[:min_len]), 4)
 
     graph = build_correlation_graph(corr_matrix)
     centrality = calculate_node_centrality(graph)
