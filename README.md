@@ -511,6 +511,23 @@ See [Forecasting Guide](docs/forecasting-guide.md)
 
 ---
 
+## 📊 Market Analytics
+Graph-based market analysis and sector rotation:
+
+| Feature | Module | Description |
+|---|---|---|
+| Correlation Graph | market_graph_analyzer.py | Network of correlated stocks |
+| Node Centrality | market_graph_analyzer.py | Most influential ticker |
+| Market Clusters | market_graph_analyzer.py | Groups of similar stocks |
+| Market Stability | market_graph_analyzer.py | Systemic risk score |
+| Sector Returns | sector_analyzer.py | Performance by sector |
+| Sector Rotation | sector_analyzer.py | Gaining vs losing sectors |
+| Benchmark Alpha | sector_analyzer.py | Outperformance vs benchmark |
+
+See [Market Analytics Guide](docs/market-analytics-guide.md)
+
+---
+
 ## ⚡ Distributed Processing
 Parallel execution for 5x pipeline speedup:
 
