@@ -1243,3 +1243,41 @@ print('RMSE:', accuracy['RMSE'])
 print('Directional accuracy:', accuracy['directional_accuracy'])
 "
 ```
+
+## Market Graph Analysis
+```bash
+# Run market graph analysis
+python -c "
+from ingestion.market_graph_analyzer import run_market_graph_analysis
+import os
+ticker_prices = {
+    'AAPL': [185+i*0.1 for i in range(30)],
+    'MSFT': [415+i*0.2 for i in range(30)],
+    'GOOGL': [175+i*0.15 for i in range(30)],
+    'AMZN': [195+i*0.05 for i in range(30)],
+    'TSLA': [250+i*0.3 for i in range(30)],
+}
+result = run_market_graph_analysis(ticker_prices, os.getenv('AWS_BUCKET_NAME'))
+print('Market leader:', result.get('leader'))
+print('Risk level:', result.get('stability', {}).get('risk_level'))
+"
+```
+
+## Sector Analysis
+```bash
+# Run sector analysis
+python -c "
+from ingestion.sector_analyzer import run_sector_analysis
+import os
+ticker_prices = {
+    'AAPL': [185+i*0.1 for i in range(30)],
+    'MSFT': [415+i*0.2 for i in range(30)],
+    'GOOGL': [175+i*0.15 for i in range(30)],
+    'AMZN': [195+i*0.05 for i in range(30)],
+    'TSLA': [250+i*0.3 for i in range(30)],
+}
+result = run_sector_analysis(ticker_prices, os.getenv('AWS_BUCKET_NAME'))
+print('Sector returns:', result.get('sector_returns'))
+print('Leaders:', result.get('sector_leaders'))
+"
+```
