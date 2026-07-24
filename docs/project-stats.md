@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 85 ingestion modules + 6 scripts |
+| Python files | 87 ingestion modules + 6 scripts |
 | Test files | 27 test files |
-| Total tests | 572 passing |
+| Total tests | 582 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 66 architecture decisions |
+| ADRs | 67 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -203,6 +203,10 @@
 172. Forecasting Guide (multi-model approach documented)
 173. Volatility Regime Detection (3 regimes with thresholds)
 174. Directional Accuracy Tracking (up/down prediction %)
+175. Market Graph Analysis (centrality + clustering)
+176. Sector Rotation Detection (gaining/losing/stable)
+177. Benchmark Alpha Calculation
+178. Market Stability Score (density-based)
 
 ## MLOps Statistics
 | Capability | Module | Status |
