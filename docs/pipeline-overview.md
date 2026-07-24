@@ -694,3 +694,34 @@ z_score = 1.96 for 95% confidence
 detect_trend() → uptrend/downtrend/sideways
 detect_seasonality() → seasonal=True/False
 calculate_volatility_regime() → low/medium/high
+
+## Market Analytics Layer
+
+### Graph Analysis (market_graph_analyzer.py)
+Daily run after correlation matrix calculated:
+```
+correlation_matrix → build_correlation_graph(threshold=0.7)
+                  → calculate_node_centrality()
+                  → find_market_clusters()
+                  → detect_market_leader()
+                  → calculate_market_stability()
+Output: S3 processed/graph_analysis/YYYY/MM/DD/analysis.json
+```
+
+### Sector Analysis (sector_analyzer.py)
+Daily run after ticker returns calculated:
+```
+ticker_returns → calculate_sector_returns()
+              → identify_sector_leaders()
+              → calculate_sector_rotation()
+              → compare_to_benchmark()
+Output: S3 processed/sector_analysis/YYYY/MM/DD/analysis.json
+```
+
+### Correlation → Graph → Sector Pipeline
+```
+raw_prices → correlation_matrix (market_correlation.py)
+          → graph_analysis (market_graph_analyzer.py)
+          → sector_analysis (sector_analyzer.py)
+          → portfolio_insights (portfolio_tracker.py)
+```
