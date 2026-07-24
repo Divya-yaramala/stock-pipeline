@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-572%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-582%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,7 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 74/90 of my 90-day portfolio challenge!** 572 tests · 85 modules · 65 ADRs · 171 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 75/90 of my 90-day portfolio challenge!** 582 tests · 87 modules · 67 ADRs · 178 production patterns · 3 APIs + Dashboard
 
 > 🎉 **150 production patterns milestone!**
 
@@ -89,13 +89,13 @@ Dashboard:
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 572 passing |
-| Ingestion modules | 85 |
+| Total tests | 582 passing |
+| Ingestion modules | 87 |
 | Airflow tasks | 16 |
-| ADRs | 65 |
-| Production patterns | 171 |
+| ADRs | 67 |
+| Production patterns | 178 |
 | S3 prefixes | 15+ |
-| Days built | 74 |
+| Days built | 75 |
 
 ## 🧪 Testing Strategy
 Four-tier testing approach:
@@ -1187,5 +1187,13 @@ See [Storage Guide](docs/storage-guide.md)
 - Scenario forecasting (bull/base/bear cases)
 - 10 unit tests passing green
 
+### ✅ Day 75 — Market Graph Analysis + Sector Analytics
+- Built market graph analyzer with correlation-based network analysis
+- Node centrality identifies most influential stocks
+- Market clustering groups similar-behaving stocks
+- Sector rotation detection comparing week-over-week performance
+- Benchmark alpha calculation per sector
+- 10 unit tests passing green
+
 ---
-*Built with ❤️ over 74 days as a portfolio project demonstrating production-grade data engineering.*
+*Built with ❤️ over 75 days as a portfolio project demonstrating production-grade data engineering.*
