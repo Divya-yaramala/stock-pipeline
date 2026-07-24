@@ -572,3 +572,45 @@ python -c "from ingestion.drift_detector import run_drift_detection; import os; 
    - If Prophet better recently: increase prophet_weight to 0.7
    - If Ensemble better recently: decrease to 0.5
 4. Check volatility regime — high vol needs wider intervals
+
+## Market Analytics Procedures
+
+### Daily Market Graph Check
+After pipeline runs verify graph analysis saved:
+```
+aws s3 ls s3://your-bucket/processed/graph_analysis/YYYY/MM/DD/
+```
+
+### Interpreting High Systemic Risk (density > 0.7)
+When risk_level = "high":
+1. All tickers highly correlated — limited diversification benefit
+2. Consider reducing position sizes
+3. Check if market-wide event caused correlation spike
+4. Monitor for potential sharp selloff (correlated markets fall together)
+
+```python
+python -c "
+from ingestion.market_graph_analyzer import calculate_market_stability
+graph = {'nodes': ['AAPL','MSFT','GOOGL','AMZN','TSLA'],
+         'edges': [{'source': 'AAPL', 'target': 'MSFT', 'weight': 0.9},
+                   {'source': 'AAPL', 'target': 'GOOGL', 'weight': 0.85}],
+         'edge_count': 2}
+print(calculate_market_stability(graph))
+"
+```
+
+### Weekly Sector Rotation Review
+Every Monday check sector rotation:
+```python
+python -c "
+from ingestion.sector_analyzer import calculate_sector_rotation
+current = {'Technology': 0.05, 'Communication Services': 0.02, 'Consumer Discretionary': 0.08}
+previous = {'Technology': 0.03, 'Communication Services': 0.04, 'Consumer Discretionary': 0.06}
+print(calculate_sector_rotation(current, previous))
+"
+```
+
+If Consumer Discretionary gaining and Technology losing:
+- Rotation from growth to cyclicals
+- Possible economic recovery signal
+- Consider rebalancing portfolio
