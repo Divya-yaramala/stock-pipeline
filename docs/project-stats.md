@@ -8,7 +8,7 @@
 | Total tests | 582 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 67 architecture decisions |
+| ADRs | 68 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -207,6 +207,8 @@
 176. Sector Rotation Detection (gaining/losing/stable)
 177. Benchmark Alpha Calculation
 178. Market Stability Score (density-based)
+179. Market Analytics Guide (graph + sector documented)
+180. Sector Rotation Signals (gaining/losing/stable)
 
 ## MLOps Statistics
 | Capability | Module | Status |
