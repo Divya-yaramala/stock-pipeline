@@ -528,6 +528,23 @@ See [Market Analytics Guide](docs/market-analytics-guide.md)
 
 ---
 
+## 💰 Risk Analytics
+Institutional-grade risk metrics and portfolio optimization:
+
+| Feature | Module | Description |
+|---|---|---|
+| VaR 95% | risk_analyzer.py | 1-in-20 day loss threshold |
+| CVaR 95% | risk_analyzer.py | Expected loss on worst 5% days |
+| Risk Classification | risk_analyzer.py | LOW/MEDIUM/HIGH/VERY_HIGH |
+| Efficient Frontier | portfolio_optimizer.py | 100 random portfolios |
+| Max Sharpe Portfolio | portfolio_optimizer.py | Best risk-adjusted return |
+| Min Volatility | portfolio_optimizer.py | Lowest risk portfolio |
+| Rebalancing Trades | portfolio_optimizer.py | BUY/SELL to reach target |
+
+See [Risk Analytics Guide](docs/risk-analytics-guide.md)
+
+---
+
 ## ⚡ Distributed Processing
 Parallel execution for 5x pipeline speedup:
 
