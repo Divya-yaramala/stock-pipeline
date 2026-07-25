@@ -614,3 +614,57 @@ If Consumer Discretionary gaining and Technology losing:
 - Rotation from growth to cyclicals
 - Possible economic recovery signal
 - Consider rebalancing portfolio
+
+## Risk Analytics Procedures
+
+### Daily Risk Check
+After pipeline runs verify risk analysis saved:
+```
+aws s3 ls s3://your-bucket/processed/risk_analysis/YYYY/MM/DD/
+```
+
+### If Any Ticker Shows VERY_HIGH Risk
+```python
+python -c "
+from ingestion.risk_analyzer import classify_risk_level, calculate_risk_metrics
+import numpy as np
+returns = list(np.random.normal(0.001, 0.04, 60))
+metrics = calculate_risk_metrics(returns, 'TSLA')
+level = classify_risk_level(metrics)
+print('Risk level:', level)
+print('Annual vol:', metrics.get('annualized_volatility'))
+print('VaR 95%:', metrics.get('var_95'))
+"
+```
+
+If VERY_HIGH:
+1. Check if recent news causing volatility spike
+2. Consider reducing position size
+3. Check if portfolio VaR exceeds acceptable threshold
+4. Alert portfolio manager
+
+### Weekly Portfolio Optimization Review
+Every Monday run optimization:
+```python
+python -c "
+from ingestion.portfolio_optimizer import run_portfolio_optimization
+import os, numpy as np
+ticker_returns = {
+    'AAPL': list(np.random.normal(0.001, 0.02, 60)),
+    'MSFT': list(np.random.normal(0.0008, 0.018, 60)),
+    'GOOGL': list(np.random.normal(0.0012, 0.022, 60)),
+    'AMZN': list(np.random.normal(0.0009, 0.025, 60)),
+    'TSLA': list(np.random.normal(0.0015, 0.04, 60)),
+}
+current_weights = {'AAPL': 0.2, 'MSFT': 0.2, 'GOOGL': 0.2, 'AMZN': 0.2, 'TSLA': 0.2}
+result = run_portfolio_optimization(ticker_returns, current_weights, 10000, os.getenv('AWS_BUCKET_NAME'))
+print('Max Sharpe weights:', result.get('max_sharpe', {}).get('weights'))
+print('Rebalancing needed:', result.get('rebalancing_trades'))
+"
+```
+
+If trades suggested:
+1. Review trades for reasonableness
+2. Check transaction costs (avoid tiny trades < $100)
+3. Consider tax implications before executing
+4. Execute trades if portfolio drifted > 5% from target
