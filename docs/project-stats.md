@@ -8,7 +8,7 @@
 | Total tests | 592 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 69 architecture decisions |
+| ADRs | 70 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -213,6 +213,10 @@
 182. Conditional VaR (Expected Shortfall)
 183. Efficient Frontier (100 random portfolios)
 184. Portfolio Rebalancing Trades
+185. Risk Analytics Guide (VaR + CVaR documented)
+186. Efficient Frontier Optimization (Monte Carlo)
+187. Sharpe Ratio Maximization
+188. Portfolio Rebalancing Calculator
 
 ## MLOps Statistics
 | Capability | Module | Status |
