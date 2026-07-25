@@ -1281,3 +1281,48 @@ print('Sector returns:', result.get('sector_returns'))
 print('Leaders:', result.get('sector_leaders'))
 "
 ```
+
+## Risk Analysis
+```bash
+# Calculate VaR for a ticker
+python -c "
+from ingestion.risk_analyzer import calculate_var, calculate_cvar
+import numpy as np
+returns = list(np.random.normal(0.001, 0.02, 100))
+var = calculate_var(returns, confidence_level=0.95)
+cvar = calculate_cvar(returns, confidence_level=0.95)
+print(f'VaR 95%: {var:.4f} ({var*100:.2f}%)')
+print(f'CVaR 95%: {cvar:.4f} ({cvar*100:.2f}%)')
+"
+
+# Run full risk analysis
+python -c "
+from ingestion.risk_analyzer import run_risk_analysis
+import os, numpy as np
+ticker_returns = {
+    'AAPL': list(np.random.normal(0.001, 0.02, 60)),
+    'MSFT': list(np.random.normal(0.0008, 0.018, 60)),
+}
+weights = {'AAPL': 0.6, 'MSFT': 0.4}
+result = run_risk_analysis(ticker_returns, weights, os.getenv('AWS_BUCKET_NAME'))
+print('Portfolio VaR:', result.get('portfolio', {}).get('portfolio_var'))
+"
+```
+
+## Portfolio Optimization
+```bash
+# Run efficient frontier optimization
+python -c "
+from ingestion.portfolio_optimizer import run_portfolio_optimization
+import os, numpy as np
+ticker_returns = {
+    'AAPL': list(np.random.normal(0.001, 0.02, 60)),
+    'MSFT': list(np.random.normal(0.0008, 0.018, 60)),
+    'GOOGL': list(np.random.normal(0.0012, 0.022, 60)),
+}
+current_weights = {'AAPL': 0.4, 'MSFT': 0.4, 'GOOGL': 0.2}
+result = run_portfolio_optimization(ticker_returns, current_weights, 10000, os.getenv('AWS_BUCKET_NAME'))
+print('Max Sharpe weights:', result.get('max_sharpe', {}).get('weights'))
+print('Rebalancing trades:', result.get('rebalancing_trades'))
+"
+```
