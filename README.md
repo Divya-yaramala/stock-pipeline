@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-582%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-592%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,7 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 75/90 of my 90-day portfolio challenge!** 582 tests · 87 modules · 67 ADRs · 178 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 76/90 of my 90-day portfolio challenge!** 592 tests · 89 modules · 69 ADRs · 184 production patterns · 3 APIs + Dashboard
 
 > 🎉 **150 production patterns milestone!**
 
@@ -89,13 +89,13 @@ Dashboard:
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 582 passing |
-| Ingestion modules | 87 |
+| Total tests | 592 passing |
+| Ingestion modules | 89 |
 | Airflow tasks | 16 |
-| ADRs | 67 |
-| Production patterns | 178 |
+| ADRs | 69 |
+| Production patterns | 184 |
 | S3 prefixes | 15+ |
-| Days built | 75 |
+| Days built | 76 |
 
 ## 🧪 Testing Strategy
 Four-tier testing approach:
@@ -1212,5 +1212,13 @@ See [Storage Guide](docs/storage-guide.md)
 - Benchmark alpha calculation per sector
 - 10 unit tests passing green
 
+### ✅ Day 76 — Risk Analytics + Portfolio Optimization
+- Built risk analyzer with VaR and CVaR (95% confidence)
+- Portfolio-level risk with weighted VaR calculation
+- Efficient frontier with 100 random portfolio combinations
+- Max Sharpe ratio and min volatility portfolio identification
+- Portfolio rebalancing trade calculator
+- 10 unit tests passing green
+
 ---
-*Built with ❤️ over 75 days as a portfolio project demonstrating production-grade data engineering.*
+*Built with ❤️ over 76 days as a portfolio project demonstrating production-grade data engineering.*
