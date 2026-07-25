@@ -725,3 +725,38 @@ raw_prices → correlation_matrix (market_correlation.py)
           → sector_analysis (sector_analyzer.py)
           → portfolio_insights (portfolio_tracker.py)
 ```
+
+## Risk Analytics Layer
+
+### Individual Ticker Risk (risk_analyzer.py)
+For each ticker daily:
+```
+daily_returns → calculate_var(confidence=0.95)
+              → calculate_cvar(confidence=0.95)
+              → calculate_risk_metrics()
+              → classify_risk_level()
+Output: S3 processed/risk_analysis/YYYY/MM/DD/analysis.json
+```
+
+### Portfolio Risk
+```
+portfolio_weights + ticker_returns
+→ calculate_portfolio_var()
+→ combined portfolio VaR and CVaR
+```
+
+### Portfolio Optimization (portfolio_optimizer.py)
+```
+ticker_returns → calculate_efficient_frontier_points(n=100)
+              → find_max_sharpe_portfolio()
+              → find_min_volatility_portfolio()
+              → calculate_rebalancing_trades()
+Output: S3 processed/portfolio_optimization/YYYY/MM/DD/result.json
+```
+
+### Risk → Portfolio → Rebalancing Flow
+```
+risk_analysis → identify high-risk tickers
+             → portfolio_optimization → optimal weights
+             → rebalancing_trades → actionable trades
+```
