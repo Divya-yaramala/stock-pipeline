@@ -1,11 +1,12 @@
-import json
-import os  # noqa: F401
-import logging
 import datetime
+import json
+import logging
+import math
+import os  # noqa: F401
+from typing import Any, Dict, List, Optional, Tuple  # noqa: F401
+
 import boto3
 import numpy as np
-import math
-from typing import Optional, Dict, List, Any, Tuple  # noqa: F401
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -70,9 +71,7 @@ def find_min_volatility_portfolio(
     if not frontier_points:
         return {}
     best = min(frontier_points, key=lambda p: float(str(p.get("volatility", 9999.0))))
-    logger.info(
-        "Min volatility portfolio: vol=%.4f", float(str(best.get("volatility", 0.0)))
-    )
+    logger.info("Min volatility portfolio: vol=%.4f", float(str(best.get("volatility", 0.0))))
     return best
 
 

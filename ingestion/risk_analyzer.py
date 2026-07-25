@@ -1,11 +1,12 @@
-import json
-import os  # noqa: F401
-import logging
 import datetime
-import boto3
+import json
+import logging
 import math
+import os  # noqa: F401
+from typing import Any, Dict, List, Optional, Tuple  # noqa: F401
+
+import boto3
 import numpy as np
-from typing import Optional, Dict, List, Any, Tuple  # noqa: F401
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -78,8 +79,8 @@ def calculate_risk_metrics(returns: List[float], ticker: str) -> Dict[str, Any]:
     cvar_95 = calculate_cvar(returns, 0.95)
 
     if std > 0:
-        skewness = float(np.mean([(r - mean) ** 3 for r in returns]) / (std ** 3))
-        kurtosis = float(np.mean([(r - mean) ** 4 for r in returns]) / (std ** 4)) - 3.0
+        skewness = float(np.mean([(r - mean) ** 3 for r in returns]) / (std**3))
+        kurtosis = float(np.mean([(r - mean) ** 4 for r in returns]) / (std**4)) - 3.0
     else:
         skewness = 0.0
         kurtosis = 0.0
