@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 87 ingestion modules + 6 scripts |
+| Python files | 89 ingestion modules + 6 scripts |
 | Test files | 27 test files |
-| Total tests | 582 passing |
+| Total tests | 592 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 68 architecture decisions |
+| ADRs | 69 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -209,6 +209,10 @@
 178. Market Stability Score (density-based)
 179. Market Analytics Guide (graph + sector documented)
 180. Sector Rotation Signals (gaining/losing/stable)
+181. Value at Risk (VaR 95% historical simulation)
+182. Conditional VaR (Expected Shortfall)
+183. Efficient Frontier (100 random portfolios)
+184. Portfolio Rebalancing Trades
 
 ## MLOps Statistics
 | Capability | Module | Status |

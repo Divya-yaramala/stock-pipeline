@@ -78,3 +78,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [066](066-volatility-regime-detection.md) | Volatility Regime Detection | Accepted |
 | [067](067-market-graph-analysis.md) | Market Graph Analysis for Correlation Detection | Accepted |
 | [068](068-sector-rotation-detection.md) | Sector Rotation Detection | Accepted |
+| [069](069-var-cvar-risk-metrics.md) | VaR and CVaR for Risk Management | Accepted |
