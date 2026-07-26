@@ -668,3 +668,54 @@ If trades suggested:
 2. Check transaction costs (avoid tiny trades < $100)
 3. Consider tax implications before executing
 4. Execute trades if portfolio drifted > 5% from target
+
+## Event-Driven Workflow Procedures
+
+### Viewing Today's Workflow History
+```python
+python -c "
+from ingestion.event_workflow import get_workflow_history
+import os, datetime
+history = get_workflow_history(
+    os.getenv('AWS_BUCKET_NAME'),
+    datetime.datetime.now().strftime('%Y/%m/%d')
+)
+print(f'Total events processed: {len(history)}')
+for event in history:
+    print(f'  {event.get(\"event_type\")}: {event.get(\"triggers_fired\")} triggers fired')
+"
+```
+
+### Expected Daily Workflow Events
+| Event | Expected Count | Notes |
+|---|---|---|
+| pipeline_completed | 5 | One per ticker |
+| anomaly_detected | 0-5 | Only on anomaly days |
+| quality_gate_blocked | 0 | Should be 0 normally |
+| model_drift_detected | 0 | Only on drift days |
+| sla_missed | 0 | Should be 0 normally |
+
+### If quality_gate_blocked Events Found
+This is a CRITICAL event — immediate action needed:
+1. Check which ticker was blocked:
+```bash
+aws s3 ls s3://your-bucket/quality_gates/YYYY/MM/DD/
+```
+2. Check gate results:
+```bash
+aws s3 cp s3://your-bucket/quality_gates/YYYY/MM/DD/AAPL.json -
+```
+3. Follow Quality Gate Procedures (see above)
+
+### Testing Notification Channels
+```python
+python -c "
+from ingestion.notification_manager import run_notification_check
+import os
+result = run_notification_check(os.getenv('AWS_BUCKET_NAME'))
+print('Channels tested:', result['channels_tested'])
+print('Working:', result['working'])
+print('Failed:', result['failed'])
+"
+```
+All 3 channels should show working=3, failed=0
