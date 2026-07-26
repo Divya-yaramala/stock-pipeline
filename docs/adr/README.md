@@ -80,3 +80,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [068](068-sector-rotation-detection.md) | Sector Rotation Detection | Accepted |
 | [069](069-var-cvar-risk-metrics.md) | VaR and CVaR for Risk Management | Accepted |
 | [070](070-efficient-frontier-optimization.md) | Efficient Frontier Portfolio Optimization | Accepted |
+| [071](071-event-driven-workflow-triggers.md) | Event-Driven Workflow Triggers | Accepted |

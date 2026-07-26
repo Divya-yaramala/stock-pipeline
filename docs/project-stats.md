@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 89 ingestion modules + 6 scripts |
+| Python files | 91 ingestion modules + 6 scripts |
 | Test files | 27 test files |
-| Total tests | 592 passing |
+| Total tests | 602 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 70 architecture decisions |
+| ADRs | 71 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -217,6 +217,12 @@
 186. Efficient Frontier Optimization (Monte Carlo)
 187. Sharpe Ratio Maximization
 188. Portfolio Rebalancing Calculator
+189. Event-Driven Workflows (5 triggers, 9 actions)
+190. Multi-Channel Notifications (Slack, email, S3 log)
+191. Critical Alert System (all channels on CRITICAL)
+192. Workflow History (S3-based audit trail)
+
+🎉 600 tests milestone!
 
 ## MLOps Statistics
 | Capability | Module | Status |
