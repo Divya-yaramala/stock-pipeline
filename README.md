@@ -547,6 +547,24 @@ See [Risk Analytics Guide](docs/risk-analytics-guide.md)
 
 ---
 
+## ⚡ Event-Driven Workflows
+Automatic action triggers on pipeline events:
+
+| Event | Severity | Actions Triggered |
+|---|---|---|
+| anomaly_detected | HIGH | Slack + report + audit |
+| quality_gate_blocked | CRITICAL | Slack + remediation + pause |
+| model_drift_detected | MEDIUM | Retraining + Slack + audit |
+| sla_missed | HIGH | Slack + audit + escalate |
+| pipeline_completed | LOW | Dashboard + summary + audit |
+
+3-channel notification system:
+🔔 Slack · 📧 Email · 📁 S3 Log
+
+See [Event-Driven Guide](docs/event-driven-guide.md)
+
+---
+
 ## ⚡ Distributed Processing
 Parallel execution for 5x pipeline speedup:
 
