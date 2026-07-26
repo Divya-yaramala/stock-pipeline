@@ -6,7 +6,6 @@ import smtplib
 from typing import Any, Dict, List, Optional
 
 import boto3
-import requests
 
 from ingestion import slack_alerter
 
@@ -21,7 +20,13 @@ NOTIFICATION_CHANNELS: List[Dict[str, Any]] = [
 
 
 def _send_to_slack(title: str, message: str, severity: str) -> bool:
-    color_map = {"CRITICAL": "danger", "HIGH": "danger", "MEDIUM": "warning", "LOW": "good", "INFO": "good"}
+    color_map = {
+        "CRITICAL": "danger",
+        "HIGH": "danger",
+        "MEDIUM": "warning",
+        "LOW": "good",
+        "INFO": "good",
+    }
     color = color_map.get(severity.upper(), "warning")
     return slack_alerter.send_slack_message(message=message, title=title, color=color)
 
@@ -187,7 +192,9 @@ def run_notification_check(bucket: str) -> Dict[str, Any]:
             elif channel_name == "email":
                 ok = _send_to_email("Health Check", "Notification system health check", "INFO")
             elif channel_name == "s3_log":
-                ok = _send_to_s3_log("Health Check", "Notification system health check", "INFO", bucket)
+                ok = _send_to_s3_log(
+                    "Health Check", "Notification system health check", "INFO", bucket
+                )
             else:
                 ok = False
 

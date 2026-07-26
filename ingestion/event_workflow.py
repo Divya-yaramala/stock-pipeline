@@ -1,8 +1,7 @@
 import datetime
 import json
 import logging
-import os
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Dict, List
 
 import boto3
 
@@ -91,7 +90,9 @@ def execute_workflow_action(
 
         elif action == "pause_pipeline":
             key = f"workflows/flags/{date_path}/pause_{timestamp}.json"
-            s3.put_object(Bucket=bucket, Key=key, Body=json.dumps({"paused": True, **event_payload}))
+            s3.put_object(
+                Bucket=bucket, Key=key, Body=json.dumps({"paused": True, **event_payload})
+            )
             success = True
             details = f"Pause flag saved: {key}"
 
@@ -146,7 +147,8 @@ def process_event(
             actions_executed += 1
 
     logger.info(
-        f"Event processing complete: {event_type} | triggers={triggers_fired} | actions={actions_executed}"
+        f"Event processing complete: {event_type} "
+        f"| triggers={triggers_fired} | actions={actions_executed}"
     )
     return {
         "event_type": event_type,
@@ -212,7 +214,8 @@ def run_event_processing(
         total_actions += int(str(result.get("actions_executed", 0)))
 
     logger.info(
-        f"Event processing summary: {total_events} events | {total_triggers} triggers | {total_actions} actions"
+        f"Event processing summary: {total_events} events "
+        f"| {total_triggers} triggers | {total_actions} actions"
     )
     return {
         "total_events": total_events,
