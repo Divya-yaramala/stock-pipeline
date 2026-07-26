@@ -1326,3 +1326,45 @@ print('Max Sharpe weights:', result.get('max_sharpe', {}).get('weights'))
 print('Rebalancing trades:', result.get('rebalancing_trades'))
 "
 ```
+
+## Event-Driven Workflows
+
+```bash
+# Process a pipeline event
+python -c "
+from ingestion.event_workflow import process_event
+import os
+payload = {'ticker': 'AAPL', 'anomaly_label': 'SPIKE', 'price': 185.0}
+result = process_event('anomaly_detected', payload, os.getenv('AWS_BUCKET_NAME'))
+print('Triggers fired:', result['triggers_fired'])
+print('Actions executed:', result['actions_executed'])
+"
+
+# Get workflow history for today
+python -c "
+from ingestion.event_workflow import get_workflow_history
+import os, datetime
+history = get_workflow_history(os.getenv('AWS_BUCKET_NAME'), datetime.datetime.now().strftime('%Y/%m/%d'))
+print('Events processed today:', len(history))
+"
+```
+
+## Notification Manager
+
+```bash
+# Send a critical alert
+python -c "
+from ingestion.notification_manager import send_critical_alert
+import os
+result = send_critical_alert('Pipeline Alert', 'Quality gate blocked for AAPL', 'AAPL', os.getenv('AWS_BUCKET_NAME'))
+print('Alert sent:', result)
+"
+
+# Test all notification channels
+python -c "
+from ingestion.notification_manager import run_notification_check
+import os
+result = run_notification_check(os.getenv('AWS_BUCKET_NAME'))
+print('Channels working:', result['working'], '/', result['channels_tested'])
+"
+```
