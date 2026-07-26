@@ -760,3 +760,38 @@ risk_analysis → identify high-risk tickers
              → portfolio_optimization → optimal weights
              → rebalancing_trades → actionable trades
 ```
+
+## Event-Driven Workflow Layer
+
+### Trigger Definitions (event_workflow.py)
+5 triggers covering critical pipeline events:
+```
+T001: anomaly_detected      → HIGH     → 3 actions
+T002: quality_gate_blocked  → CRITICAL → 3 actions
+T003: model_drift_detected  → MEDIUM   → 3 actions
+T004: sla_missed            → HIGH     → 3 actions
+T005: pipeline_completed    → LOW      → 3 actions
+```
+
+### Notification Channels (notification_manager.py)
+3 channels with severity routing:
+```
+LOW:      S3 log only
+MEDIUM:   S3 log + Slack
+HIGH:     S3 log + Slack + escalation
+CRITICAL: ALL channels (Slack + email + S3 + pause)
+```
+
+### Integration with Event Bus
+```
+event_bus.publish_event() → event_workflow.process_event()
+                         → notification_manager.send_notification()
+                         → save_workflow_log()
+```
+
+### Workflow History
+All processed events saved to:
+```
+S3: workflows/logs/YYYY/MM/DD/event_type_timestamp.json
+```
+Enables daily audit of all triggered workflows
