@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-592%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-602%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,9 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 76/90 of my 90-day portfolio challenge!** 592 tests · 89 modules · 69 ADRs · 184 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 77/90 of my 90-day portfolio challenge!** 602 tests · 91 modules · 71 ADRs · 192 production patterns · 3 APIs + Dashboard
+
+> 🎉 **600 tests milestone!**
 
 > 🎉 **150 production patterns milestone!**
 
@@ -89,13 +91,13 @@ Dashboard:
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 592 passing |
-| Ingestion modules | 89 |
+| Total tests | 602 passing |
+| Ingestion modules | 91 |
 | Airflow tasks | 16 |
-| ADRs | 69 |
-| Production patterns | 184 |
+| ADRs | 71 |
+| Production patterns | 192 |
 | S3 prefixes | 15+ |
-| Days built | 76 |
+| Days built | 77 |
 
 ## 🧪 Testing Strategy
 Four-tier testing approach:
@@ -1237,5 +1239,13 @@ See [Storage Guide](docs/storage-guide.md)
 - Portfolio rebalancing trade calculator
 - 10 unit tests passing green
 
+### ✅ Day 77 — Event-Driven Workflows + Notification Manager
+- Built event workflow with 5 triggers and 9 action types
+- Multi-channel notification manager (Slack, email, S3 log)
+- Critical alerts sent to ALL channels simultaneously
+- Workflow history for full audit trail
+- 🎉 600 tests milestone reached!
+- 10 unit tests passing green
+
 ---
-*Built with ❤️ over 76 days as a portfolio project demonstrating production-grade data engineering.*
+*Built with ❤️ over 77 days as a portfolio project demonstrating production-grade data engineering.*
