@@ -8,7 +8,7 @@
 | Total tests | 602 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 71 architecture decisions |
+| ADRs | 72 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -221,6 +221,9 @@
 190. Multi-Channel Notifications (Slack, email, S3 log)
 191. Critical Alert System (all channels on CRITICAL)
 192. Workflow History (S3-based audit trail)
+193. Event-Driven Guide (triggers + actions documented)
+194. Severity Escalation (LOW→MEDIUM→HIGH→CRITICAL)
+195. Multi-Channel Fallback (S3 always available)
 
 🎉 600 tests milestone!
 
