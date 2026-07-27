@@ -1,7 +1,6 @@
 import datetime
 import json
 import logging
-import os
 from typing import Any, Dict, List, Optional
 
 import boto3

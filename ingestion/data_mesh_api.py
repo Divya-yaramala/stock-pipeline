@@ -1,7 +1,6 @@
 import datetime
 import json
 import logging
-import os
 import uuid
 from typing import Any, Dict, List, Optional
 
@@ -94,7 +93,7 @@ def get_data_product_sample(
             resp = s3.get_object(Bucket=bucket, Key=key)
             record = json.loads(resp["Body"].read())
             if isinstance(record, list):
-                samples.extend(record[:num_records - len(samples)])
+                samples.extend(record[: num_records - len(samples)])
             else:
                 samples.append(record)
     except Exception as e:
