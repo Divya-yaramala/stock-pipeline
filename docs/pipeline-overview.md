@@ -795,3 +795,39 @@ All processed events saved to:
 S3: workflows/logs/YYYY/MM/DD/event_type_timestamp.json
 ```
 Enables daily audit of all triggered workflows
+
+## Self-Service Analytics Layer
+
+### Available Metrics (self_service_analytics.py)
+8 metrics across 5 categories:
+- price: price_return_pct
+- risk: volatility_20d
+- quality: anomaly_rate_pct, quality_score
+- nlp: sentiment_score
+- ml: prediction_accuracy_pct
+- operations: sla_compliance_pct, pipeline_duration_minutes
+
+### Custom Report Builder
+```
+build_custom_report(metrics=[M001,M002], tickers=[AAPL,MSFT])
+→ Loads pre-computed metrics from S3
+→ Builds nested {ticker: {metric: value}} dict
+→ Saves to S3: reports/custom/YYYY/MM/DD/
+```
+
+### Data Mesh API (data_mesh_api.py)
+Access control workflow:
+```
+1. request_data_access()        → S3 access_requests/
+2. approve_access_request()     → S3 approved/
+3. get_data_product_sample()    → S3 sample data
+4. publish_data_product_update() → S3 updates/
+```
+
+### Consumer Teams
+| Team | Products | Use Case |
+|---|---|---|
+| ml_team | DP001 (prices) | Feature engineering |
+| analytics | DP001, DP005 | Business reporting |
+| trading | DP002, DP003, DP004 | Trading signals |
+| risk | DP002 | Risk management |
