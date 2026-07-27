@@ -565,6 +565,27 @@ See [Event-Driven Guide](docs/event-driven-guide.md)
 
 ---
 
+## 📊 Self-Service Analytics
+Business users access metrics without engineering help:
+
+| Category | Metrics Available |
+|---|---|
+| Price | Daily return % |
+| Risk | 20-day volatility |
+| Quality | Anomaly rate, quality score |
+| ML | Prediction accuracy % |
+| Operations | SLA compliance, pipeline duration |
+| NLP | Sentiment score |
+
+Custom reports combine any metrics for any tickers.
+Data mesh access control with request-approval workflow.
+
+🎉 **200 production patterns milestone!**
+
+See [Self-Service Analytics Guide](docs/self-service-analytics-guide.md)
+
+---
+
 ## ⚡ Distributed Processing
 Parallel execution for 5x pipeline speedup:
 
