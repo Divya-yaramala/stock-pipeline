@@ -8,7 +8,7 @@
 | Total tests | 612 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 73 architecture decisions |
+| ADRs | 74 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -228,6 +228,8 @@
 197. Data Mesh API (access requests + approval workflow)
 198. Metric Comparison (cross-ticker leaderboard)
 199. Data Product Updates (versioned changelog)
+200. Self-Service Analytics Guide (8 metrics documented)
+201. Data Mesh Access Control (request + approval workflow)
 
 🎉 600 tests milestone!
 
