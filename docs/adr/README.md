@@ -83,3 +83,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [071](071-event-driven-workflow-triggers.md) | Event-Driven Workflow Triggers | Accepted |
 | [072](072-multi-channel-notifications.md) | Multi-Channel Notification System | Accepted |
 | [073](073-self-service-analytics-pattern.md) | Self-Service Analytics Pattern | Accepted |
+| [074](074-data-mesh-access-control.md) | Data Mesh Access Control Pattern | Accepted |
