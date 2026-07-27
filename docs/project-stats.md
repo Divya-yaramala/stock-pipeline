@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 91 ingestion modules + 6 scripts |
+| Python files | 93 ingestion modules + 6 scripts |
 | Test files | 27 test files |
-| Total tests | 602 passing |
+| Total tests | 612 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 72 architecture decisions |
+| ADRs | 73 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -224,6 +224,10 @@
 193. Event-Driven Guide (triggers + actions documented)
 194. Severity Escalation (LOW→MEDIUM→HIGH→CRITICAL)
 195. Multi-Channel Fallback (S3 always available)
+196. Self-Service Analytics (8 metrics, custom reports)
+197. Data Mesh API (access requests + approval workflow)
+198. Metric Comparison (cross-ticker leaderboard)
+199. Data Product Updates (versioned changelog)
 
 🎉 600 tests milestone!
 
