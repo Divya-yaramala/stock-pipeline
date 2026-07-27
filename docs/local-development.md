@@ -1368,3 +1368,59 @@ result = run_notification_check(os.getenv('AWS_BUCKET_NAME'))
 print('Channels working:', result['working'], '/', result['channels_tested'])
 "
 ```
+
+## Self-Service Analytics
+
+```bash
+# List available metrics
+python -c "
+from ingestion.self_service_analytics import list_available_metrics
+import json
+metrics = list_available_metrics()
+for m in metrics:
+    print(f'{m[\"metric_id\"]}: {m[\"name\"]} ({m[\"category\"]})')
+"
+
+# Build custom report
+python -c "
+from ingestion.self_service_analytics import build_custom_report
+import os, datetime
+result = build_custom_report(
+    metrics=['M001', 'M002', 'M006'],
+    tickers=['AAPL', 'MSFT'],
+    date=datetime.datetime.now().strftime('%Y/%m/%d'),
+    bucket=os.getenv('AWS_BUCKET_NAME')
+)
+print('Report:', result)
+"
+```
+
+## Data Mesh API
+
+```bash
+# Request access to a data product
+python -c "
+from ingestion.data_mesh_api import request_data_access
+import os
+request_id = request_data_access(
+    product_id='DP001',
+    requester='analytics_team',
+    purpose='Quarterly performance analysis',
+    bucket=os.getenv('AWS_BUCKET_NAME')
+)
+print('Access request ID:', request_id)
+"
+
+# Publish data product update
+python -c "
+from ingestion.data_mesh_api import publish_data_product_update
+import os
+result = publish_data_product_update(
+    product_id='DP001',
+    version='1.1.0',
+    changelog='Added adj_close field for split-adjusted prices',
+    bucket=os.getenv('AWS_BUCKET_NAME')
+)
+print('Update published:', result)
+"
+```
