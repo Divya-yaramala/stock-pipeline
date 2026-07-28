@@ -831,3 +831,42 @@ Access control workflow:
 | analytics | DP001, DP005 | Business reporting |
 | trading | DP002, DP003, DP004 | Trading signals |
 | risk | DP002 | Risk management |
+
+## Compliance and Audit Layer
+
+### Compliance Reporter (compliance_reporter.py)
+Daily compliance checks across 4 frameworks:
+```
+CF001 SOX:      audit_trail + data_integrity + access_control + retention
+CF002 GDPR:     pii_protection + data_minimization + erasure + consent
+CF003 FINRA:    trade_reporting + audit_trail + retention + supervisory
+CF004 INTERNAL: classification + quality_gates + sla + documentation
+```
+
+Output: `S3 reports/compliance/YYYY/MM/DD/report.json`
+Certificates: `S3 reports/certificates/framework_id/date.json`
+
+### Audit Manager (audit_manager.py)
+8 audit categories logged throughout pipeline:
+```
+data_access → pipeline_execution → model_training → secret_access
+schema_change → config_change → compliance_check → data_modification
+```
+
+Suspicious activity detection:
+- 3+ failed attempts same actor → ALERT
+- Access before 6 AM or after 10 PM → REVIEW
+
+Output: `S3 audit/entries/YYYY/MM/DD/category/audit_id.json`
+Summary: `S3 audit/summaries/YYYY/MM/DD/summary.json`
+
+### Compliance → Audit → Certificate Flow
+```
+audit_manager logs all actions
+      ↓
+compliance_reporter checks requirements
+      ↓
+If all requirements met → generate_compliance_certificate()
+      ↓
+Certificate saved to S3 reports/certificates/
+```
