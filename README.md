@@ -438,6 +438,7 @@ stock-pipeline/
 | [Self-Service Analytics Guide](docs/self-service-analytics-guide.md) | 8 metrics, custom reports, data mesh access workflow |
 | [Data Mesh Guide](docs/data-mesh-guide.md) | Domain-driven data products and ownership |
 | [Event-Driven Guide](docs/event-driven-guide.md) | Workflow triggers, action types, severity escalation |
+| [Compliance Guide](docs/compliance-guide.md) | SOX, GDPR, FINRA, INTERNAL frameworks and audit categories |
 
 ---
 
