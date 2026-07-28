@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-612%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-622%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,7 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 78/90 of my 90-day portfolio challenge!** 612 tests · 93 modules · 73 ADRs · 199 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 79/90 of my 90-day portfolio challenge!** 622 tests · 95 modules · 75 ADRs · 205 production patterns · 3 APIs + Dashboard
 
 > 🎉 **600 tests milestone!**
 
@@ -91,13 +91,13 @@ Dashboard:
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 612 passing |
-| Ingestion modules | 93 |
+| Total tests | 622 passing |
+| Ingestion modules | 95 |
 | Airflow tasks | 16 |
-| ADRs | 73 |
-| Production patterns | 199 |
+| ADRs | 75 |
+| Production patterns | 205 |
 | S3 prefixes | 15+ |
-| Days built | 77 |
+| Days built | 79 |
 
 ## 🧪 Testing Strategy
 Four-tier testing approach:
@@ -1297,5 +1297,13 @@ See [Storage Guide](docs/storage-guide.md)
 - Metric trend analysis over configurable time windows
 - 10 unit tests passing green
 
+### ✅ Day 79 — Compliance Reporting + Audit Management
+- Built compliance reporter covering SOX, GDPR, FINRA, INTERNAL frameworks
+- Auto-generated compliance certificates for passing frameworks
+- Audit manager with 8 audit categories
+- Suspicious activity detection (failed access attempts, off-hours access)
+- 30-day compliance trend analysis
+- 10 unit tests passing green
+
 ---
-*Built with ❤️ over 78 days as a portfolio project demonstrating production-grade data engineering.*
+*Built with ❤️ over 79 days as a portfolio project demonstrating production-grade data engineering.*
