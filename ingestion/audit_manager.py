@@ -1,5 +1,4 @@
 import datetime
-import hashlib
 import json
 import logging
 import uuid
@@ -31,9 +30,7 @@ def create_audit_entry(
     outcome: str = "success",
 ) -> Dict[str, Any]:
     if category not in AUDIT_CATEGORIES:
-        raise ValueError(
-            f"Invalid audit category: '{category}'. Must be one of {AUDIT_CATEGORIES}"
-        )
+        raise ValueError(f"Invalid audit category: '{category}'. Must be one of {AUDIT_CATEGORIES}")
 
     audit_id = str(uuid.uuid4())
     now = datetime.datetime.utcnow()
@@ -120,9 +117,7 @@ def generate_audit_summary(
 
     suspicious = detect_suspicious_activity(all_entries)
 
-    logger.info(
-        f"Audit summary: {len(all_entries)} total entries | {len(suspicious)} suspicious"
-    )
+    logger.info(f"Audit summary: {len(all_entries)} total entries | {len(suspicious)} suspicious")
     return {
         "total": len(all_entries),
         "by_category": by_category,

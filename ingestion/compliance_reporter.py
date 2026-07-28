@@ -2,7 +2,7 @@ import datetime
 import json
 import logging
 import uuid
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 import boto3
 
@@ -134,9 +134,7 @@ def generate_compliance_report(
         total_score += float(str(result.get("score_pct", 0.0)))
 
     total_score_pct = total_score / len(COMPLIANCE_FRAMEWORKS) if COMPLIANCE_FRAMEWORKS else 0.0
-    overall_compliant = all(
-        bool(r.get("compliant", False)) for r in frameworks_results.values()
-    )
+    overall_compliant = all(bool(r.get("compliant", False)) for r in frameworks_results.values())
 
     report: Dict[str, Any] = {
         "date": date,
@@ -190,7 +188,11 @@ def calculate_compliance_trend(
     min_score = min(scores)
 
     if len(scores) >= 2:
-        trend = "improving" if scores[-1] > scores[0] else "declining" if scores[-1] < scores[0] else "stable"
+        trend = (
+            "improving"
+            if scores[-1] > scores[0]
+            else "declining" if scores[-1] < scores[0] else "stable"
+        )
     else:
         trend = "stable"
 
