@@ -8,7 +8,7 @@
 | Total tests | 622 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 75 architecture decisions |
+| ADRs | 76 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -234,6 +234,9 @@
 203. Compliance Certificates (auto-generated on passing)
 204. Audit Manager (8 categories, suspicious activity detection)
 205. Compliance Trend Analysis (30-day history)
+206. Compliance Guide (4 frameworks documented)
+207. Audit Trail (8 categories, S3 storage)
+208. Suspicious Activity Detection (failed attempts + off-hours)
 
 🎉 600 tests milestone!
 
