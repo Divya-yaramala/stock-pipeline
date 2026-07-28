@@ -719,3 +719,58 @@ print('Failed:', result['failed'])
 "
 ```
 All 3 channels should show working=3, failed=0
+
+## Self-Service Analytics Procedures
+
+### Building a Custom Report
+```python
+python -c "
+from ingestion.self_service_analytics import build_custom_report
+import os, datetime
+result = build_custom_report(
+    metrics=['M001', 'M002', 'M006'],
+    tickers=['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA'],
+    date=datetime.datetime.now().strftime('%Y/%m/%d'),
+    bucket=os.getenv('AWS_BUCKET_NAME')
+)
+for ticker, metrics in result.items():
+    if ticker != 'date':
+        print(f'{ticker}: {metrics}')
+"
+```
+
+### Data Mesh Access Request Workflow
+When analytics team needs access to stock_prices (DP001):
+
+Step 1 - Analytics team requests access:
+```python
+python -c "
+from ingestion.data_mesh_api import request_data_access
+import os
+request_id = request_data_access(
+    'DP001', 'analytics_team',
+    'Q3 performance report', os.getenv('AWS_BUCKET_NAME')
+)
+print('Request ID:', request_id)
+"
+```
+
+Step 2 - Data owner approves:
+```python
+python -c "
+from ingestion.data_mesh_api import approve_access_request
+import os
+result = approve_access_request('REQUEST_ID_HERE', 'data_engineering', os.getenv('AWS_BUCKET_NAME'))
+print('Approved:', result)
+"
+```
+
+Step 3 - Analytics team gets sample:
+```python
+python -c "
+from ingestion.data_mesh_api import get_data_product_sample
+import os
+sample = get_data_product_sample('DP001', 5, os.getenv('AWS_BUCKET_NAME'))
+print('Sample records:', len(sample))
+"
+```
