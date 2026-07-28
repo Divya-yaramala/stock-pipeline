@@ -774,3 +774,64 @@ sample = get_data_product_sample('DP001', 5, os.getenv('AWS_BUCKET_NAME'))
 print('Sample records:', len(sample))
 "
 ```
+
+## Compliance Procedures
+
+### Daily Compliance Check
+Run after 11 AM EST:
+```python
+python -c "
+from ingestion.compliance_reporter import run_compliance_reporting
+import os
+result = run_compliance_reporting(os.getenv('AWS_BUCKET_NAME'))
+print('Overall compliant:', result.get('overall_compliant'))
+print('Score:', result.get('total_score_pct'), '%')
+for fw, data in result.get('frameworks', {}).items():
+    status = '✅' if data.get('compliant') else '❌'
+    print(f'  {status} {fw}: {data.get(\"score_pct\", 0):.1f}%')
+"
+```
+
+### If Framework Non-Compliant
+1. Identify failed requirements from report
+2. Check specific requirement:
+   - audit_trail: Are all access events being logged?
+   - data_integrity: Check for unauthorized S3 modifications
+   - quality_gates: Review quality_gate.py results
+   - sla_compliance: Check sla_reporter.py results
+3. Fix underlying issue
+4. Re-run compliance check
+
+### Weekly Suspicious Activity Review
+Every Monday:
+```python
+python -c "
+from ingestion.audit_manager import run_audit_management
+import os
+result = run_audit_management(os.getenv('AWS_BUCKET_NAME'))
+suspicious = result.get('suspicious', [])
+if suspicious:
+    print('⚠️ SUSPICIOUS ACTIVITY DETECTED:')
+    for s in suspicious:
+        print(f'  Actor: {s.get(\"actor\")}, Category: {s.get(\"category\")}')
+else:
+    print('✅ No suspicious activity detected')
+"
+```
+
+### Generating Compliance Certificate
+```python
+python -c "
+from ingestion.compliance_reporter import generate_compliance_certificate
+import os, datetime
+cert = generate_compliance_certificate(
+    'CF004',
+    os.getenv('AWS_BUCKET_NAME'),
+    datetime.datetime.now().strftime('%Y/%m/%d')
+)
+if cert.get('certified'):
+    print('✅ CERTIFIED:', cert['certificate_id'])
+else:
+    print('❌ NOT CERTIFIED - check compliance report')
+"
+```
