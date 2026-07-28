@@ -589,6 +589,23 @@ See [Self-Service Analytics Guide](docs/self-service-analytics-guide.md)
 
 ---
 
+## 📋 Compliance and Audit
+Regulatory compliance for financial data pipelines:
+
+| Framework | Coverage | Certificate |
+|---|---|---|
+| SOX | Audit trail + data integrity | Auto-generated |
+| GDPR | PII protection + data minimization | Auto-generated |
+| FINRA | Trade reporting + retention | Auto-generated |
+| INTERNAL | Quality gates + SLA + docs | Auto-generated |
+
+8 audit categories with suspicious activity detection.
+30-day compliance trend analysis.
+
+See [Compliance Guide](docs/compliance-guide.md)
+
+---
+
 ## ⚡ Distributed Processing
 Parallel execution for 5x pipeline speedup:
 
