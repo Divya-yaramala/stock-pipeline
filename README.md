@@ -435,6 +435,9 @@ stock-pipeline/
 | [API Versioning Guide](docs/api-versioning-guide.md) | Version history, endpoint categories, client examples |
 | [Testing Guide](docs/testing-guide.md) | Four-tier testing strategy, templates, coverage thresholds |
 | [Configuration Guide](docs/configuration-guide.md) | All env vars, config classes, and security best practices |
+| [Self-Service Analytics Guide](docs/self-service-analytics-guide.md) | 8 metrics, custom reports, data mesh access workflow |
+| [Data Mesh Guide](docs/data-mesh-guide.md) | Domain-driven data products and ownership |
+| [Event-Driven Guide](docs/event-driven-guide.md) | Workflow triggers, action types, severity escalation |
 
 ---
 
