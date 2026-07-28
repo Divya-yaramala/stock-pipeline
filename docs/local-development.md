@@ -1424,3 +1424,57 @@ result = publish_data_product_update(
 print('Update published:', result)
 "
 ```
+
+## Compliance Reporting
+
+```bash
+# Run full compliance report
+python -c "
+from ingestion.compliance_reporter import run_compliance_reporting
+import os
+result = run_compliance_reporting(os.getenv('AWS_BUCKET_NAME'))
+print('Overall compliant:', result.get('overall_compliant'))
+print('Total score:', result.get('total_score_pct'))
+"
+
+# Check specific framework
+python -c "
+from ingestion.compliance_reporter import check_framework_compliance
+import os, datetime
+result = check_framework_compliance(
+    'CF004',
+    os.getenv('AWS_BUCKET_NAME'),
+    datetime.datetime.now().strftime('%Y/%m/%d')
+)
+print('INTERNAL compliance score:', result.get('score_pct'))
+print('Failed requirements:', result.get('failed'))
+"
+```
+
+## Audit Management
+
+```bash
+# Create audit entry
+python -c "
+from ingestion.audit_manager import create_audit_entry, save_audit_entry
+import os
+entry = create_audit_entry(
+    category='data_access',
+    action='read_stock_prices',
+    actor='analytics_team',
+    resource='raw/stocks/AAPL',
+    details={'purpose': 'Q3 report'}
+)
+save_audit_entry(entry, os.getenv('AWS_BUCKET_NAME'))
+print('Audit entry saved:', entry['audit_id'])
+"
+
+# Run audit management report
+python -c "
+from ingestion.audit_manager import run_audit_management
+import os
+result = run_audit_management(os.getenv('AWS_BUCKET_NAME'))
+print('Total entries:', result.get('total'))
+print('Suspicious activities:', len(result.get('suspicious', [])))
+"
+```
