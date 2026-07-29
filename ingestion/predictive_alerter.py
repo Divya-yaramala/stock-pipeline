@@ -1,10 +1,10 @@
-import boto3
 import json
-import os
 import logging
 import math
 from datetime import datetime
-from typing import Optional, Dict, List, Any
+from typing import Any, Dict, List, Optional
+
+import boto3
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -74,7 +74,9 @@ def predict_sla_risk(
     predicted = completion_times[-1] + slope
     at_risk = predicted > float(sla_target_hour)
 
-    confidence = "high" if len(completion_times) >= 7 else "medium" if len(completion_times) >= 4 else "low"
+    confidence = (
+        "high" if len(completion_times) >= 7 else "medium" if len(completion_times) >= 4 else "low"
+    )
 
     result: Dict[str, Any] = {
         "at_risk": at_risk,
@@ -112,8 +114,16 @@ def generate_predictive_alerts(
             alerts.append(
                 {
                     "type": "quality_degradation",
-                    "severity": "HIGH" if qd["days_until_breach"] is not None and int(str(qd["days_until_breach"])) <= 3 else "MEDIUM",
-                    "message": f"{ticker}: Quality degrading, breach in {qd['days_until_breach']} days",
+                    "severity": (
+                        "HIGH"
+                        if qd["days_until_breach"] is not None
+                        and int(str(qd["days_until_breach"])) <= 3
+                        else "MEDIUM"
+                    ),
+                    "message": (
+                        f"{ticker}: Quality degrading, "
+                        f"breach in {qd['days_until_breach']} days"
+                    ),
                     "prediction": qd,
                 }
             )
@@ -126,7 +136,10 @@ def generate_predictive_alerts(
                 {
                     "type": "sla_risk",
                     "severity": "HIGH",
-                    "message": f"{ticker}: SLA at risk, predicted hour {sla['predicted_completion_hour']:.2f}",
+                    "message": (
+                        f"{ticker}: SLA at risk, "
+                        f"predicted hour {sla['predicted_completion_hour']:.2f}"
+                    ),
                     "prediction": sla,
                 }
             )
@@ -135,14 +148,19 @@ def generate_predictive_alerts(
         try:
             s3 = boto3.client("s3")
             now = datetime.utcnow()
-            key = f"monitoring/predictive_alerts/{now.year}/{now.month:02d}/{now.day:02d}/{ticker}.json"
+            key = (
+                f"monitoring/predictive_alerts"
+                f"/{now.year}/{now.month:02d}/{now.day:02d}/{ticker}.json"
+            )
             s3.put_object(
                 Bucket=bucket,
                 Key=key,
                 Body=json.dumps(alerts),
                 ContentType="application/json",
             )
-            logger.info(f"Saved {len(alerts)} predictive alerts for {ticker} to s3://{bucket}/{key}")
+            logger.info(
+                f"Saved {len(alerts)} predictive alerts for {ticker} to s3://{bucket}/{key}"
+            )
         except Exception as e:
             logger.warning(f"Could not save alerts to S3: {e}")
 

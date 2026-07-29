@@ -1,10 +1,9 @@
-import boto3
-import json
-import os
-import logging
 import hashlib
-from datetime import datetime
-from typing import Optional, Dict, List, Any
+import json
+import logging
+from typing import Any, Dict, List
+
+import boto3
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -55,7 +54,7 @@ def detect_metric_anomaly(
     baseline = values[:-1]
     mean = sum(baseline) / len(baseline)
     variance = sum((v - mean) ** 2 for v in baseline) / len(baseline)
-    std = variance ** 0.5 if variance > 0 else 1e-9
+    std = variance**0.5 if variance > 0 else 1e-9
     latest = values[-1]
     z_score = (latest - mean) / std
     anomaly_detected = abs(z_score) > z_threshold
@@ -75,7 +74,9 @@ def generate_root_cause_hypothesis(
     correlated_metrics: Dict[str, float],
 ) -> List[str]:
     hypotheses: List[str] = []
-    hypotheses.append(f"Direct degradation in {failed_metric} detected — check upstream data source.")
+    hypotheses.append(
+        f"Direct degradation in {failed_metric} detected — check upstream data source."
+    )
 
     for pair, corr in correlated_metrics.items():
         if abs(float(str(corr))) > 0.6:
@@ -88,7 +89,9 @@ def generate_root_cause_hypothesis(
                 )
 
     if not correlated_metrics:
-        hypotheses.append(f"No correlated metrics found — {failed_metric} degradation may be isolated.")
+        hypotheses.append(
+            f"No correlated metrics found — {failed_metric} degradation may be isolated."
+        )
 
     logger.info(f"Generated {len(hypotheses)} hypotheses for {failed_metric}")
     return hypotheses
@@ -145,9 +148,7 @@ def run_intelligent_monitoring(
                 sample_metrics[metric].extend([float(str(v)) for v in vals])
 
         scalar_metrics: Dict[str, float] = {
-            k: float(str(v))
-            for k, v in ticker_metrics.items()
-            if isinstance(v, (int, float))
+            k: float(str(v)) for k, v in ticker_metrics.items() if isinstance(v, (int, float))
         }
         if scalar_metrics:
             fp = calculate_health_fingerprint(scalar_metrics)
@@ -166,7 +167,9 @@ def run_intelligent_monitoring(
     combined_fp_input: Dict[str, float] = {
         k: float(str(sum(v) / len(v))) for k, v in sample_metrics.items() if v
     }
-    overall_fingerprint = calculate_health_fingerprint(combined_fp_input) if combined_fp_input else "no_data"
+    overall_fingerprint = (
+        calculate_health_fingerprint(combined_fp_input) if combined_fp_input else "no_data"
+    )
 
     result: Dict[str, Any] = {
         "fingerprint": overall_fingerprint,
