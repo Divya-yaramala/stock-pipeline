@@ -1478,3 +1478,55 @@ print('Total entries:', result.get('total'))
 print('Suspicious activities:', len(result.get('suspicious', [])))
 "
 ```
+
+## Predictive Monitoring
+```python
+# Run predictive monitoring for all tickers
+python -c "
+from ingestion.predictive_alerter import run_predictive_monitoring
+import os
+result = run_predictive_monitoring(os.getenv('AWS_BUCKET_NAME'))
+print('Total predictive alerts:', result['total_alerts'])
+print('Tickers at risk:', result['tickers_at_risk'])
+"
+
+# Predict anomaly probability for a price series
+python -c "
+from ingestion.predictive_alerter import predict_anomaly_probability
+prices = [185.0, 185.5, 184.8, 185.2, 185.1, 184.9, 185.3, 195.0]
+prob = predict_anomaly_probability(prices, window=7)
+print(f'Anomaly probability: {prob:.2%}')
+"
+
+# Predict quality degradation
+python -c "
+from ingestion.predictive_alerter import predict_quality_degradation
+scores = [95.0, 93.0, 91.0, 89.0, 87.0, 85.0, 83.0]
+result = predict_quality_degradation(scores, threshold=80.0)
+print('Degrading:', result['degrading'])
+print('Days until breach:', result['days_until_breach'])
+"
+```
+
+## Intelligent Monitoring
+```python
+# Run intelligent monitoring
+python -c "
+from ingestion.intelligent_monitor import run_intelligent_monitoring
+import os
+result = run_intelligent_monitoring(os.getenv('AWS_BUCKET_NAME'))
+print('Health fingerprint:', result.get('fingerprint'))
+print('Anomalies detected:', result.get('anomalies_found', 0))
+"
+
+# Get root cause hypotheses
+python -c "
+from ingestion.intelligent_monitor import generate_root_cause_hypothesis
+hypotheses = generate_root_cause_hypothesis(
+    'quality_score',
+    {'anomaly_rate': 0.85, 'pipeline_duration': 0.72}
+)
+for h in hypotheses:
+    print('-', h)
+"
+```
