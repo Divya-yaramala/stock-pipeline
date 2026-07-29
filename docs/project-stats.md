@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 95 ingestion modules + 6 scripts |
+| Python files | 97 ingestion modules + 6 scripts |
 | Test files | 27 test files |
-| Total tests | 622 passing |
+| Total tests | 632 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 76 architecture decisions |
+| ADRs | 77 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -237,6 +237,10 @@
 206. Compliance Guide (4 frameworks documented)
 207. Audit Trail (8 categories, S3 storage)
 208. Suspicious Activity Detection (failed attempts + off-hours)
+209. Predictive Alerter (anomaly probability + quality trend)
+210. SLA Risk Prediction (trend-based forecasting)
+211. Root Cause Hypothesis Generator
+212. Health Fingerprinting (state change detection)
 
 🎉 600 tests milestone!
 

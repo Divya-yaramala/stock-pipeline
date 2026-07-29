@@ -86,3 +86,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [074](074-data-mesh-access-control.md) | Data Mesh Access Control Pattern | Accepted |
 | [075](075-compliance-frameworks.md) | Compliance Framework Coverage | Accepted |
 | [076](076-audit-trail-strategy.md) | Audit Trail Strategy | Accepted |
+| [077](077-predictive-monitoring-pattern.md) | Predictive Monitoring Pattern | Accepted |
