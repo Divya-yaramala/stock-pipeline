@@ -8,7 +8,7 @@
 | Total tests | 632 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 77 architecture decisions |
+| ADRs | 78 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -241,6 +241,9 @@
 210. SLA Risk Prediction (trend-based forecasting)
 211. Root Cause Hypothesis Generator
 212. Health Fingerprinting (state change detection)
+213. Predictive Monitoring Guide (3 predictive models documented)
+214. Health Fingerprinting (MD5-based state tracking)
+215. Metric Correlation Analysis (relationship discovery)
 
 🎉 600 tests milestone!
 
