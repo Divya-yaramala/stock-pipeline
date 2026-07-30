@@ -121,8 +121,7 @@ def generate_predictive_alerts(
                         else "MEDIUM"
                     ),
                     "message": (
-                        f"{ticker}: Quality degrading, "
-                        f"breach in {qd['days_until_breach']} days"
+                        f"{ticker}: Quality degrading, " f"breach in {qd['days_until_breach']} days"
                     ),
                     "prediction": qd,
                 }
