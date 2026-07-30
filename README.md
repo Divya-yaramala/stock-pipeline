@@ -623,6 +623,22 @@ See [Predictive Monitoring Guide](docs/predictive-monitoring-guide.md)
 
 ---
 
+## 🧠 Knowledge Graph and Search
+Domain knowledge capture and documentation search:
+
+| Feature | Module | Description |
+|---|---|---|
+| Entity Graph | knowledge_graph.py | Stocks, sectors, relationships |
+| BELONGS_TO | knowledge_graph.py | Ticker → sector mapping |
+| CORRELATES_WITH | knowledge_graph.py | High-correlation relationships |
+| Search Index | semantic_search.py | Inverted index over 99 modules |
+| Module Finder | semantic_search.py | Find related code by keyword |
+
+🎉 80 ADRs milestone reached!
+See [Knowledge Graph Guide](docs/knowledge-graph-guide.md)
+
+---
+
 ## ⚡ Distributed Processing
 Parallel execution for 5x pipeline speedup:
 
