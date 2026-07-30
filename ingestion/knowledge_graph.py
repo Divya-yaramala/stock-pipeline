@@ -1,7 +1,6 @@
 import hashlib
 import json
 import logging
-import os
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -46,9 +45,7 @@ def add_relationship(
     properties: Optional[Dict[str, Any]],
     bucket: str,
 ) -> str:
-    rel_id = hashlib.md5(
-        f"{source_id}:{relationship_type}:{target_id}".encode()
-    ).hexdigest()
+    rel_id = hashlib.md5(f"{source_id}:{relationship_type}:{target_id}".encode()).hexdigest()
     record: Dict[str, Any] = {
         "relationship_id": rel_id,
         "source_id": source_id,
@@ -86,7 +83,10 @@ def get_entity_relationships(
                 try:
                     body = s3.get_object(Bucket=bucket, Key=str(obj["Key"]))["Body"].read()
                     rel = json.loads(body.decode("utf-8"))
-                    if str(rel.get("source_id")) == entity_id or str(rel.get("target_id")) == entity_id:
+                    if (
+                        str(rel.get("source_id")) == entity_id
+                        or str(rel.get("target_id")) == entity_id
+                    ):
                         relationships.append(rel)
                 except Exception:
                     continue
@@ -119,7 +119,9 @@ def find_connected_entities(
                     continue
     except Exception as e:
         logger.error(f"Failed to find connected entities: {e}")
-    logger.info(f"Found {len(connected)} connected entities for {entity_id} via {relationship_type}")
+    logger.info(
+        f"Found {len(connected)} connected entities for {entity_id} via {relationship_type}"
+    )
     return connected
 
 

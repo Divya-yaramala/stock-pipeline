@@ -1,10 +1,7 @@
 import json
 import logging
-import math
-import os
 import re
-from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 import boto3
 
