@@ -835,3 +835,55 @@ else:
     print('❌ NOT CERTIFIED - check compliance report')
 "
 ```
+
+## Predictive Monitoring Procedures
+
+### Daily Predictive Check
+After pipeline runs (afternoon):
+```python
+python -c "
+from ingestion.predictive_alerter import run_predictive_monitoring
+import os
+result = run_predictive_monitoring(os.getenv('AWS_BUCKET_NAME'))
+if result['tickers_at_risk']:
+    print('⚠️ TICKERS AT RISK:', result['tickers_at_risk'])
+    print('Alert types:', result['by_type'])
+else:
+    print('✅ No tickers at risk')
+"
+```
+
+### If Quality Degradation Predicted
+1. Check current quality scores:
+```python
+python -c "
+from ingestion.predictive_alerter import predict_quality_degradation
+scores = [95, 93, 91, 89, 87, 85, 83]
+result = predict_quality_degradation(scores, threshold=80.0)
+print('Days until breach:', result['days_until_breach'])
+print('Trend slope:', result['trend_slope'])
+"
+```
+2. If < 3 days: run manual quality check immediately
+3. Identify which quality dimension is declining
+4. Fix underlying data issue before threshold breach
+
+### Health Fingerprint Comparison
+```python
+python -c "
+from ingestion.intelligent_monitor import (
+    calculate_health_fingerprint,
+    compare_health_fingerprints
+)
+yesterday_metrics = {'quality': 92.0, 'anomaly_rate': 5.0, 'sla': 100.0}
+today_metrics = {'quality': 88.0, 'anomaly_rate': 12.0, 'sla': 83.0}
+fp1 = calculate_health_fingerprint(yesterday_metrics)
+fp2 = calculate_health_fingerprint(today_metrics)
+changed = compare_health_fingerprints(fp1, fp2)
+print('Health state changed:', changed)
+"
+```
+If changed = True:
+1. Compare yesterday vs today metrics manually
+2. Identify which metrics changed
+3. Investigate root cause
