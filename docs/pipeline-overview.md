@@ -904,3 +904,39 @@ Layer 1: Real-time monitor (realtime_monitor.py) — every 5-15 min
 Layer 2: Predictive alerter (predictive_alerter.py) — daily
 Layer 3: Intelligent monitor (intelligent_monitor.py) — daily
 Layer 4: Health dashboard (pipeline_health_dashboard.py) — daily
+
+## Knowledge Graph and Search Layer
+
+### Knowledge Graph (knowledge_graph.py)
+Entities and relationships stored in S3:
+```
+knowledge_graph/entities/stock/AAPL.json
+knowledge_graph/entities/sector/Technology.json
+knowledge_graph/relationships/BELONGS_TO/rel_id.json
+```
+
+Built-in relationships:
+5 tickers × BELONGS_TO × 3 sectors
+2 COMPETES_WITH relationships (same sector)
+2 CORRELATES_WITH relationships (high correlation)
+
+Total: 5 entities + 9 relationships at startup
+
+### Semantic Search (semantic_search.py)
+Inverted index over pipeline documentation:
+```
+search/index/index.json → {term: [doc_ids]}
+```
+
+Searchable content:
+- 99 module docstrings
+- 79 ADR decisions
+- README sections
+- Pipeline overview content
+
+### Integration
+`knowledge_graph.find_connected_entities()`
+→ identifies related stocks for portfolio analysis
+
+`semantic_search.recommend_related_modules()`
+→ developer productivity tool for finding related code
