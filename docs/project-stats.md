@@ -8,7 +8,7 @@
 | Total tests | 642 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 79 architecture decisions |
+| ADRs | 80 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -248,6 +248,11 @@
 217. Semantic Search (inverted index + ranking)
 218. Stock Domain Ontology (BELONGS_TO, COMPETES_WITH, CORRELATES_WITH)
 219. Module Recommendation (related module discovery)
+220. Knowledge Graph Guide (entity + relationship documented)
+221. Semantic Search Guide (inverted index algorithm)
+222. Module Recommendation Engine
+
+🎉 80 ADRs milestone!
 
 🎉 600 tests milestone!
 
