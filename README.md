@@ -440,6 +440,7 @@ stock-pipeline/
 | [Event-Driven Guide](docs/event-driven-guide.md) | Workflow triggers, action types, severity escalation |
 | [Compliance Guide](docs/compliance-guide.md) | SOX, GDPR, FINRA, INTERNAL frameworks and audit categories |
 | [Predictive Monitoring Guide](docs/predictive-monitoring-guide.md) | Anomaly probability, quality degradation prediction, SLA risk, health fingerprinting |
+| [Knowledge Graph Guide](docs/knowledge-graph-guide.md) | Entity types, relationship types, stock domain ontology, semantic search algorithm |
 
 ---
 
