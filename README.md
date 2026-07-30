@@ -607,6 +607,21 @@ See [Compliance Guide](docs/compliance-guide.md)
 
 ---
 
+## 🔮 Predictive Monitoring
+Alert BEFORE issues become critical:
+
+| Prediction | Algorithm | Threshold |
+|---|---|---|
+| Anomaly probability | Z-score → sigmoid | > 70% probability |
+| Quality degradation | Linear trend | < 3 days to breach |
+| SLA risk | Moving average | Predicted > SLA target |
+
+Intelligent monitoring with root cause hypotheses.
+Health fingerprinting detects silent state changes.
+See [Predictive Monitoring Guide](docs/predictive-monitoring-guide.md)
+
+---
+
 ## ⚡ Distributed Processing
 Parallel execution for 5x pipeline speedup:
 
