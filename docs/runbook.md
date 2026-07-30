@@ -887,3 +887,57 @@ If changed = True:
 1. Compare yesterday vs today metrics manually
 2. Identify which metrics changed
 3. Investigate root cause
+
+## Knowledge Graph Procedures
+
+### Rebuilding Knowledge Graph
+Run after adding new tickers or updating correlations:
+```python
+python -c "
+from ingestion.knowledge_graph import build_stock_knowledge_graph
+import os
+result = build_stock_knowledge_graph(os.getenv('AWS_BUCKET_NAME'))
+print('Entities:', result['entities_created'])
+print('Relationships:', result['relationships_created'])
+"
+```
+
+### Finding Related Stocks
+```python
+python -c "
+from ingestion.knowledge_graph import find_connected_entities
+import os
+# Find all tech stocks
+tech_stocks = find_connected_entities('Technology', 'BELONGS_TO', os.getenv('AWS_BUCKET_NAME'))
+print('Tech sector stocks:', tech_stocks)
+
+# Find AAPL competitors
+competitors = find_connected_entities('AAPL', 'COMPETES_WITH', os.getenv('AWS_BUCKET_NAME'))
+print('AAPL competitors:', competitors)
+"
+```
+
+### Rebuilding Search Index
+Run after adding new modules or ADRs:
+```python
+python -c "
+from ingestion.semantic_search import index_pipeline_docs
+import os
+result = index_pipeline_docs(os.getenv('AWS_BUCKET_NAME'))
+print('Indexed:', result['indexed_documents'], 'documents')
+print('Terms:', result['unique_terms'], 'unique terms')
+"
+```
+
+### Searching for Relevant Modules
+```python
+python -c "
+from ingestion.semantic_search import search_pipeline_knowledge
+import os
+query = 'machine learning model training'
+results = search_pipeline_knowledge(query, os.getenv('AWS_BUCKET_NAME'))
+print(f'Results for \"{query}\":')
+for r in results[:5]:
+    print(f'  {r[\"id\"]}: score={r.get(\"score\", 0):.3f}')
+"
+```
