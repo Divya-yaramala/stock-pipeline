@@ -1530,3 +1530,52 @@ for h in hypotheses:
     print('-', h)
 "
 ```
+
+## Knowledge Graph
+```python
+# Build stock knowledge graph
+python -c "
+from ingestion.knowledge_graph import build_stock_knowledge_graph
+import os
+result = build_stock_knowledge_graph(os.getenv('AWS_BUCKET_NAME'))
+print('Entities created:', result['entities_created'])
+print('Relationships created:', result['relationships_created'])
+"
+
+# Find stocks in same sector
+python -c "
+from ingestion.knowledge_graph import find_connected_entities
+import os
+tech_peers = find_connected_entities('AAPL', 'BELONGS_TO', os.getenv('AWS_BUCKET_NAME'))
+print('AAPL sector peers:', tech_peers)
+"
+```
+
+## Semantic Search
+```python
+# Index pipeline documentation
+python -c "
+from ingestion.semantic_search import index_pipeline_docs
+import os
+result = index_pipeline_docs(os.getenv('AWS_BUCKET_NAME'))
+print('Documents indexed:', result['indexed_documents'])
+print('Unique terms:', result['unique_terms'])
+"
+
+# Search pipeline knowledge
+python -c "
+from ingestion.semantic_search import search_pipeline_knowledge
+import os
+results = search_pipeline_knowledge('anomaly detection isolation forest', os.getenv('AWS_BUCKET_NAME'))
+for r in results[:3]:
+    print(r.get('id'), '-', r.get('score'))
+"
+
+# Get related modules
+python -c "
+from ingestion.semantic_search import recommend_related_modules
+import os
+related = recommend_related_modules('anomaly_detector', os.getenv('AWS_BUCKET_NAME'))
+print('Related modules:', related)
+"
+```
