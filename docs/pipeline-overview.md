@@ -870,3 +870,37 @@ If all requirements met → generate_compliance_certificate()
       ↓
 Certificate saved to S3 reports/certificates/
 ```
+
+## Predictive Monitoring Layer
+
+### Predictive Alerter (predictive_alerter.py)
+3 predictive models run daily per ticker:
+
+Model 1: Anomaly Probability
+prices[-10:] → Z-score → sigmoid → probability
+Alert if probability > 0.7
+
+Model 2: Quality Degradation
+quality_scores[-7:] → linear trend → days_until_breach
+Alert if days_until_breach < 3
+
+Model 3: SLA Risk
+completion_times[-7:] → moving average → predicted_hour
+Alert if predicted_hour > sla_target_hour
+
+Output: S3 monitoring/predictive_alerts/YYYY/MM/DD/ticker.json
+
+### Intelligent Monitor (intelligent_monitor.py)
+correlate_metrics() → find metric relationships
+detect_metric_anomaly() → Z-score on metric time series
+generate_root_cause_hypothesis() → explain degradations
+calculate_health_fingerprint() → MD5 of all metrics
+compare_health_fingerprints() → detect state changes
+
+Output: S3 monitoring/intelligent/YYYY/MM/DD/report.json
+
+### Monitoring Stack (complete)
+Layer 1: Real-time monitor (realtime_monitor.py) — every 5-15 min
+Layer 2: Predictive alerter (predictive_alerter.py) — daily
+Layer 3: Intelligent monitor (intelligent_monitor.py) — daily
+Layer 4: Health dashboard (pipeline_health_dashboard.py) — daily
