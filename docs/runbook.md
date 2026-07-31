@@ -941,3 +941,44 @@ for r in results[:5]:
     print(f'  {r[\"id\"]}: score={r.get(\"score\", 0):.3f}')
 "
 ```
+
+## Report Generation Procedures
+
+### Daily Report Generation
+Run after pipeline completes (after 11 AM EST):
+```python
+python -c "
+from ingestion.pipeline_report_generator import run_report_generation
+import os
+result = run_report_generation(os.getenv('AWS_BUCKET_NAME'))
+exec_status = result.get('executive', {}).get('pipeline_status', 'unknown')
+print('Pipeline status:', exec_status)
+print('Data quality grade:', result.get('executive', {}).get('data_quality_grade'))
+"
+```
+
+### Weekly Digest (Every Monday)
+```python
+python -c "
+from ingestion.pipeline_report_generator import generate_weekly_digest
+import os, datetime
+week = datetime.datetime.now().strftime('%Y-W%V')
+digest = generate_weekly_digest(os.getenv('AWS_BUCKET_NAME'), week)
+print('Week:', week)
+print('Avg quality:', digest.get('avg_quality_score'))
+print('Total anomalies:', digest.get('total_anomalies'))
+"
+```
+
+### Getting Recommendations
+```python
+python -c "
+from ingestion.stock_recommender import run_recommendation_engine
+import os
+for profile in ['conservative', 'moderate', 'aggressive']:
+    result = run_recommendation_engine(profile, os.getenv('AWS_BUCKET_NAME'))
+    recs = result.get('recommendations', [])
+    top = recs[0]['ticker'] if recs else 'none'
+    print(f'{profile}: top pick = {top}')
+"
+```
