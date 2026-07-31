@@ -441,6 +441,7 @@ stock-pipeline/
 | [Compliance Guide](docs/compliance-guide.md) | SOX, GDPR, FINRA, INTERNAL frameworks and audit categories |
 | [Predictive Monitoring Guide](docs/predictive-monitoring-guide.md) | Anomaly probability, quality degradation prediction, SLA risk, health fingerprinting |
 | [Knowledge Graph Guide](docs/knowledge-graph-guide.md) | Entity types, relationship types, stock domain ontology, semantic search algorithm |
+| [Recommendation Engine Guide](docs/recommendation-engine-guide.md) | 3 investor profiles, scoring algorithm, similar ticker finder |
 
 ---
 
