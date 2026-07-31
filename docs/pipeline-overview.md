@@ -940,3 +940,34 @@ Searchable content:
 
 `semantic_search.recommend_related_modules()`
 → developer productivity tool for finding related code
+
+## Recommendation and Reporting Layer
+
+### Stock Recommender (stock_recommender.py)
+3 investor profiles with scoring:
+```
+conservative → quality > 90%, volatility < 15%
+moderate     → quality > 80%, volatility < 25%
+aggressive   → quality > 70%, volatility < 40%
+```
+
+Scoring: quality(40%) + volatility(30%) + sector(20%) + sentiment(10%)
+Output: S3 reports/recommendations/YYYY/MM/DD/profile_name.json
+
+### Pipeline Reports (pipeline_report_generator.py)
+3 report types generated daily:
+```
+Executive Summary → business stakeholders
+Technical Report  → engineering team
+Weekly Digest     → trend analysis (Mondays)
+```
+
+Output: S3 reports/executive/, reports/technical/, reports/weekly/
+
+### Report Consumers
+| Report | Audience | Frequency | Format |
+|---|---|---|---|
+| Executive Summary | Business | Daily | HTML |
+| Technical Report | Engineers | Daily | JSON + HTML |
+| Weekly Digest | All teams | Weekly | HTML |
+| Recommendations | Investors | Daily | JSON |
