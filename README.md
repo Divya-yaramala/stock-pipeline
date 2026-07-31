@@ -640,6 +640,22 @@ See [Knowledge Graph Guide](docs/knowledge-graph-guide.md)
 
 ---
 
+## 🎯 Recommendation Engine
+Profile-based stock recommendations:
+
+| Profile | Risk | Quality Min | Volatility Max |
+|---|---|---|---|
+| Conservative | LOW | 90% | 15% |
+| Moderate | MEDIUM | 80% | 25% |
+| Aggressive | HIGH | 70% | 40% |
+
+Three report types: Executive Summary · Technical Report · Weekly Digest
+🎉 **101 ingestion modules milestone!**
+
+See [Recommendation Engine Guide](docs/recommendation-engine-guide.md)
+
+---
+
 ## ⚡ Distributed Processing
 Parallel execution for 5x pipeline speedup:
 
