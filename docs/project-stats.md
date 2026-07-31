@@ -8,7 +8,7 @@
 | Total tests | 642 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 80 architecture decisions |
+| ADRs | 82 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -251,6 +251,9 @@
 220. Knowledge Graph Guide (entity + relationship documented)
 221. Semantic Search Guide (inverted index algorithm)
 222. Module Recommendation Engine
+229. Recommendation Engine Guide (3 profiles documented)
+230. Report Generation Strategy (executive + technical + weekly)
+231. HTML Report Formatting (email-ready output)
 
 🎉 80 ADRs milestone!
 
