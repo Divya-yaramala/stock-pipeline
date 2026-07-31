@@ -90,3 +90,5 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [078](078-health-fingerprinting.md) | Health Fingerprinting for State Change Detection | Accepted |
 | [079](079-knowledge-graph-pattern.md) | Knowledge Graph for Domain Knowledge | Accepted |
 | [080](080-semantic-search-inverted-index.md) | Semantic Search with Inverted Index | Accepted |
+| [081](081-recommendation-engine-pattern.md) | Stock Recommendation Engine | Accepted |
+| [082](082-report-generation-strategy.md) | Report Generation Strategy | Accepted |
