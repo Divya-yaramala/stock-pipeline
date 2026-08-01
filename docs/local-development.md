@@ -1579,3 +1579,58 @@ related = recommend_related_modules('anomaly_detector', os.getenv('AWS_BUCKET_NA
 print('Related modules:', related)
 "
 ```
+
+## Model Deployment
+```python
+# Create a deployment
+python -c "
+from ingestion.model_deployment_manager import create_deployment
+import os
+deployment_id = create_deployment(
+    model_name='anomaly_detector',
+    model_version='v2.1.0',
+    environment='development',
+    metrics={'accuracy': 0.85, 'rmse': 2.3},
+    bucket=os.getenv('AWS_BUCKET_NAME')
+)
+print('Deployment ID:', deployment_id)
+"
+
+# Promote to staging
+python -c "
+from ingestion.model_deployment_manager import promote_to_environment
+import os
+result = promote_to_environment(
+    'DEPLOYMENT_ID', 'development', 'staging',
+    os.getenv('AWS_BUCKET_NAME')
+)
+print('Promoted:', result)
+"
+
+# Rollback if needed
+python -c "
+from ingestion.model_deployment_manager import rollback_deployment
+import os
+result = rollback_deployment('anomaly_detector', 'production', os.getenv('AWS_BUCKET_NAME'))
+print('Rolled back:', result)
+"
+```
+
+## Serving Infrastructure
+```python
+# Create serving endpoint
+python -c "
+from ingestion.serving_infrastructure import create_serving_endpoint
+import os
+endpoint = create_serving_endpoint('anomaly_detector', 'production', 8080, os.getenv('AWS_BUCKET_NAME'))
+print('Endpoint:', endpoint['endpoint_id'])
+"
+
+# Check infrastructure health
+python -c "
+from ingestion.serving_infrastructure import run_infrastructure_check
+import os
+result = run_infrastructure_check(os.getenv('AWS_BUCKET_NAME'))
+print('Healthy:', result['healthy'], '/', result['total_endpoints'])
+"
+```
