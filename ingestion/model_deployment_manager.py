@@ -32,9 +32,7 @@ def create_deployment(
     min_acc = float(str(env_cfg["min_accuracy"]))
     accuracy = float(str(metrics.get("accuracy", 0.0)))
     if accuracy < min_acc:
-        raise ValueError(
-            f"Accuracy {accuracy:.2f} below minimum {min_acc:.2f} for {environment}"
-        )
+        raise ValueError(f"Accuracy {accuracy:.2f} below minimum {min_acc:.2f} for {environment}")
 
     deployment_id = hashlib.md5(
         f"{model_name}:{model_version}:{environment}:{datetime.utcnow().isoformat()}".encode()

@@ -17,9 +17,7 @@ def create_serving_endpoint(
     port: int,
     bucket: str,
 ) -> Dict[str, Any]:
-    endpoint_id = hashlib.md5(
-        f"{model_name}:{environment}:{port}".encode()
-    ).hexdigest()[:12]
+    endpoint_id = hashlib.md5(f"{model_name}:{environment}:{port}".encode()).hexdigest()[:12]
 
     config: Dict[str, Any] = {
         "endpoint_id": endpoint_id,
