@@ -8,7 +8,7 @@
 | Total tests | 662 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 83 architecture decisions |
+| ADRs | 84 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -259,6 +259,9 @@
 234. Deployment Rollback (previous version restore)
 235. Serving Endpoint Management
 236. Endpoint Health Checks
+237. Model Deployment Guide (3-environment strategy)
+238. Serving Infrastructure Pattern (endpoints + scaling)
+239. p95 Latency Tracking per Endpoint
 
 🎉 80 ADRs milestone!
 
