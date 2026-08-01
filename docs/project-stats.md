@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 99 ingestion modules + 6 scripts |
+| Python files | 103 ingestion modules + 6 scripts |
 | Test files | 27 test files |
-| Total tests | 642 passing |
+| Total tests | 662 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 82 architecture decisions |
+| ADRs | 83 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -254,6 +254,11 @@
 229. Recommendation Engine Guide (3 profiles documented)
 230. Report Generation Strategy (executive + technical + weekly)
 231. HTML Report Formatting (email-ready output)
+232. Model Deployment Manager (3 environments)
+233. Deployment Promotion (dev → staging → prod)
+234. Deployment Rollback (previous version restore)
+235. Serving Endpoint Management
+236. Endpoint Health Checks
 
 🎉 80 ADRs milestone!
 

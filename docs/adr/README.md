@@ -92,3 +92,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [080](080-semantic-search-inverted-index.md) | Semantic Search with Inverted Index | Accepted |
 | [081](081-recommendation-engine-pattern.md) | Stock Recommendation Engine | Accepted |
 | [082](082-report-generation-strategy.md) | Report Generation Strategy | Accepted |
+| [083](083-model-deployment-environments.md) | Model Deployment Environments | Accepted |
