@@ -93,3 +93,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [081](081-recommendation-engine-pattern.md) | Stock Recommendation Engine | Accepted |
 | [082](082-report-generation-strategy.md) | Report Generation Strategy | Accepted |
 | [083](083-model-deployment-environments.md) | Model Deployment Environments | Accepted |
+| [084](084-serving-infrastructure-pattern.md) | ML Model Serving Infrastructure | Accepted |
