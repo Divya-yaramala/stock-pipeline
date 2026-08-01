@@ -143,9 +143,7 @@ def find_similar_tickers(
         v = float(str(metrics.get("volatility", 0.0)))
         s = float(str(metrics.get("sentiment", 0.0)))
         dist = math.sqrt(
-            ((ref_quality - q) / 100.0) ** 2
-            + (ref_vol - v) ** 2
-            + (ref_sent - s) ** 2
+            ((ref_quality - q) / 100.0) ** 2 + (ref_vol - v) ** 2 + (ref_sent - s) ** 2
         )
         distances.append({"ticker": other, "distance": dist})
 
