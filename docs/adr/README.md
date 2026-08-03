@@ -97,3 +97,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [085](085-pipeline-validation-framework.md) | Pipeline Validation Framework | Accepted |
 | [086](086-contract-enforcement-pattern.md) | Data Contract Enforcement Pattern | Accepted |
 | [087](087-workflow-automation-engine.md) | Workflow Automation Engine | Accepted |
+| [088](088-pipeline-recovery-strategies.md) | Pipeline Recovery Strategies | Accepted |
