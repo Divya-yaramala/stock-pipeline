@@ -675,6 +675,24 @@ See [Validation Framework Guide](docs/validation-framework-guide.md)
 
 ---
 
+## ⚙️ Workflow Automation
+5 automated workflows with recovery management:
+
+| Workflow | Schedule | Steps |
+|---|---|---|
+| Daily data refresh | Mon-Fri 6 AM | 6 steps |
+| Weekly model eval | Monday 8 AM | 4 steps |
+| Monthly compliance | 1st of month | 3 steps |
+| Quality monitor | Every 15 min | 3 steps |
+| Ad-hoc backfill | Manual | 3 steps |
+
+5 recovery strategies: retry · skip · fallback · checkpoint · manual
+🎉 **250+ production patterns and counting!**
+
+See [Workflow Automation Guide](docs/workflow-automation-guide.md)
+
+---
+
 ## ⚡ Distributed Processing
 Parallel execution for 5x pipeline speedup:
 
