@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-662%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-672%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,7 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 83/90 of my 90-day portfolio challenge!** 662 tests · 103 modules · 83 ADRs · 236 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 84/90 of my 90-day portfolio challenge!** 672 tests · 105 modules · 85 ADRs · 243 production patterns · 3 APIs + Dashboard
 
 > 🎉 **600 tests milestone!**
 
@@ -91,13 +91,13 @@ Dashboard:
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 622 passing |
-| Ingestion modules | 95 |
+| Total tests | 672 passing |
+| Ingestion modules | 105 |
 | Airflow tasks | 16 |
-| ADRs | 75 |
-| Production patterns | 205 |
+| ADRs | 85 |
+| Production patterns | 243 |
 | S3 prefixes | 15+ |
-| Days built | 79 |
+| Days built | 84 |
 
 ## 🧪 Testing Strategy
 Four-tier testing approach:
@@ -1406,5 +1406,13 @@ See [Storage Guide](docs/storage-guide.md)
 - Endpoint scaling and metrics tracking
 - 10 unit tests passing green
 
+### ✅ Day 84 — Pipeline Validation + Contract Enforcement
+- Built pipeline validator with 8 validation rules
+- Business rule validation (High >= Low, Close in range)
+- Temporal consistency checking (sequential dates)
+- Contract enforcer with violation tracking
+- Contract health score (100 - violation_rate_pct)
+- 10 unit tests passing green
+
 ---
-*Built with ❤️ over 83 days as a portfolio project demonstrating production-grade data engineering.*
+*Built with ❤️ over 84 days as a portfolio project demonstrating production-grade data engineering.*
