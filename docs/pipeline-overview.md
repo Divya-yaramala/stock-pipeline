@@ -971,3 +971,46 @@ Output: S3 reports/executive/, reports/technical/, reports/weekly/
 | Technical Report | Engineers | Daily | JSON + HTML |
 | Weekly Digest | All teams | Weekly | HTML |
 | Recommendations | Investors | Daily | JSON |
+
+## MLOps Deployment Layer
+
+### Model Deployment Manager (model_deployment_manager.py)
+3-environment promotion pipeline:
+```
+Development (accuracy > 60%) → Staging (> 65%) → Production (> 70%)
+```
+
+Per deployment saved to S3:
+```
+deployments/development/anomaly_detector/deployment_id.json
+deployments/staging/anomaly_detector/deployment_id.json
+deployments/production/anomaly_detector/deployment_id.json
+```
+
+### Serving Infrastructure (serving_infrastructure.py)
+Per-environment endpoints:
+```
+serving/endpoints/development/anomaly_detector.json
+serving/endpoints/staging/anomaly_detector.json
+serving/endpoints/production/anomaly_detector.json
+```
+
+Health check metrics per endpoint:
+- healthy: bool
+- latency_ms: float
+- requests_per_minute: float
+- error_rate_pct: float
+- p95_latency_ms: float
+
+### Complete MLOps Flow (updated)
+```
+Feature Engineering → AutoML → Hyperparameter Tuning
+      ↓
+Model Registry → Experiment Tracking → A/B Testing
+      ↓
+Drift Detection → Retraining Triggers → Model Monitor
+      ↓
+Deployment Manager (dev→staging→prod) → Serving Infrastructure
+      ↓
+REST API /predictions/{ticker} → Dashboard
+```
