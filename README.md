@@ -657,6 +657,23 @@ See [Recommendation Engine Guide](docs/recommendation-engine-guide.md)
 
 ---
 
+## ✅ Data Validation Framework
+8-rule validation ensuring data quality:
+
+| Category | Rules | Check |
+|---|---|---|
+| Structural | V001 | Required fields + types |
+| Statistical | V002, V008 | Ranges + outliers |
+| Business | V005 | High >= Low, Close in range |
+| Temporal | V004 | Sequential dates |
+| Completeness | V006 | No null values |
+| Uniqueness | V007 | No duplicates |
+
+Contract enforcement blocks invalid data automatically.
+See [Validation Framework Guide](docs/validation-framework-guide.md)
+
+---
+
 ## ⚡ Distributed Processing
 Parallel execution for 5x pipeline speedup:
 
