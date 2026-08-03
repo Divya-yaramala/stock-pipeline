@@ -8,7 +8,7 @@
 | Total tests | 672 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 85 architecture decisions |
+| ADRs | 86 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -266,6 +266,9 @@
 241. Business Rule Validation (high >= low, close in range)
 242. Temporal Consistency Check (sequential dates)
 243. Contract Enforcer (violation tracking + health score)
+244. Validation Framework Guide (8 rules documented)
+245. Contract Enforcement (blocking + DLQ integration)
+246. Contract Health Monitoring (7-day trend)
 
 🎉 80 ADRs milestone!
 
