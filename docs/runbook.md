@@ -1030,3 +1030,65 @@ If health < 70%:
 2. Identify which fields causing violations
 3. Check if Yahoo Finance API changed response format
 4. Update contract schema if legitimate schema change
+
+## Workflow Automation Procedures
+
+### Triggering a Workflow Manually
+```python
+python -c "
+from ingestion.workflow_automation_engine import trigger_workflow
+import os
+exec_id = trigger_workflow('AW001', 'manual_daily_run', os.getenv('AWS_BUCKET_NAME'))
+print('Started execution:', exec_id)
+"
+```
+
+### Checking Workflow Reliability (Weekly)
+```python
+python -c "
+from ingestion.workflow_automation_engine import (
+    get_workflow_execution_history, calculate_workflow_reliability
+)
+import os
+for wf_id in ['AW001', 'AW002', 'AW003', 'AW004']:
+    history = get_workflow_execution_history(wf_id, os.getenv('AWS_BUCKET_NAME'))
+    if history:
+        reliability = calculate_workflow_reliability(history)
+        print(f'{wf_id}: {reliability[\"success_rate_pct\"]:.1f}% success rate')
+"
+```
+
+### Handling Pipeline Failures
+If AW001 fails at snowflake_sync step:
+```python
+python -c "
+from ingestion.pipeline_recovery_manager import handle_step_failure, create_checkpoint
+import os
+checkpoint_id = create_checkpoint(
+    'daily_pipeline', 'snowflake_sync',
+    {'last_ticker': 'AAPL', 'synced_count': 3},
+    os.getenv('AWS_BUCKET_NAME')
+)
+result = handle_step_failure(
+    'daily_pipeline', 'snowflake_sync',
+    'Snowflake connection timeout', 'retry',
+    os.getenv('AWS_BUCKET_NAME')
+)
+print('Recovery action:', result['action_taken'])
+print('Should continue:', result['should_continue'])
+"
+```
+
+### Checking Pipeline Resilience
+```python
+python -c "
+from ingestion.pipeline_recovery_manager import (
+    get_recovery_history, calculate_pipeline_resilience
+)
+import os
+history = get_recovery_history('daily_pipeline', os.getenv('AWS_BUCKET_NAME'))
+resilience = calculate_pipeline_resilience(history)
+print('Auto-recovery rate:', resilience['auto_recovery_rate_pct'], '%')
+print('Manual interventions:', resilience['manual_interventions'])
+"
+```
