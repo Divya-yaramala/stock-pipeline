@@ -1056,3 +1056,43 @@ records → run_validation_suite() → pass_rate < 80% → WARNING
         → run_contract_enforcement() → blocked = True → DLQ
         → all good → proceed to PostgreSQL
 ```
+
+## Workflow Automation Layer
+
+### Automated Workflows (workflow_automation_engine.py)
+5 workflows covering all pipeline cadences:
+
+```
+AW001 Daily (Mon-Fri 6 AM): 6 steps — core pipeline
+AW002 Weekly (Mon 8 AM):    4 steps — model evaluation
+AW003 Monthly (1st 9 AM):   3 steps — compliance
+AW004 Continuous (every 15 min): 3 steps — quality monitor
+AW005 Ad-hoc (manual):      3 steps — backfill
+```
+
+Execution tracking: S3 automation/executions/YYYY/MM/DD/
+Reliability metrics: success_rate, avg_duration, failure_count
+
+### Recovery Manager (pipeline_recovery_manager.py)
+5 recovery strategies per failure:
+```
+retry      → backoff_seconds=60, max_attempts=3
+skip       → continue without step result
+fallback   → use alternative data source
+checkpoint → resume from S3 checkpoint
+manual     → pause for human review
+```
+
+Checkpoints saved to: S3 recovery/checkpoints/
+Resilience score: auto_recovery_rate_pct
+
+### Automation → Recovery → Alert Flow
+```
+Workflow execution → step failure detected
+      ↓
+handle_step_failure(strategy) → retry/skip/fallback
+      ↓
+If manual: pause_pipeline flag set → Slack alert
+      ↓
+Recovery recorded → resilience score updated
+```
