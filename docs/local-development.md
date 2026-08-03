@@ -1634,3 +1634,50 @@ result = run_infrastructure_check(os.getenv('AWS_BUCKET_NAME'))
 print('Healthy:', result['healthy'], '/', result['total_endpoints'])
 "
 ```
+
+## Pipeline Validation
+```bash
+# Run full validation suite for a ticker
+python -c "
+from ingestion.pipeline_validator import run_validation_suite
+records = [
+    {'ticker': 'AAPL', 'trade_date': '2026-07-29', 'open_price': 185.0,
+     'high_price': 190.0, 'low_price': 183.0, 'close_price': 188.0, 'volume': 1000000},
+]
+result = run_validation_suite(records, 'AAPL')
+print('Pass rate:', result['pass_rate_pct'], '%')
+print('Passed rules:', result['passed'], '/', result['total_rules'])
+"
+
+# Validate business rules only
+python -c "
+from ingestion.pipeline_validator import validate_business_rules
+data = {'high_price': 190.0, 'low_price': 183.0, 'close_price': 188.0, 'open_price': 185.0, 'volume': 1000000}
+result = validate_business_rules(data)
+print('Business rules passed:', result['passed'])
+print('Violations:', result['violations'])
+"
+```
+
+## Contract Enforcement
+```bash
+# Enforce stock price contract
+python -c "
+from ingestion.contract_enforcer import run_contract_enforcement
+import os
+data = {'ticker': 'AAPL', 'trade_date': '2026-07-29', 'open_price': 185.0,
+        'high_price': 190.0, 'low_price': 183.0, 'close_price': 188.0, 'volume': 1000000}
+result = run_contract_enforcement('AAPL', data, os.getenv('AWS_BUCKET_NAME'))
+print('Blocked:', result['blocked'])
+print('Violations:', result['violations'])
+"
+
+# Check contract health
+python -c "
+from ingestion.contract_enforcer import calculate_contract_health
+import os
+health = calculate_contract_health('C001', os.getenv('AWS_BUCKET_NAME'))
+print('Contract health score:', health['health_score'])
+print('Violation rate:', health['violation_rate_pct'], '%')
+"
+```
