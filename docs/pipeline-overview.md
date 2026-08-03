@@ -1014,3 +1014,45 @@ Deployment Manager (dev→staging→prod) → Serving Infrastructure
       ↓
 REST API /predictions/{ticker} → Dashboard
 ```
+
+## Data Validation and Contract Layer
+
+### Pipeline Validator (pipeline_validator.py)
+8 rules run on every batch of records:
+
+```
+Structural:   V001 schema_validation
+Statistical:  V002 range_validation + V008 statistical_outliers
+Relational:   V003 referential_integrity
+Temporal:     V004 temporal_consistency
+Business:     V005 business_rules
+Completeness: V006 completeness_check
+Uniqueness:   V007 uniqueness_check
+```
+
+Pass rate = passed_rules / 8 × 100
+Output: S3 validation/YYYY/MM/DD/ticker.json
+
+### Contract Enforcer (contract_enforcer.py)
+C001 stock_price_event contract enforced per record:
+```
+enforce_contract() → violations found → blocked = True
+                  → no violations   → pipeline continues
+```
+
+Violation tracking:
+```
+contracts/violations/YYYY/MM/DD/C001_AAPL.json
+```
+
+Contract health score:
+```
+health_score = 100 - (violations_this_week / total_records × 100)
+```
+
+### Validation → Contract → DLQ Flow
+```
+records → run_validation_suite() → pass_rate < 80% → WARNING
+        → run_contract_enforcement() → blocked = True → DLQ
+        → all good → proceed to PostgreSQL
+```
