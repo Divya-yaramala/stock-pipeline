@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 103 ingestion modules + 6 scripts |
-| Test files | 27 test files |
-| Total tests | 662 passing |
+| Python files | 105 ingestion modules + 6 scripts |
+| Test files | 29 test files |
+| Total tests | 672 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 84 architecture decisions |
+| ADRs | 85 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -262,6 +262,10 @@
 237. Model Deployment Guide (3-environment strategy)
 238. Serving Infrastructure Pattern (endpoints + scaling)
 239. p95 Latency Tracking per Endpoint
+240. Pipeline Validator (8 rules across 6 categories)
+241. Business Rule Validation (high >= low, close in range)
+242. Temporal Consistency Check (sequential dates)
+243. Contract Enforcer (violation tracking + health score)
 
 🎉 80 ADRs milestone!
 
