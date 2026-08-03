@@ -8,7 +8,7 @@
 | Total tests | 682 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 87 architecture decisions |
+| ADRs | 88 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -274,6 +274,9 @@
 249. Workflow Reliability Tracking (success rate + duration)
 250. Pipeline Checkpointing (resume from failure point)
 251. Pipeline Recovery Strategies (retry/skip/fallback/checkpoint/manual)
+252. Workflow Automation Guide (5 workflows documented)
+253. Recovery Strategy Guide (5 strategies)
+254. Pipeline Resilience Score (auto-recovery tracking)
 
 🎉 80 ADRs milestone!
 
