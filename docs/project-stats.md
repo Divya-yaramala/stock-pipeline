@@ -3,7 +3,7 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 105 ingestion modules + 6 scripts |
+| Python files | 105 ingestion modules + 7 scripts |
 | Test files | 29 test files |
 | Total tests | 672 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
@@ -269,6 +269,7 @@
 244. Validation Framework Guide (8 rules documented)
 245. Contract Enforcement (blocking + DLQ integration)
 246. Contract Health Monitoring (7-day trend)
+247. Validation CLI Script (scripts/run_validation.py — total scripts: 7)
 
 🎉 80 ADRs milestone!
 
