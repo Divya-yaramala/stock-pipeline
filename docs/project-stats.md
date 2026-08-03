@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 105 ingestion modules + 7 scripts |
-| Test files | 29 test files |
-| Total tests | 672 passing |
+| Python files | 107 ingestion modules + 7 scripts |
+| Test files | 31 test files |
+| Total tests | 682 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 86 architecture decisions |
+| ADRs | 87 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -270,6 +270,10 @@
 245. Contract Enforcement (blocking + DLQ integration)
 246. Contract Health Monitoring (7-day trend)
 247. Validation CLI Script (scripts/run_validation.py — total scripts: 7)
+248. Workflow Automation Engine (5 workflows, priority-based)
+249. Workflow Reliability Tracking (success rate + duration)
+250. Pipeline Checkpointing (resume from failure point)
+251. Pipeline Recovery Strategies (retry/skip/fallback/checkpoint/manual)
 
 🎉 80 ADRs milestone!
 
