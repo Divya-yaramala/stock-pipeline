@@ -443,6 +443,7 @@ stock-pipeline/
 | [Knowledge Graph Guide](docs/knowledge-graph-guide.md) | Entity types, relationship types, stock domain ontology, semantic search algorithm |
 | [Recommendation Engine Guide](docs/recommendation-engine-guide.md) | 3 investor profiles, scoring algorithm, similar ticker finder |
 | [Validation Framework Guide](docs/validation-framework-guide.md) | 8 validation rules, business rules, field ranges, contract health score |
+| [Workflow Automation Guide](docs/workflow-automation-guide.md) | 5 automated workflows, recovery strategies, reliability targets |
 
 ---
 
