@@ -982,3 +982,51 @@ for profile in ['conservative', 'moderate', 'aggressive']:
     print(f'{profile}: top pick = {top}')
 "
 ```
+
+## Data Validation Procedures
+
+### Daily Validation Check
+After pipeline runs verify validation reports:
+```bash
+aws s3 ls s3://your-bucket/validation/YYYY/MM/DD/
+```
+Expected: 5 files (one per ticker)
+
+### If Pass Rate Below 80%
+```python
+python -c "
+from ingestion.pipeline_validator import run_validation_suite, save_validation_report
+import os, datetime
+records = []  # Load from S3
+result = run_validation_suite(records, 'AAPL')
+print('Pass rate:', result['pass_rate_pct'])
+for r in result['results']:
+    if not r.get('passed'):
+        print('FAILED:', r['rule_id'], r.get('violations', []))
+"
+```
+
+1. Identify which rules are failing
+2. Check raw data for the specific violations
+3. Common issues:
+   - V005 fails: Yahoo Finance returned bad OHLCV data
+   - V004 fails: Weekend/holiday data included
+   - V001 fails: API response missing fields
+
+### Contract Health Check
+```python
+python -c "
+from ingestion.contract_enforcer import calculate_contract_health
+import os
+health = calculate_contract_health('C001', os.getenv('AWS_BUCKET_NAME'))
+score = health['health_score']
+status = '✅ Healthy' if score >= 90 else '⚠️ Degraded' if score >= 70 else '❌ Critical'
+print(f'Contract C001 health: {score:.1f}% {status}')
+"
+```
+
+If health < 70%:
+1. Check violation history: get_contract_violation_history('C001', bucket)
+2. Identify which fields causing violations
+3. Check if Yahoo Finance API changed response format
+4. Update contract schema if legitimate schema change
