@@ -1681,3 +1681,64 @@ print('Contract health score:', health['health_score'])
 print('Violation rate:', health['violation_rate_pct'], '%')
 "
 ```
+
+## Workflow Automation
+```bash
+# Run automation check
+python -c "
+from ingestion.workflow_automation_engine import run_automation_check
+import os
+result = run_automation_check(os.getenv('AWS_BUCKET_NAME'))
+print('Workflows registered:', result['workflows_registered'])
+"
+
+# Trigger a workflow manually
+python -c "
+from ingestion.workflow_automation_engine import trigger_workflow
+import os
+exec_id = trigger_workflow(
+    'AW001', 'manual_trigger', os.getenv('AWS_BUCKET_NAME')
+)
+print('Execution ID:', exec_id)
+"
+
+# Check workflow reliability
+python -c "
+from ingestion.workflow_automation_engine import (
+    get_workflow_execution_history,
+    calculate_workflow_reliability
+)
+import os
+history = get_workflow_execution_history('AW001', os.getenv('AWS_BUCKET_NAME'))
+reliability = calculate_workflow_reliability(history)
+print('Success rate:', reliability['success_rate_pct'], '%')
+"
+```
+
+## Pipeline Recovery
+```bash
+# Create a checkpoint
+python -c "
+from ingestion.pipeline_recovery_manager import create_checkpoint
+import os
+checkpoint_id = create_checkpoint(
+    'daily_pipeline', 'anomaly_detection',
+    {'ticker': 'AAPL', 'processed': 3},
+    os.getenv('AWS_BUCKET_NAME')
+)
+print('Checkpoint:', checkpoint_id)
+"
+
+# Handle a step failure
+python -c "
+from ingestion.pipeline_recovery_manager import handle_step_failure
+import os
+result = handle_step_failure(
+    'daily_pipeline', 'snowflake_sync',
+    'Connection timeout', 'retry',
+    os.getenv('AWS_BUCKET_NAME')
+)
+print('Should continue:', result['should_continue'])
+print('Action taken:', result['action_taken'])
+"
+```
