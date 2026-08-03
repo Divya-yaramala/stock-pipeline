@@ -3,7 +3,7 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 107 ingestion modules + 7 scripts |
+| Python files | 107 ingestion modules + 9 scripts |
 | Test files | 31 test files |
 | Total tests | 682 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
@@ -277,6 +277,7 @@
 252. Workflow Automation Guide (5 workflows documented)
 253. Recovery Strategy Guide (5 strategies)
 254. Pipeline Resilience Score (auto-recovery tracking)
+255. Trigger Workflow CLI (scripts/trigger_workflow.py — dry-run support, total scripts: 9)
 
 🎉 80 ADRs milestone!
 
