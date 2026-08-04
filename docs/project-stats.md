@@ -8,7 +8,7 @@
 | Total tests | 692 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 89 architecture decisions |
+| ADRs | 90 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -283,8 +283,12 @@
 258. Silver Layer (validated clean data)
 259. Gold Layer (business aggregations)
 260. Delta Versioner (transaction log + time travel)
+261. Lakehouse Guide (docs/lakehouse-guide.md — medallion architecture guide)
+262. Delta Versioning Pattern (ADR 090 — custom S3 log vs Delta Lake)
 
 🎉 80 ADRs milestone!
+
+🎉 90 ADRs milestone!
 
 🎉 600 tests milestone!
 
