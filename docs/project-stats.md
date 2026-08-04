@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 107 ingestion modules + 9 scripts |
-| Test files | 31 test files |
-| Total tests | 682 passing |
+| Python files | 109 ingestion modules + 9 scripts |
+| Test files | 33 test files |
+| Total tests | 692 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 88 architecture decisions |
+| ADRs | 89 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -278,6 +278,11 @@
 253. Recovery Strategy Guide (5 strategies)
 254. Pipeline Resilience Score (auto-recovery tracking)
 255. Trigger Workflow CLI (scripts/trigger_workflow.py — dry-run support, total scripts: 9)
+256. Data Lakehouse (bronze/silver/gold medallion architecture)
+257. Bronze Layer (raw data preservation)
+258. Silver Layer (validated clean data)
+259. Gold Layer (business aggregations)
+260. Delta Versioner (transaction log + time travel)
 
 🎉 80 ADRs milestone!
 

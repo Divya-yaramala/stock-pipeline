@@ -98,3 +98,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [086](086-contract-enforcement-pattern.md) | Data Contract Enforcement Pattern | Accepted |
 | [087](087-workflow-automation-engine.md) | Workflow Automation Engine | Accepted |
 | [088](088-pipeline-recovery-strategies.md) | Pipeline Recovery Strategies | Accepted |
+| [089](089-lakehouse-architecture.md) | Data Lakehouse with Bronze/Silver/Gold | Accepted |
