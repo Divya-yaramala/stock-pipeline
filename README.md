@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-682%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-692%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,7 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 85/90 of my 90-day portfolio challenge!** 682 tests · 107 modules · 87 ADRs · 251 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 86/90 of my 90-day portfolio challenge!** 692 tests · 109 modules · 89 ADRs · 260 production patterns · 3 APIs + Dashboard
 
 > 🎉 **600 tests milestone!**
 
@@ -91,13 +91,13 @@ Dashboard:
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 682 passing |
-| Ingestion modules | 107 |
+| Total tests | 692 passing |
+| Ingestion modules | 109 |
 | Airflow tasks | 16 |
-| ADRs | 87 |
-| Production patterns | 251 |
+| ADRs | 89 |
+| Production patterns | 260 |
 | S3 prefixes | 15+ |
-| Days built | 85 |
+| Days built | 86 |
 
 ## 🧪 Testing Strategy
 Four-tier testing approach:
@@ -1462,4 +1462,13 @@ See [Storage Guide](docs/storage-guide.md)
 - 10 unit tests passing green
 
 ---
-*Built with ❤️ over 85 days as a portfolio project demonstrating production-grade data engineering.*
+### ✅ Day 86 — Data Lakehouse + Delta Versioning
+- Built medallion architecture (bronze/silver/gold layers)
+- Bronze: raw ingested data preserved for reprocessing
+- Silver: validated data (quality >= 80%) for ML/analytics
+- Gold: pre-aggregated business metrics for dashboards
+- Delta versioner with transaction log and time travel queries
+- 10 unit tests passing green
+
+---
+*Built with ❤️ over 86 days as a portfolio project demonstrating production-grade data engineering.*
