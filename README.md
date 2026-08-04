@@ -694,6 +694,22 @@ See [Workflow Automation Guide](docs/workflow-automation-guide.md)
 
 ---
 
+## 🏛️ Data Lakehouse
+Medallion architecture with Delta-style versioning:
+
+| Layer | Contents | Retention |
+|---|---|---|
+| Bronze | Raw API data | 365 days |
+| Silver | Validated data (score >= 80%) | 730 days |
+| Gold | Business aggregations | 1825 days |
+
+Delta transaction log tracks every INSERT/UPDATE/DELETE with time travel support.
+🎉 **260+ production patterns and counting!**
+
+See [Lakehouse Guide](docs/lakehouse-guide.md)
+
+---
+
 ## ⚡ Distributed Processing
 Parallel execution for 5x pipeline speedup:
 
