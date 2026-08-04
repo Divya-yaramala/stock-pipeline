@@ -58,8 +58,6 @@ if __name__ == "__main__":
         help="Layer to check (default: all)",
     )
     parser.add_argument("--date", help="Date in YYYY-MM-DD format (default: today)")
-    parser.add_argument(
-        "--optimize", action="store_true", help="Run delta table optimization"
-    )
+    parser.add_argument("--optimize", action="store_true", help="Run delta table optimization")
     parsed_args = parser.parse_args()
     run_lakehouse_cli(parsed_args)
