@@ -1742,3 +1742,61 @@ print('Should continue:', result['should_continue'])
 print('Action taken:', result['action_taken'])
 "
 ```
+
+## Data Lakehouse
+```bash
+# Run full lakehouse pipeline for a ticker
+python -c "
+from ingestion.lakehouse_manager import run_lakehouse_pipeline
+import os
+raw_data = {
+    'ticker': 'AAPL', 'trade_date': '2026-07-31',
+    'open_price': 185.0, 'high_price': 190.0,
+    'low_price': 183.0, 'close_price': 188.0, 'volume': 1000000
+}
+result = run_lakehouse_pipeline('AAPL', raw_data, os.getenv('AWS_BUCKET_NAME'))
+print('Bronze ID:', result['bronze_id'])
+print('Silver ID:', result['silver_id'])
+print('Gold ID:', result['gold_id'])
+print('Validation score:', result['validation_score'])
+"
+
+# Check layer stats
+python -c "
+from ingestion.lakehouse_manager import get_layer_stats
+import os, datetime
+date = datetime.datetime.now().strftime('%Y/%m/%d')
+for layer in ['bronze', 'silver', 'gold']:
+    stats = get_layer_stats(layer, os.getenv('AWS_BUCKET_NAME'), date)
+    print(f'{layer}: {stats[\"record_count\"]} records, {stats[\"size_mb\"]:.2f} MB')
+"
+```
+
+## Delta Versioning
+```bash
+# Create a delta log entry
+python -c "
+from ingestion.delta_versioner import run_delta_versioning
+import os
+version_id = run_delta_versioning('AAPL', 'INSERT', 5, os.getenv('AWS_BUCKET_NAME'))
+print('Version ID:', version_id)
+"
+
+# View delta history
+python -c "
+from ingestion.delta_versioner import get_delta_history
+import os
+history = get_delta_history('AAPL', os.getenv('AWS_BUCKET_NAME'), days=7)
+print('Delta entries:', len(history))
+for entry in history[-3:]:
+    print(f'  {entry.get(\"timestamp\")}: {entry.get(\"operation\")} +{entry.get(\"records_added\")} records')
+"
+
+# Time travel query
+python -c "
+from ingestion.delta_versioner import time_travel_query
+import os
+records = time_travel_query('AAPL', '2026-07-01', os.getenv('AWS_BUCKET_NAME'))
+print('Records as of 2026-07-01:', len(records))
+"
+```
