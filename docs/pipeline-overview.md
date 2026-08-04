@@ -1096,3 +1096,46 @@ If manual: pause_pipeline flag set → Slack alert
       ↓
 Recovery recorded → resilience score updated
 ```
+
+## Lakehouse Layer
+
+### Medallion Architecture (lakehouse_manager.py)
+3-tier storage with quality gates between layers:
+
+```
+Yahoo Finance API
+      ↓
+Bronze (raw) → Validate → Silver (clean) → Aggregate → Gold (business)
+      ↓               ↓                          ↓
+  Always          Only if                  Daily OHLCV
+  written       score >= 80%              summaries
+```
+
+Layer paths:
+```
+lakehouse/bronze/YYYY/MM/DD/ticker/source_timestamp.json
+lakehouse/silver/YYYY/MM/DD/ticker/validated_timestamp.json
+lakehouse/gold/YYYY/MM/DD/ticker/aggregation_type.json
+```
+
+Retention: Bronze 365 days → Silver 730 days → Gold 1825 days
+
+### Delta Versioner (delta_versioner.py)
+Every write creates a transaction log entry:
+```
+delta/log/ticker/version_id_timestamp.json
+```
+
+Operations tracked: INSERT, UPDATE, DELETE, SCHEMA_CHANGE
+
+Time travel: replay log up to target date
+Optimization: compact files < 1KB weekly
+
+### Lakehouse → Delta → Pipeline Flow
+```
+run_lakehouse_pipeline() → write_to_bronze() → create_delta_log_entry(INSERT)
+      ↓
+validation_score >= 80% → write_to_silver() → create_delta_log_entry(INSERT)
+      ↓
+aggregate → write_to_gold() → create_delta_log_entry(INSERT)
+```
