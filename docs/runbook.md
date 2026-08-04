@@ -1092,3 +1092,45 @@ print('Auto-recovery rate:', resilience['auto_recovery_rate_pct'], '%')
 print('Manual interventions:', resilience['manual_interventions'])
 "
 ```
+
+## Lakehouse Procedures
+
+### Daily Lakehouse Pipeline Run
+```python
+python -c "
+from ingestion.lakehouse_manager import run_lakehouse_pipeline
+import os
+raw = {'ticker': 'AAPL', 'trade_date': '2026-08-04', 'open_price': 190.0,
+       'high_price': 195.0, 'low_price': 188.0, 'close_price': 193.0, 'volume': 50000000}
+result = run_lakehouse_pipeline('AAPL', raw, os.getenv('AWS_BUCKET_NAME'))
+print('Bronze ID:', result['bronze_id'])
+print('Silver ID:', result['silver_id'])
+print('Validation Score:', result['validation_score'])
+"
+```
+
+### Checking Layer Stats
+```bash
+python scripts/run_lakehouse.py --layer all --date 2026-08-04
+```
+
+### Time Travel Query
+```python
+python -c "
+from ingestion.delta_versioner import time_travel_query
+import os
+records = time_travel_query('AAPL', '2026-08-01', os.getenv('AWS_BUCKET_NAME'))
+print(f'AAPL had {len(records)} log entries as of 2026-08-01')
+"
+```
+
+### Weekly Delta Optimization
+```bash
+python scripts/run_lakehouse.py --optimize
+```
+
+### If Silver Layer Empty (Validation Failing)
+1. Check validation score — silver requires >= 80%
+2. Review bronze records: `python scripts/run_lakehouse.py --layer bronze`
+3. Fix data quality issues in source
+4. Re-run lakehouse pipeline for the affected date
