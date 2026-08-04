@@ -3,7 +3,7 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 109 ingestion modules + 9 scripts |
+| Python files | 109 ingestion modules + 10 scripts |
 | Test files | 33 test files |
 | Total tests | 692 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
@@ -278,6 +278,7 @@
 253. Recovery Strategy Guide (5 strategies)
 254. Pipeline Resilience Score (auto-recovery tracking)
 255. Trigger Workflow CLI (scripts/trigger_workflow.py — dry-run support, total scripts: 9)
+263. Lakehouse CLI Script (scripts/run_lakehouse.py — layer stats + delta optimization, total scripts: 10)
 256. Data Lakehouse (bronze/silver/gold medallion architecture)
 257. Bronze Layer (raw data preservation)
 258. Silver Layer (validated clean data)
