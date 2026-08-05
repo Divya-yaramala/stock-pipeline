@@ -447,6 +447,7 @@ stock-pipeline/
 | [Validation Framework Guide](docs/validation-framework-guide.md) | 8 validation rules, business rules, field ranges, contract health score |
 | [Workflow Automation Guide](docs/workflow-automation-guide.md) | 5 automated workflows, recovery strategies, reliability targets |
 | [Lakehouse Guide](docs/lakehouse-guide.md) | Medallion architecture, delta versioning, time travel, cost analysis |
+| [Adaptive Modeling Guide](docs/adaptive-modeling-guide.md) | 3 market regimes, online features, concept drift detection |
 
 ---
 
