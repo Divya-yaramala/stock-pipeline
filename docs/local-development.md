@@ -1800,3 +1800,50 @@ records = time_travel_query('AAPL', '2026-07-01', os.getenv('AWS_BUCKET_NAME'))
 print('Records as of 2026-07-01:', len(records))
 "
 ```
+
+## Online Feature Engineering
+```bash
+# Compute online features for a ticker
+python -c "
+from ingestion.online_feature_engineer import build_online_feature_vector
+prices = [185+i*0.1 for i in range(20)]
+volumes = [1000000+i*10000 for i in range(20)]
+features = build_online_feature_vector('AAPL', prices, volumes)
+print('Regime:', features['regime'])
+print('Features:', list(features['features'].keys()))
+"
+
+# Detect market regime
+python -c "
+from ingestion.online_feature_engineer import compute_regime_features
+prices = [185+i*0.5 for i in range(30)]
+regime = compute_regime_features(prices)
+print('Regime:', regime['regime'])
+print('Confidence:', regime['confidence'])
+"
+```
+
+## Adaptive Modeling
+```bash
+# Select best model for regime
+python -c "
+from ingestion.adaptive_model import select_best_model_for_regime
+performance = {
+    'gradient_boosting': {'accuracy': 0.82},
+    'ensemble': {'accuracy': 0.79},
+    'linear_regression': {'accuracy': 0.71},
+}
+for regime in ['trending', 'volatile', 'mean_reverting']:
+    model = select_best_model_for_regime(regime, performance)
+    print(f'{regime}: {model}')
+"
+
+# Detect concept drift
+python -c "
+from ingestion.adaptive_model import detect_concept_drift
+recent_errors = [3.5, 4.2, 4.8, 5.1, 5.5, 6.0, 6.8]
+result = detect_concept_drift(recent_errors, baseline_error=3.0)
+print('Drift detected:', result['drift_detected'])
+print('Action:', result['action'])
+"
+```
