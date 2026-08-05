@@ -1134,3 +1134,48 @@ python scripts/run_lakehouse.py --optimize
 2. Review bronze records: `python scripts/run_lakehouse.py --layer bronze`
 3. Fix data quality issues in source
 4. Re-run lakehouse pipeline for the affected date
+
+## Adaptive Modeling Procedures
+
+### Daily Regime Check
+After pipeline runs check current market regime:
+```python
+python -c "
+from ingestion.online_feature_engineer import compute_regime_features
+import yfinance as yf
+data = yf.download('AAPL', period='30d', progress=False)
+prices = list(data['Close'].values)
+regime = compute_regime_features(prices)
+print('Current AAPL regime:', regime['regime'])
+print('Confidence:', regime['confidence'])
+"
+```
+
+### If Concept Drift Detected
+```python
+python -c "
+from ingestion.adaptive_model import detect_concept_drift
+recent_errors = [4.5, 5.2, 6.1, 7.3, 8.5]
+result = detect_concept_drift(recent_errors, baseline_error=3.5)
+print('Drift detected:', result['drift_detected'])
+print('Action:', result['action'])
+"
+```
+
+If action = 'retrain':
+1. Trigger retraining job:
+```python
+python -c "from ingestion.retraining_trigger import run_retraining_check; import os; print(run_retraining_check(['AAPL','MSFT','GOOGL','AMZN','TSLA'], os.getenv('AWS_BUCKET_NAME')))"
+```
+2. Monitor new model accuracy for 3 days
+3. If improved: update model weights
+
+If action = 'adjust_weights':
+```python
+python -c "
+from ingestion.adaptive_model import update_model_weights
+weights = {'gradient_boosting': 0.4, 'ensemble': 0.4, 'linear_regression': 0.2}
+updated = update_model_weights(weights, recent_accuracy=0.78)
+print('Updated weights:', updated)
+"
+```
