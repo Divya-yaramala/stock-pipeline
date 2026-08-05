@@ -202,6 +202,40 @@ python -c "from ingestion.ab_tester import create_ab_experiment; import os; prin
 
 ---
 
+## 14. Online Feature Engineering (`ingestion/online_feature_engineer.py`)
+Module: online_feature_engineer.py
+Features: rolling stats, microstructure, regime
+Update: Real-time with every new price
+
+---
+
+## 15. Adaptive Modeling (`ingestion/adaptive_model.py`)
+Module: adaptive_model.py
+Selection: Regime-based model routing
+Adaptation: Weight updates from accuracy feedback
+Drift: Concept drift detection + retraining trigger
+
+---
+
+## Complete MLOps Lifecycle (15 stages)
+1. Feature Engineering (batch)
+2. AutoML (5 candidates)
+3. Hyperparameter Tuning (GridSearchCV)
+4. Model Registry (staging → production)
+5. Experiment Tracking
+6. Feature Store (S3)
+7. Model Serving (endpoints)
+8. Model Explainability (SHAP)
+9. Drift Detection (PSI)
+10. Retraining Triggers
+11. Model Monitor (MAE/RMSE)
+12. A/B Testing (hash-based)
+13. Deployment Manager (3 envs)
+14. Online Feature Engineering
+15. Adaptive Modeling (regime-based)
+
+---
+
 ## MLOps S3 Layout
 
 ```
