@@ -1139,3 +1139,44 @@ validation_score >= 80% → write_to_silver() → create_delta_log_entry(INSERT)
       ↓
 aggregate → write_to_gold() → create_delta_log_entry(INSERT)
 ```
+
+## Adaptive Modeling Layer
+
+### Online Feature Engineer (online_feature_engineer.py)
+Real-time features from rolling windows:
+```
+prices[-20:] → rolling stats (mean, std, momentum, acceleration)
+volumes[-20:] → volume features (mean, ratio)
+microstructure → spread proxy, price impact, trade intensity
+regime → trending / volatile / mean_reverting
+```
+
+Output: S3 features/online/YYYY/MM/DD/ticker_timestamp.json
+
+### Adaptive Model (adaptive_model.py)
+Regime-based model selection:
+```
+trending      → gradient_boosting
+volatile      → ensemble (RF + GB + Linear)
+mean_reverting → linear_regression
+```
+
+Concept drift monitoring:
+```
+recent_errors vs baseline → drift_detected? → retrain/adjust/continue
+```
+
+Weight adaptation:
+```
+accuracy improves → increase model weight (learning_rate=0.01)
+```
+
+Output: S3 models/adaptive/YYYY/MM/DD/ticker.json
+
+### Adaptive Pipeline Flow
+```
+new_price → online_features → regime_detection
+         → model_selection → adaptive_prediction
+         → concept_drift_check → weight_update
+         → save_results
+```
