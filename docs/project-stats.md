@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 109 ingestion modules + 10 scripts |
-| Test files | 33 test files |
-| Total tests | 692 passing |
+| Python files | 111 ingestion modules + 10 scripts |
+| Test files | 35 test files |
+| Total tests | 702 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 90 architecture decisions |
+| ADRs | 91 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -279,6 +279,11 @@
 254. Pipeline Resilience Score (auto-recovery tracking)
 255. Trigger Workflow CLI (scripts/trigger_workflow.py — dry-run support, total scripts: 9)
 263. Lakehouse CLI Script (scripts/run_lakehouse.py — layer stats + delta optimization, total scripts: 10)
+264. Online Feature Engineering (rolling windows + microstructure features)
+265. Market Regime Detection (trending/volatile/mean-reverting)
+266. Adaptive Model Selection (regime-based model routing)
+267. Concept Drift Detection (error-based retraining trigger)
+268. Dynamic Weight Adaptation (accuracy-based weight updates)
 256. Data Lakehouse (bronze/silver/gold medallion architecture)
 257. Bronze Layer (raw data preservation)
 258. Silver Layer (validated clean data)
@@ -290,6 +295,8 @@
 🎉 80 ADRs milestone!
 
 🎉 90 ADRs milestone!
+
+🎉 700 tests milestone!
 
 🎉 600 tests milestone!
 

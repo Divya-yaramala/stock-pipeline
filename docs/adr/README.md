@@ -100,3 +100,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [088](088-pipeline-recovery-strategies.md) | Pipeline Recovery Strategies | Accepted |
 | [089](089-lakehouse-architecture.md) | Data Lakehouse with Bronze/Silver/Gold | Accepted |
 | [090](090-delta-versioning-pattern.md) | Delta Versioning with Transaction Log | Accepted |
+| [091](091-online-learning-pattern.md) | Online Learning and Adaptive Modeling | Accepted |
