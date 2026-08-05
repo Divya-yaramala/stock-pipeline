@@ -713,6 +713,22 @@ See [Lakehouse Guide](docs/lakehouse-guide.md)
 
 ---
 
+## 🧠 Adaptive Modeling
+Regime-aware ML that adapts to market conditions:
+
+| Regime | Condition | Best Model |
+|---|---|---|
+| Trending | Momentum > 2% | Gradient Boosting |
+| Volatile | Std/Mean > 3% | Ensemble |
+| Mean-Reverting | Autocorr < -0.3 | Linear Regression |
+
+Online features from 20-price rolling window.
+Concept drift detection triggers retraining automatically.
+
+See [Adaptive Modeling Guide](docs/adaptive-modeling-guide.md)
+
+---
+
 ## ⚡ Distributed Processing
 Parallel execution for 5x pipeline speedup:
 
