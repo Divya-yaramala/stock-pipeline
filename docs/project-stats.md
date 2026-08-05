@@ -3,7 +3,7 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 111 ingestion modules + 10 scripts |
+| Python files | 111 ingestion modules + 11 scripts |
 | Test files | 35 test files |
 | Total tests | 702 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
@@ -279,6 +279,7 @@
 254. Pipeline Resilience Score (auto-recovery tracking)
 255. Trigger Workflow CLI (scripts/trigger_workflow.py — dry-run support, total scripts: 9)
 263. Lakehouse CLI Script (scripts/run_lakehouse.py — layer stats + delta optimization, total scripts: 10)
+272. Adaptive Pipeline CLI (scripts/run_adaptive_pipeline.py — regime + prediction output, total scripts: 11)
 264. Online Feature Engineering (rolling windows + microstructure features)
 265. Market Regime Detection (trending/volatile/mean-reverting)
 266. Adaptive Model Selection (regime-based model routing)
