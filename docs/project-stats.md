@@ -8,7 +8,7 @@
 | Total tests | 702 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 91 architecture decisions |
+| ADRs | 92 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -284,6 +284,9 @@
 266. Adaptive Model Selection (regime-based model routing)
 267. Concept Drift Detection (error-based retraining trigger)
 268. Dynamic Weight Adaptation (accuracy-based weight updates)
+269. Adaptive Modeling Guide (3 regimes documented)
+270. Market Microstructure Features (spread + impact)
+271. Online Learning Pipeline (features → regime → model → predict)
 256. Data Lakehouse (bronze/silver/gold medallion architecture)
 257. Bronze Layer (raw data preservation)
 258. Silver Layer (validated clean data)
