@@ -101,3 +101,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [089](089-lakehouse-architecture.md) | Data Lakehouse with Bronze/Silver/Gold | Accepted |
 | [090](090-delta-versioning-pattern.md) | Delta Versioning with Transaction Log | Accepted |
 | [091](091-online-learning-pattern.md) | Online Learning and Adaptive Modeling | Accepted |
+| [092](092-online-feature-engineering.md) | Online Feature Engineering with Rolling Windows | Accepted |
