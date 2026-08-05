@@ -471,6 +471,8 @@ End-to-end ML lifecycle from training to monitoring:
 | A/B Testing | `ab_tester.py` | Hash-based assignment, MAE winner |
 | AutoML | `automl_pipeline.py` | 5-model competition |
 | Tuning | `hyperparameter_tuner.py` | GridSearchCV optimization |
+| Online Features | `online_feature_engineer.py` | Rolling window + regime |
+| Adaptive Model | `adaptive_model.py` | Regime-based selection |
 
 See [MLOps Guide](docs/mlops-guide.md) for full documentation.
 
