@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-692%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-702%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,9 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 86/90 of my 90-day portfolio challenge!** 692 tests · 109 modules · 89 ADRs · 260 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 87/90 of my 90-day portfolio challenge!** 702 tests · 111 modules · 91 ADRs · 268 production patterns · 3 APIs + Dashboard
+
+> 🎉 **700 tests milestone!**
 
 > 🎉 **600 tests milestone!**
 
@@ -91,11 +93,11 @@ Dashboard:
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 692 passing |
-| Ingestion modules | 109 |
+| Total tests | 702 passing |
+| Ingestion modules | 111 |
 | Airflow tasks | 16 |
-| ADRs | 89 |
-| Production patterns | 260 |
+| ADRs | 91 |
+| Production patterns | 268 |
 | S3 prefixes | 15+ |
 | Days built | 86 |
 
@@ -1488,4 +1490,14 @@ See [Storage Guide](docs/storage-guide.md)
 - 10 unit tests passing green
 
 ---
-*Built with ❤️ over 86 days as a portfolio project demonstrating production-grade data engineering.*
+### ✅ Day 87 — Online Feature Engineering + Adaptive Modeling
+- Built online feature engineer with rolling window features
+- Market microstructure features (spread proxy, price impact)
+- Market regime detection (trending/volatile/mean-reverting)
+- Adaptive model selecting best algorithm per regime
+- Concept drift detection triggering retraining
+- 🎉 700 tests milestone reached!
+- 10 unit tests passing green
+
+---
+*Built with ❤️ over 87 days as a portfolio project demonstrating production-grade data engineering.*
