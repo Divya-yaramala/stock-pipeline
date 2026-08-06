@@ -8,7 +8,7 @@
 | Total tests | 712 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 93 architecture decisions |
+| ADRs | 94 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -284,6 +284,10 @@
 274. Google SRE Golden Signals (latency/traffic/errors/saturation)
 275. Service Level Objectives (5 SLOs with compliance checking)
 276. Observability Dashboard (unified metrics from all pipeline sources)
+277. Observability Guide (golden signals + SLOs documented)
+278. SLO Framework (5 objectives with targets)
+279. Error Budget Tracking (future implementation noted)
+280. Trace Analysis (slowest span + error detection)
 264. Online Feature Engineering (rolling windows + microstructure features)
 265. Market Regime Detection (trending/volatile/mean-reverting)
 266. Adaptive Model Selection (regime-based model routing)
