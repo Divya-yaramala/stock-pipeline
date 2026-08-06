@@ -1179,3 +1179,46 @@ updated = update_model_weights(weights, recent_accuracy=0.78)
 print('Updated weights:', updated)
 "
 ```
+
+## Observability Procedures
+
+### Daily Observability Check
+Run after pipeline completes:
+```python
+python -c "
+from ingestion.observability_dashboard import run_observability_check
+import os
+result = run_observability_check(os.getenv('AWS_BUCKET_NAME'))
+signals = result.get('golden_signals', {})
+slo = result.get('slo_compliance', {})
+print('=== Golden Signals ===')
+for k, v in signals.items():
+    print(f'  {k}: {v}')
+print(f'=== SLO Compliance: {slo.get(\"compliant\")}/{slo.get(\"total\")} ===')
+for v in slo.get('violations', []):
+    print(f'  FAIL: {v}')
+"
+```
+
+### Investigating Slow Pipeline Runs
+```python
+python -c "
+from ingestion.distributed_tracer import run_pipeline_with_tracing, get_trace, analyze_trace
+import os
+trace_id = run_pipeline_with_tracing('AAPL', os.getenv('AWS_BUCKET_NAME'))
+trace = get_trace(trace_id, os.getenv('AWS_BUCKET_NAME'))
+analysis = analyze_trace(trace)
+print('Slowest span:', analysis['slowest_span'])
+print('Total duration:', analysis['total_ms'], 'ms')
+if analysis['total_ms'] > 2700000:
+    print('Pipeline took > 45 minutes!')
+"
+```
+
+### SLO Violation Response
+For each SLO violation:
+- pipeline_availability: Check GitHub Actions for failures
+- data_freshness: Run run_incremental_load manually
+- quality_score: Run quality gate check
+- prediction_accuracy: Check drift detector
+- api_latency: Restart API server
