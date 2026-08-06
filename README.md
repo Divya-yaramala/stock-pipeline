@@ -732,6 +732,27 @@ See [Adaptive Modeling Guide](docs/adaptive-modeling-guide.md)
 
 ---
 
+## 🔭 Full-Stack Observability
+Google SRE principles for pipeline reliability:
+
+### Golden Signals
+| Signal | Metric | Target |
+|---|---|---|
+| Latency | Avg pipeline duration | < 45 min |
+| Traffic | Records/hour | > 5/day |
+| Errors | DLQ rate | < 5% |
+| Saturation | Resource utilization | < 80% |
+
+### Service Level Objectives (5 SLOs)
+pipeline_availability · data_freshness · quality_score
+prediction_accuracy · api_latency
+
+Distributed tracing with span-level visibility.
+
+See [Observability Guide](docs/observability-guide.md)
+
+---
+
 ## ⚡ Distributed Processing
 Parallel execution for 5x pipeline speedup:
 
