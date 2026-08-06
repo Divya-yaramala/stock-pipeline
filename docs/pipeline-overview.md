@@ -1180,3 +1180,47 @@ new_price → online_features → regime_detection
          → concept_drift_check → weight_update
          → save_results
 ```
+
+## Observability Layer
+
+### Distributed Tracer (distributed_tracer.py)
+Full pipeline execution tracing:
+```
+start_trace() → start_span(fetch_data) → end_span()
+             → start_span(validate) → end_span()
+             → start_span(detect_anomaly) → end_span()
+             → start_span(predict) → end_span()
+             → start_span(generate_insights) → end_span()
+             → end_trace()
+```
+
+Storage: S3 traces/YYYY/MM/DD/trace_id/
+Analysis: slowest_span, error_count, total_duration_ms
+
+### Observability Dashboard (observability_dashboard.py)
+Google SRE Golden Signals daily:
+```
+latency    → avg pipeline duration minutes
+traffic    → records processed per hour
+errors     → DLQ events / total events %
+saturation → max(CPU, memory, disk) %
+```
+
+SLO Compliance (5 objectives):
+```
+pipeline_availability (99.5%) + data_freshness (25h)
+quality_score (90%) + prediction_accuracy (70%)
+api_latency (500ms p95)
+```
+
+Output: S3 reports/observability/YYYY/MM/DD/report.json
+
+### Complete Observability Stack
+```
+Layer 1: Real-time monitor (every 5-15 min)
+Layer 2: Distributed tracer (per pipeline run)
+Layer 3: Golden signals (daily)
+Layer 4: SLO compliance (daily)
+Layer 5: Predictive alerts (daily)
+Layer 6: Intelligent monitor (daily)
+```
