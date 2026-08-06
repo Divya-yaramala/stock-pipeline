@@ -1847,3 +1847,49 @@ print('Drift detected:', result['drift_detected'])
 print('Action:', result['action'])
 "
 ```
+
+## Distributed Tracing
+```bash
+# Run pipeline with full tracing
+python -c "
+from ingestion.distributed_tracer import run_pipeline_with_tracing
+import os
+trace_id = run_pipeline_with_tracing('AAPL', os.getenv('AWS_BUCKET_NAME'))
+print('Trace ID:', trace_id)
+"
+
+# Analyze a trace
+python -c "
+from ingestion.distributed_tracer import get_trace, analyze_trace
+import os
+trace = get_trace('YOUR_TRACE_ID', os.getenv('AWS_BUCKET_NAME'))
+analysis = analyze_trace(trace)
+print('Slowest span:', analysis['slowest_span'])
+print('Error count:', analysis['error_count'])
+print('Total duration:', analysis['total_ms'], 'ms')
+"
+```
+
+## Observability Dashboard
+```bash
+# Run full observability check
+python -c "
+from ingestion.observability_dashboard import run_observability_check
+import os
+result = run_observability_check(os.getenv('AWS_BUCKET_NAME'))
+signals = result.get('golden_signals', {})
+print('Latency:', signals.get('latency'), 'min')
+print('Error rate:', signals.get('errors'), '%')
+slo = result.get('slo_compliance', {})
+print('SLO compliance:', slo.get('compliant'), '/', slo.get('total'))
+"
+
+# Check SLO compliance
+python -c "
+from ingestion.observability_dashboard import get_service_level_objectives, check_slo_compliance
+slos = get_service_level_objectives()
+print('Defined SLOs:')
+for slo in slos:
+    print(f'  {slo[\"name\"]}: {slo[\"target\"]}')
+"
+```
