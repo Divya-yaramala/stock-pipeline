@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 111 ingestion modules + 11 scripts |
-| Test files | 35 test files |
-| Total tests | 702 passing |
+| Python files | 113 ingestion modules + 11 scripts |
+| Test files | 37 test files |
+| Total tests | 712 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 92 architecture decisions |
+| ADRs | 93 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -280,6 +280,10 @@
 255. Trigger Workflow CLI (scripts/trigger_workflow.py — dry-run support, total scripts: 9)
 263. Lakehouse CLI Script (scripts/run_lakehouse.py — layer stats + delta optimization, total scripts: 10)
 272. Adaptive Pipeline CLI (scripts/run_adaptive_pipeline.py — regime + prediction output, total scripts: 11)
+273. Distributed Tracer (trace + span tracking per pipeline step)
+274. Google SRE Golden Signals (latency/traffic/errors/saturation)
+275. Service Level Objectives (5 SLOs with compliance checking)
+276. Observability Dashboard (unified metrics from all pipeline sources)
 264. Online Feature Engineering (rolling windows + microstructure features)
 265. Market Regime Detection (trending/volatile/mean-reverting)
 266. Adaptive Model Selection (regime-based model routing)
