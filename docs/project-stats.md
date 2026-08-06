@@ -3,7 +3,7 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 113 ingestion modules + 11 scripts |
+| Python files | 113 ingestion modules + 12 scripts |
 | Test files | 37 test files |
 | Total tests | 712 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
@@ -280,6 +280,7 @@
 255. Trigger Workflow CLI (scripts/trigger_workflow.py — dry-run support, total scripts: 9)
 263. Lakehouse CLI Script (scripts/run_lakehouse.py — layer stats + delta optimization, total scripts: 10)
 272. Adaptive Pipeline CLI (scripts/run_adaptive_pipeline.py — regime + prediction output, total scripts: 11)
+281. Observability CLI (scripts/run_observability.py — golden signals + SLO table, total scripts: 12)
 273. Distributed Tracer (trace + span tracking per pipeline step)
 274. Google SRE Golden Signals (latency/traffic/errors/saturation)
 275. Service Level Objectives (5 SLOs with compliance checking)
