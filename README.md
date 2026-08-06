@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-702%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-712%20passing-brightgreen)
 ![Airflow](https://img.shields.io/badge/Airflow-2.9-red)
 ![dbt](https://img.shields.io/badge/dbt-Core-orange)
 ![Snowflake](https://img.shields.io/badge/Snowflake-blue)
@@ -13,7 +13,7 @@
 > A production-grade AI-powered stock price pipeline that ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT market insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
-> 🎉 **Day 87/90 of my 90-day portfolio challenge!** 702 tests · 111 modules · 91 ADRs · 268 production patterns · 3 APIs + Dashboard
+> 🎉 **Day 88/90 of my 90-day portfolio challenge!** 712 tests · 113 modules · 93 ADRs · 276 production patterns · 3 APIs + Dashboard
 
 > 🎉 **700 tests milestone!**
 
@@ -93,11 +93,11 @@ Dashboard:
 ## 📊 Project Stats
 | Metric | Value |
 |---|---|
-| Total tests | 702 passing |
-| Ingestion modules | 111 |
+| Total tests | 712 passing |
+| Ingestion modules | 113 |
 | Airflow tasks | 16 |
-| ADRs | 91 |
-| Production patterns | 268 |
+| ADRs | 93 |
+| Production patterns | 276 |
 | S3 prefixes | 15+ |
 | Days built | 86 |
 
@@ -1519,4 +1519,13 @@ See [Storage Guide](docs/storage-guide.md)
 - 10 unit tests passing green
 
 ---
-*Built with ❤️ over 87 days as a portfolio project demonstrating production-grade data engineering.*
+### ✅ Day 88 — Distributed Tracing + Observability Dashboard
+- Built distributed tracer with trace and span tracking
+- Slowest span detection and error span identification
+- Observability dashboard with Google SRE golden signals
+- 5 Service Level Objectives (SLOs) with compliance checking
+- Unified observability report combining all pipeline metrics
+- 10 unit tests passing green
+
+---
+*Built with ❤️ over 88 days as a portfolio project demonstrating production-grade data engineering.*
