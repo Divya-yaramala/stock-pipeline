@@ -44,3 +44,31 @@ python -c "from ingestion.sla_reporter import run_sla_reporting; import os; prin
 - `pipeline_lag > 60 min` → pipeline stalled → check Airflow
 - `error_rate > 5%` → DLQ filling up → check dead_letter_queue.py
 - `SLA compliance < 90%` → escalate to on-call engineer
+
+## Layer 5: Distributed Tracing (distributed_tracer.py)
+Captures full pipeline execution timeline:
+- trace_id per pipeline run
+- span per pipeline step
+- slowest_span detection
+- error_span identification
+
+## Layer 6: Observability Dashboard (observability_dashboard.py)
+Google SRE golden signals:
+- latency: avg pipeline duration
+- traffic: records per hour
+- errors: DLQ rate
+- saturation: resource utilization
+
+SLO compliance tracking:
+- 5 objectives checked daily
+- violations logged and alerted
+
+## Complete 6-Layer Monitoring Stack
+| Layer | Tool | Frequency |
+|---|---|---|
+| 1. Real-time | realtime_monitor.py | Every 5-15 min |
+| 2. SLA | sla_reporter.py | Daily |
+| 3. Observability | observability_dashboard.py | Daily |
+| 4. Predictive | predictive_alerter.py | Daily |
+| 5. Intelligent | intelligent_monitor.py | Daily |
+| 6. Tracing | distributed_tracer.py | Per pipeline run |
