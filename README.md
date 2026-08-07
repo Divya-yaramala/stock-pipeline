@@ -12,6 +12,10 @@
 > A production-grade AI-powered stock price pipeline built over 89 days as part of a 90-day portfolio challenge. Ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
 
 ---
+> 🏆 **89 days complete — 1 day remaining!** 717+ tests · 114+ modules · 95 ADRs · 285+ patterns · Full MLOps lifecycle · Production-hardened
+---
+
+---
 > 🎉 **Day 89/90 of my 90-day portfolio challenge!**
 > 712+ tests · 113+ modules · 94 ADRs · 276+ production patterns · 3 APIs · Full MLOps lifecycle
 ---
