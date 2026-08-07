@@ -21,3 +21,18 @@ mypy ingestion/ --ignore-missing-imports
 2. Import from ingestion module
 3. Chain dependencies correctly
 4. Update docs/pipeline-overview.md
+
+## Project Stats (Day 89)
+- 113+ modules in ingestion/
+- 712+ tests in tests/
+- 95 ADRs in docs/adr/
+- 12 scripts in scripts/
+
+## Adding New Features
+1. Create module in ingestion/
+2. Add 5+ tests in tests/test_module_name.py
+3. Run all linters: black, isort, flake8, mypy
+4. Add ADR if major architectural decision
+5. Update docs/project-stats.md
+6. Add commands to docs/local-development.md
+7. Update README.md Progress Log
