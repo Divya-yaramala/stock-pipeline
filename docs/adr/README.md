@@ -1,5 +1,15 @@
 # Architecture Decision Records
 
+## Summary
+Total ADRs: 95
+Categories:
+- Infrastructure: ADR 001-010
+- ML/AI: ADR 011-030
+- Data Quality: ADR 031-050
+- Security: ADR 051-060
+- MLOps: ADR 061-080
+- Advanced: ADR 081-095
+
 This project follows the practice of Architecture Decision Records (ADRs) to document
 the reasoning behind every major technology choice. Each ADR follows the format:
 Status, Context, Decision, Reasons, and Consequences. This ensures future engineers
