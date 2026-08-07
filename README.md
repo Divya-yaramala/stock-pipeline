@@ -5,7 +5,7 @@
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![Tests](https://img.shields.io/badge/tests-712%2B%20passing-brightgreen)
 ![Modules](https://img.shields.io/badge/modules-113%2B-orange)
-![ADRs](https://img.shields.io/badge/ADRs-94-purple)
+![ADRs](https://img.shields.io/badge/ADRs-95-purple)
 ![Patterns](https://img.shields.io/badge/patterns-276%2B-red)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
@@ -110,7 +110,7 @@ Dashboard:
 | Total tests | 712+ passing |
 | Ingestion modules | 113+ |
 | Airflow tasks | 16 |
-| ADRs | 94 |
+| ADRs | 95 |
 | Production patterns | 276+ |
 | Scripts | 12 |
 | Days built | 89 |
