@@ -1135,6 +1135,28 @@ python scripts/run_lakehouse.py --optimize
 3. Fix data quality issues in source
 4. Re-run lakehouse pipeline for the affected date
 
+## Pre-Deployment Health Check
+Always run before deploying to production:
+```bash
+python ingestion/pipeline_health_checker.py
+```
+
+Expected output:
+```
+Health Score: 95.0/100 (Grade: A)
+  Modules: 113/113 importable
+  Tests: 712 discovered
+  Dependencies: all installed
+  Env vars: 12/15 present (optional vars missing)
+```
+
+If grade < B (< 80%):
+1. Check which check failed
+2. Fix failing modules (import errors)
+3. Install missing dependencies
+4. Set missing required env vars
+5. Re-run health check
+
 ## Adaptive Modeling Procedures
 
 ### Daily Regime Check
