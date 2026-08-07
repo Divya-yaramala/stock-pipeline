@@ -104,3 +104,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [092](092-online-feature-engineering.md) | Online Feature Engineering with Rolling Windows | Accepted |
 | [093](093-distributed-tracing-pattern.md) | Distributed Tracing for Pipeline Observability | Accepted |
 | [094](094-service-level-objectives.md) | Service Level Objectives Framework | Accepted |
+| [095](095-production-health-checking.md) | Production Health Checking | Accepted |
