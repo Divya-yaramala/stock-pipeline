@@ -1801,6 +1801,21 @@ print('Records as of 2026-07-01:', len(records))
 "
 ```
 
+## Pipeline Health Check
+```bash
+# Run full health check
+python ingestion/pipeline_health_checker.py
+
+# Expected output:
+# Health Score: 95.0/100 (Grade: A)
+
+# Health check covers:
+# 1. All modules importable
+# 2. Test suite discoverable
+# 3. Dependencies installed
+# 4. Environment variables set
+```
+
 ## Online Feature Engineering
 ```bash
 # Compute online features for a ticker
