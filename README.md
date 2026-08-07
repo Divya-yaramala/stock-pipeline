@@ -465,6 +465,10 @@ stock-pipeline/
 | [Lakehouse Guide](docs/lakehouse-guide.md) | Medallion architecture, delta versioning, time travel, cost analysis |
 | [Adaptive Modeling Guide](docs/adaptive-modeling-guide.md) | 3 market regimes, online features, concept drift detection |
 | [Observability Guide](docs/observability-guide.md) | Google SRE golden signals, 5 SLOs, distributed tracing |
+| [Portfolio Showcase](docs/portfolio-showcase.md) | Project scale, depth, tech stack, recruiter reference |
+| [Interview Q&A](docs/interview-questions.md) | Architecture, ML/AI, and data engineering Q&A |
+| [Final Project Stats](docs/final-project-stats.md) | Complete statistics across all 89 days |
+| [Reports Guide](docs/reports-guide.md) | Executive, technical, and weekly report formats |
 
 ---
 
