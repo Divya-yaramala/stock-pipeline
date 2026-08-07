@@ -469,6 +469,7 @@ stock-pipeline/
 | [Interview Q&A](docs/interview-questions.md) | Architecture, ML/AI, and data engineering Q&A |
 | [Final Project Stats](docs/final-project-stats.md) | Complete statistics across all 89 days |
 | [Reports Guide](docs/reports-guide.md) | Executive, technical, and weekly report formats |
+| [90-Day Journey](docs/90-day-journey.md) | Chronological record of building the pipeline day by day |
 
 ---
 
