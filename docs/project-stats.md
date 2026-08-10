@@ -3,12 +3,12 @@
 ## Code Statistics
 | Metric | Count |
 |---|---|
-| Python files | 114 ingestion modules + 12 scripts |
-| Test files | 38 test files |
-| Total tests | 717 passing |
+| Python files | 115 ingestion modules + 12 scripts |
+| Test files | 39 test files |
+| Total tests | 722 passing |
 | dbt models | 6 models (3 staging + 3 marts) |
 | Airflow tasks | 16 tasks in DAG |
-| ADRs | 95 architecture decisions |
+| ADRs | 96 architecture decisions |
 | Lines of Python code | ~2500+ |
 | REST API endpoints | 13 |
 
@@ -409,3 +409,9 @@ Next milestone: 100 modules on Day 82
 🎉 4 compliance frameworks (SOX, GDPR, FINRA, INTERNAL)
 🎉 Medallion lakehouse architecture
 🎉 Adaptive modeling with regime detection
+
+---
+
+🏆 90-Day Portfolio Challenge Complete!
+Built by Divya Vani Yaramala
+github.com/Divya-yaramala/stock-pipeline

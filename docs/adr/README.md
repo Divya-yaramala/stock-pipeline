@@ -115,3 +115,4 @@ Architecture Decision Records (ADRs) capture the key technical decisions made du
 | [093](093-distributed-tracing-pattern.md) | Distributed Tracing for Pipeline Observability | Accepted |
 | [094](094-service-level-objectives.md) | Service Level Objectives Framework | Accepted |
 | [095](095-production-health-checking.md) | Production Health Checking | Accepted |
+| [096](096-90-day-challenge-reflection.md) | 90-Day Challenge Architectural Reflection | Accepted |
