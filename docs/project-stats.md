@@ -351,12 +351,22 @@
 ## Development Statistics
 | Metric | Count |
 |---|---|
-| Days of development | 89 days |
+| Days of development | 90 days |
 | Total commits | 150+ |
 | CI/CD workflows | 2 (CI + Code Quality) |
 | Linters passing | 4 (black, isort, flake8, mypy) |
-| Documentation files | 25+ |
+| Documentation files | 35+ |
 | Guide documents | 20+ |
+
+## Documentation Statistics
+| Type | Count |
+|---|---|
+| Core docs | 5 |
+| Operations docs | 5 |
+| Architecture ADRs | 96 |
+| Domain guides | 20+ |
+| Project summary docs | 6 |
+| Total documentation files | 35+ |
 
 ## Why This Stack Beats Alternatives
 | Our Choice | Alternative | Why We Won |
