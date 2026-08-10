@@ -3,10 +3,10 @@
 [![CI Pipeline](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Divya-yaramala/stock-pipeline/actions/workflows/code-quality.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-717%2B%20passing-brightgreen)
-![Modules](https://img.shields.io/badge/modules-114%2B-orange)
-![ADRs](https://img.shields.io/badge/ADRs-95-purple)
-![Patterns](https://img.shields.io/badge/patterns-280%2B-red)
+![Tests](https://img.shields.io/badge/tests-722%2B%20passing-brightgreen)
+![Modules](https://img.shields.io/badge/modules-115%2B-orange)
+![ADRs](https://img.shields.io/badge/ADRs-96-purple)
+![Patterns](https://img.shields.io/badge/patterns-282%2B-red)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 > A production-grade AI-powered stock price pipeline built over **90 days** as part of a 90-day portfolio challenge. Ingests daily OHLCV data, detects anomalies with ML, forecasts prices with Prophet, generates GPT insights, and serves data through REST, GraphQL, and WebSocket APIs — all orchestrated by Apache Airflow.
