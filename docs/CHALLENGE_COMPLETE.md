@@ -44,6 +44,17 @@ A production-grade AI stock pipeline covering:
 - Adaptive modeling with regime detection
 - Distributed tracing and observability
 
+## Repository Links
+- Stock Pipeline: https://github.com/Divya-yaramala/stock-pipeline
+- Crypto Pipeline: https://github.com/Divya-yaramala/crypto-streaming-pipeline
+- GitHub Profile: https://github.com/Divya-yaramala
+- LinkedIn: https://linkedin.com/in/divya-v-yaramala
+
+## CI/CD Status
+Both repos have green badges on main branch.
+722+ tests passing on every push.
+Code quality enforced: black + isort + flake8 + mypy
+
 ## Thank You
 Built with determination, daily discipline,
 and a commitment to production-grade quality.
