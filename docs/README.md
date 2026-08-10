@@ -1,19 +1,50 @@
-# Documentation Index — Stock Pipeline
+# Documentation Index — Stock Pipeline (Final)
 
-## Core Docs
-- [Pipeline Overview](pipeline-overview.md) — Architecture and components
-- [Data Dictionary](data-dictionary.md) — All table schemas and S3 prefixes
-- [Local Development](local-development.md) — Setup and commands
-- [API Documentation](api-docs.md) — REST, GraphQL, WebSocket reference
+## Core Documentation
+- [Pipeline Overview](pipeline-overview.md)
+- [Data Dictionary](data-dictionary.md)
+- [Local Development](local-development.md)
+- [API Documentation](api-docs.md)
+- [Configuration Guide](configuration-guide.md)
 
 ## Operations
-- [Operations Runbook](runbook.md) — Day-to-day operations guide
-- [Project Checklist](project-checklist.md) — Production readiness checklist
-- [Loom Video Script](loom-video-script.md) — Portfolio demo script
+- [Operations Runbook](runbook.md)
+- [Backfill Guide](backfill-guide.md)
+- [Cost Optimization Guide](cost-optimization-guide.md)
+- [Storage Guide](storage-guide.md)
+- [Testing Guide](testing-guide.md)
 
-## Architecture Decisions
-- [ADR Index](adr/README.md) — All 29 architecture decisions
+## Architecture
+- [ADR Index](adr/README.md) — 96 decisions
+- [MLOps Guide](mlops-guide.md) — 15 stages
+- [Monitoring Guide](monitoring-guide.md) — 6 layers
 
-## Project Stats
-- [Project Statistics](project-stats.md) — Modules, tests, patterns
-- [Portfolio Summary](portfolio-summary.md) — High-level overview
+## Domain Guides (20+)
+- [Forecasting Guide](forecasting-guide.md)
+- [Risk Analytics Guide](risk-analytics-guide.md)
+- [NLP Guide](nlp-guide.md)
+- [Knowledge Graph Guide](knowledge-graph-guide.md)
+- [Lakehouse Guide](lakehouse-guide.md)
+- [Observability Guide](observability-guide.md)
+- [Compliance Guide](compliance-guide.md)
+- [Data Privacy Guide](data-privacy-guide.md)
+- [Streaming Analytics Guide](streaming-analytics-guide.md)
+- [Adaptive Modeling Guide](adaptive-modeling-guide.md)
+- [Model Deployment Guide](model-deployment-guide.md)
+- [Workflow Automation Guide](workflow-automation-guide.md)
+- [Feature Flags Guide](feature-flags-guide.md)
+- [Data Mesh Guide](data-mesh-guide.md)
+- [Data Contracts Guide](data-contracts-guide.md)
+- [Validation Framework Guide](validation-framework-guide.md)
+- [Predictive Monitoring Guide](predictive-monitoring-guide.md)
+- [Recommendation Engine Guide](recommendation-engine-guide.md)
+- [Market Analytics Guide](market-analytics-guide.md)
+- [Self-Service Analytics Guide](self-service-analytics-guide.md)
+
+## Project Summary
+- [Challenge Complete](CHALLENGE_COMPLETE.md) 🏆
+- [90-Day Journey](90-day-journey.md)
+- [Lessons Learned](lessons-learned.md)
+- [Portfolio Showcase](portfolio-showcase.md)
+- [Final Project Stats](final-project-stats.md)
+- [Tech Decisions Summary](tech-decisions-summary.md)
