@@ -1256,3 +1256,23 @@ Feature Eng → AutoML → Tuning → Registry → Experiments
 Catalog → Metadata → Contracts → Schema Registry
 → Lineage → Impact Analysis → Compliance → Audit
 ```
+
+---
+
+## Airflow DAG Summary (16 Tasks)
+Task 1:  check_trading_day
+Task 2:  run_incremental_load
+Task 3:  run_validation
+Task 4:  run_quality_reporting
+Task 5:  load_to_postgres_staging
+Task 6:  run_dbt_models
+Task 7:  run_anomaly_detection
+Task 8:  run_price_prediction
+Task 9:  run_market_insights
+Task 10: run_snowflake_sync
+Task 11: run_dlq_replay
+Task 12: run_monitoring_report
+Task 13: generate_sla_report
+Task 14: run_s3_optimization
+Task 15: run_report_generation
+Task 16: send_daily_report_email
