@@ -471,6 +471,8 @@ stock-pipeline/
 | [Final Project Stats](docs/final-project-stats.md) | Complete statistics across all 89 days |
 | [Reports Guide](docs/reports-guide.md) | Executive, technical, and weekly report formats |
 | [90-Day Journey](docs/90-day-journey.md) | Chronological record of building the pipeline day by day |
+| [Lessons Learned](docs/lessons-learned.md) | Technical, process, and career lessons from 90 days |
+| [Challenge Complete](docs/CHALLENGE_COMPLETE.md) | Final achievement summary and celebration |
 
 ---
 
